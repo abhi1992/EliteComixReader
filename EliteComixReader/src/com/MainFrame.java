@@ -217,7 +217,7 @@ public class MainFrame extends JFrame {
     
     void save() {
         if(ArchiveManager.getSize() != 0) {
-            JFileChooser ch = new JFileChooser("file:\\E:\\misc\\");
+            JFileChooser ch = new JFileChooser(new File("."));
             
             ch.setSelectedFile(ArchiveManager.getFile(panel.getIndex()));
             ch.setCurrentDirectory(null);
@@ -259,7 +259,6 @@ public class MainFrame extends JFrame {
                         - panel.getFrameHeight() 
                             && panel.getXPos() - 3 <= 0)
                 {
-                    //System.out.print("jhgfjh");
                     panel.setX(panel.getXPos() - 3);
                     panel.repaint();
                 }
