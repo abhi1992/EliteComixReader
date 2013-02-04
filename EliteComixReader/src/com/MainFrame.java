@@ -198,8 +198,11 @@ public class MainFrame extends JFrame {
             @Override
             public boolean accept(File f) {
              
-                return f.isDirectory() || f.getName().toLowerCase().endsWith(".cbr")
-                     || f.getName().toLowerCase().endsWith(".cbz");
+                return     f.isDirectory() 
+                        || f.getName().toLowerCase().endsWith(".cbr")
+                        || f.getName().toLowerCase().endsWith(".cbz")
+                        || f.getName().toLowerCase().endsWith(".rar")
+                        || f.getName().toLowerCase().endsWith(".zip");
              }
              
             @Override
@@ -209,16 +212,18 @@ public class MainFrame extends JFrame {
         
         File f = chooser.getSelectedFile();
         doWork(e, f);
+        chooser = null;
     }
     
     void save() {
         if(ArchiveManager.getSize() != 0) {
-            JFileChooser chooser = new JFileChooser("file:/E:/misc/");
-            chooser.setCurrentDirectory(new File("file:/E:/misc/"));
-            chooser.setSelectedFile(ArchiveManager.getFile(panel.getIndex()));
-            int approve = chooser.showSaveDialog(panel);
+            JFileChooser ch = new JFileChooser("file:\\E:\\misc\\");
+            
+            ch.setSelectedFile(ArchiveManager.getFile(panel.getIndex()));
+            ch.setCurrentDirectory(null);
+            int approve = ch.showSaveDialog(panel);
             if(approve == JFileChooser.APPROVE_OPTION) {
-                File f = chooser.getSelectedFile();
+                File f = ch.getSelectedFile();
                 try {
                     Files.copy(ArchiveManager.getFile(panel.getIndex()).toPath(),
                             f.toPath(), COPY_ATTRIBUTES);
