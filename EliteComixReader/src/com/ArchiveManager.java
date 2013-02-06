@@ -34,7 +34,7 @@ public class ArchiveManager extends ExtractorModel{
    RARExtractor cbrExt;
     public int extract(File file) throws IOException {
         f = file;
-        if(f.getName().endsWith(".cbr")) {
+        if(f.getName().endsWith(".cbr") || f.getName().endsWith(".rar")) {
             
             cbrExt = new RARExtractor();
             
@@ -42,7 +42,7 @@ public class ArchiveManager extends ExtractorModel{
             
             
         }
-        else if(file.toString().endsWith(".cbz")) {
+        else if(file.toString().endsWith(".cbz") || f.getName().endsWith(".zip")) {
            CbzExtractor cbzExt;
            cbzExt = new CbzExtractor();
            //System.out.print("sdkhdhsl");

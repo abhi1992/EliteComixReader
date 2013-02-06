@@ -72,10 +72,9 @@ public class CbzExtractor extends ExtractorModel implements Extractor
                     
                     
                     while(entry != null) {
-                        File f = new File("E:/cbr/");
+                        File f = new File(appDir);
                         //os = new ByteArrayOutputStream();
                         //System.out.println("entryname " + entry.getName());
-                        f.mkdirs();
                         os.reset();
                         File ff = f;
                         if (entry.isDirectory()) {

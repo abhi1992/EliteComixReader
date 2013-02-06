@@ -59,7 +59,6 @@ public class MainFrame extends JFrame {
     
     private void initComponents(Dimension d, final ArchiveManager ext)
     {
-        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocation(200, 200);
         setVisible(true);
@@ -122,10 +121,10 @@ public class MainFrame extends JFrame {
                         open(ext);   
                     }
                     else if(!panel.isImageEmpty(panel.getIndex())) {
-                    if(e.getKeyCode() == KeyEvent.VK_DOWN){
+                    if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                         moveDown();
                     }
-                    else if(e.getKeyCode() == KeyEvent.VK_UP){
+                    else if(e.getKeyCode() == KeyEvent.VK_UP) {
                         if(panel.getImageHeight() > panel.getFrameHeight())
                         {   
                             if( Math.abs(panel.getYPos() + 5) < 
@@ -217,7 +216,7 @@ public class MainFrame extends JFrame {
     
     void save() {
         if(ArchiveManager.getSize() != 0) {
-            JFileChooser ch = new JFileChooser(new File("."));
+            JFileChooser ch = new JFileChooser();
             
             ch.setSelectedFile(ArchiveManager.getFile(panel.getIndex()));
             ch.setCurrentDirectory(null);

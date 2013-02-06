@@ -37,7 +37,8 @@ class ExtractorModel {
     private static String errorString;
     private static ArrayList<File> file;
     private static int fileSize;
-    
+    final static String appDir = System.getProperty("user.home")
+                        + System.getProperty("file.separator") + ".ELiteComixReader";
     ExtractorModel() {
         //img = new ArrayList<>();
         errorString = new String();
@@ -45,6 +46,8 @@ class ExtractorModel {
         file = new ArrayList<>();
         //size = 0;
         fileSize = 0;
+        File f = new File(appDir);
+        f.mkdirs();
     }
     
     static File getFile() {

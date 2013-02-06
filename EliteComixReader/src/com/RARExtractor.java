@@ -95,8 +95,7 @@ public class RARExtractor extends ExtractorModel implements Extractor
                     }
                     List<FileHeader> files = arc.getFileHeaders();
                     int i = 0;
-                    File f = new File("E:/cbr/");
-                    f.mkdirs();
+                    File f = new File(appDir);
                     
                     
                     
