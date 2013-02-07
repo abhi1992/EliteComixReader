@@ -188,7 +188,7 @@ public class MainFrame extends JFrame {
     }
     
     static void open(ArchiveManager e) {
-        close();
+        
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("."));
@@ -212,10 +212,6 @@ public class MainFrame extends JFrame {
         File f = chooser.getSelectedFile();
         doWork(e, f);
         chooser = null;
-    }
-    
-    static void close() {
-        
     }
     
     void save() {
