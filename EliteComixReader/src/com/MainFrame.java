@@ -188,7 +188,7 @@ public class MainFrame extends JFrame {
     }
     
     static void open(ArchiveManager e) {
-        
+        close();
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("."));
@@ -212,6 +212,10 @@ public class MainFrame extends JFrame {
         File f = chooser.getSelectedFile();
         doWork(e, f);
         chooser = null;
+    }
+    
+    static void close() {
+        
     }
     
     void save() {
@@ -334,36 +338,35 @@ public class MainFrame extends JFrame {
     
     static void doWork(ArchiveManager ext, File f) {
         try {
-                                       
-                                    BufferedImage a = null;
-                                        try {
-                                            int success = ext.extract(f);
-                                            if(success == 0) {
-                                                panel.setIndex(0);
+                          
+            BufferedImage a = null;
+                try {
+                    int success = ext.extract(f);
+                    if(success == 0) {
+                        panel.setIndex(0);
 
-                                                if(panel.getIndex() <= ArchiveManager.getSize() 
-                                                        && ArchiveManager.getSize() != 0) {
-                                                    a = ext.getImage(panel.getIndex());
-                                                    //System.out.println("sjdkb");
-                                                }
-                                                else if(ArchiveManager.getSize() == 0) {
-                                                    panel.setEmptyImage();
-                                                    JOptionPane.showMessageDialog(panel, "No images in the File!!");
-                                                }
-                                            }
-                                            else {
-                                                JOptionPane.showMessageDialog(panel, ArchiveManager.getError());
-                                            }
-                                        } catch (IOException ex) {
-                                            //
-                                        }
-                                    if(a != null)
-                                    {
-                                        panel.loadImage(a);
-                                        panel.repaint();
-                                    }
-                                    }
-                                    catch(NullPointerException r) {
-                                    }
+                        if(panel.getIndex() <= ArchiveManager.getSize() 
+                                && ArchiveManager.getSize() != 0) {
+                            a = ext.getImage(panel.getIndex());
+                            //System.out.println("sjdkb");
+                        }
+                        else if(ArchiveManager.getSize() == 0) {
+                            panel.setEmptyImage();
+                            JOptionPane.showMessageDialog(panel, "No images in the File!!");
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(panel, ArchiveManager.getError());
+                    }
+                } catch (IOException ex) {
+                    //
+                }
+            if(a != null) {
+                panel.loadImage(a);
+                panel.repaint();
+            }
+            }
+            catch(NullPointerException r) {
+            }
     }
 }

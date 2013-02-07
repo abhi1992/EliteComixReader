@@ -99,7 +99,7 @@ class ImagePanel extends JPanel implements KeyListener
         }
     }  
     
-    void adjustImage(){
+    void adjustImage() {
         
             if(y<0 && getHeight() < frameHeight)
                 y += (frameHeight - getHeight()) / scale; 
@@ -112,7 +112,7 @@ class ImagePanel extends JPanel implements KeyListener
     
     void setTransform(double ptheta) {
         at = AffineTransform.getTranslateInstance(x, y);
-        if(ptheta != 0){
+        if(ptheta != 0) {
             trans = false;
             rotateClockwise90(ptheta);
         }

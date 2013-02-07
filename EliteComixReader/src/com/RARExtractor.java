@@ -42,7 +42,7 @@ import javax.swing.WindowConstants;
 public class RARExtractor extends ExtractorModel implements Extractor
 {	
     
-    public RARExtractor(){
+    public RARExtractor() {
         
         //setOutputStream(new ArrayList<PipedOutputStream>());
         setError(new String());
@@ -51,13 +51,13 @@ public class RARExtractor extends ExtractorModel implements Extractor
     
     
     @Override
-    public int writeToOutputStream(File file, ByteArrayOutputStream os){
-        if(file.exists()){
+    public int writeToOutputStream(File file, ByteArrayOutputStream os) {
+        if(file.exists()) {
             
-        if(file.isDirectory()){
-            System.out.print("Entered!!\n");
+        if(file.isDirectory()) {
+            //System.out.print("Entered!!\n");
             return recurseDirectory(file, os);
-        }else{
+        } else {
             //removeAll();
             return extract(file, os);
         }
@@ -68,14 +68,14 @@ public class RARExtractor extends ExtractorModel implements Extractor
     static int extract(File file, ByteArrayOutputStream osi)
     {
         
-        if(file==null || !file.exists()){
-            setError("error file " +file + " does not exist");
+        if(file == null || !file.exists()) {
+            setError("error file " + file + " does not exist");
             return -1;
         }
         String s = file.toString();
         s = s.substring(s.length()-3);
         
-        if(s.equalsIgnoreCase("rar")||s.equalsIgnoreCase("cbr")){
+        if(s.equalsIgnoreCase("rar") || s.equalsIgnoreCase("cbr")) {
 
             ReadOnlyAccessFile readFile = null;
             try {
@@ -88,8 +88,8 @@ public class RARExtractor extends ExtractorModel implements Extractor
                     setError( "archive consturctor error"+e.getMessage());
                     return -1;
                 }
-                if(arc != null){
-                    if(arc.isEncrypted()){
+                if(arc != null) {
+                    if(arc.isEncrypted()) {
                         setError( "archive is encrypted cannot extract");
                         return -1;
                     }
@@ -101,7 +101,7 @@ public class RARExtractor extends ExtractorModel implements Extractor
                     
                     for(FileHeader fh : files)
                     {
-                        String path = f.getAbsolutePath()+"/"+fh.getFileNameString();
+                        String path = f.getAbsolutePath() + "/" + fh.getFileNameString();
                         //System.out.println(fh.getFileNameString()
                           //          .subSequence(0, fh.getFileNameString().indexOf("\\")));
                         File ff = f;
@@ -110,7 +110,7 @@ public class RARExtractor extends ExtractorModel implements Extractor
                                     .subSequence(0, fh.getFileNameString().indexOf("\\")));
                             ff.mkdirs();
                             ff.deleteOnExit();
-                            path = f.getAbsolutePath()+"/" + fh.getFileNameString();
+                            path = f.getAbsolutePath() + "/" + fh.getFileNameString();
                             //System.out.println(fh.getFileNameString()
                               //      .subSequence(0, fh.getFileNameString().indexOf("\\")));
                         }
@@ -123,15 +123,15 @@ public class RARExtractor extends ExtractorModel implements Extractor
                         ff.deleteOnExit();
                         
                         //PrintWriter pw = new PrintWriter(os);
-                            if(fh.isEncrypted()){
+                            if(fh.isEncrypted()) {
                                 setError( "file is encrypted cannot extract: "+fh.getFileNameString());
                                 return -1;
                             }
-                            if(fh.isFileHeader() && fh.isUnicode()){
+                            if(fh.isFileHeader() && fh.isUnicode()) {
                                 //logger.info("unicode name: "+fh.getFileNameW());
                             }
                             
-                            try(FileOutputStream os = new FileOutputStream(ff);)
+                            try(FileOutputStream os = new FileOutputStream(ff))
                             {
                                 
                                 arc.extractFile(fh, osi);
@@ -193,7 +193,7 @@ public class RARExtractor extends ExtractorModel implements Extractor
                 return -1;
             }
             
-            for(File f: files) {
+            for(File f : files) {
                 recurseDirectory(f, os);
                 f = null;
             }
@@ -220,11 +220,11 @@ public static void main(String[] args)
     
     File file = f.getSelectedFile();
 
-    if(file.exists()){
+    if(file.exists()) {
             
-        if(file.isDirectory()){
+        if(file.isDirectory()) {
             //System.out.print(recurseDirectory(file));
-        }else{
+        } else {
            System.out.print(extract(file, new ByteArrayOutputStream()));
         }
         }

@@ -42,7 +42,9 @@ class ExtractorModel {
     ExtractorModel() {
         //img = new ArrayList<>();
         errorString = new String();
-        //cbb = new ArrayList<>();
+        if(file != null) {
+            clear();
+        }
         file = new ArrayList<>();
         //size = 0;
         fileSize = 0;
@@ -66,7 +68,7 @@ class ExtractorModel {
     }
     
     static void addAll(File files[]) {
-        for(File f : files){
+        for(File f : files) {
             if(isImageFile(f)) {
                 file.add(f);
                 fileSize ++;
@@ -88,9 +90,10 @@ class ExtractorModel {
     }
     
     static void clear() {
-        file = null;
-        file = new ArrayList<>();
-        fileSize = file.size();
+        for(File f : file) {
+            f.delete();
+        }
+        
     }
     
     static String getError() {

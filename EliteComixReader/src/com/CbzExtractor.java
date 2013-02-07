@@ -91,7 +91,7 @@ public class CbzExtractor extends ExtractorModel implements Extractor
                         ff = new File(path);
                         
                         ff.deleteOnExit();
-                        //ff.mkdirs();
+                        
                         byte[] buffer = new byte[1024];
 			int length;
                         try (FileOutputStream fout = new FileOutputStream(ff)) {
@@ -101,7 +101,7 @@ public class CbzExtractor extends ExtractorModel implements Extractor
                             }
                             
                             fout.write(os.toByteArray());
-                            if(ff!=null)
+                            if(ff != null)
                                 addFile(ff);
                         }
                         entry = zin.getNextEntry();

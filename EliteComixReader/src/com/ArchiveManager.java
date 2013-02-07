@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author Abhishek Banerjee
  */
-public class ArchiveManager extends ExtractorModel{
+public class ArchiveManager extends ExtractorModel {
    private static File f;
    FileExtractor fExt;
    RARExtractor cbrExt;
@@ -49,18 +49,17 @@ public class ArchiveManager extends ExtractorModel{
            return cbzExt.writeToOutputStream(file, new ByteArrayOutputStream());
        }
         else if(file.isDirectory()) {
-            fExt = new FileExtractor(file.listFiles());
-                return 0;
+            fExt = new FileExtractor(file.listFiles());    
+            return 0;
         }
         return -1;
     }
     
     public BufferedImage getImage(int index) throws IOException {
             return getImageFromFile(index);
- //       return null;
     }
     
-    static int getSize(){    
+    static int getSize() {
         return FileExtractor.getFileSize();
     }
 }
