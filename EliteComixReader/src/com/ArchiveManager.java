@@ -19,46 +19,60 @@
 package com;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 
 /**
- *
+ * Manages various file extensions.
  * @author Abhishek Banerjee
+ * @version v0.0.1
+ * @since v0.0.1
  */
 public class ArchiveManager extends ExtractorModel {
    private static File f;
    FileExtractor fExt;
    RARExtractor cbrExt;
-    public int extract(File file) throws IOException {
-        f = file;
-        if(f.getName().endsWith(".cbr") || f.getName().endsWith(".rar")) {
-            
-            cbrExt = new RARExtractor();
-            
-                return cbrExt.writeToOutputStream(file, new ByteArrayOutputStream());
-            
-            
-        }
-        else if(file.toString().endsWith(".cbz") || f.getName().endsWith(".zip")) {
+   
+   /**
+    * 
+    * @param file comic book file name
+    * @return integer representing success or failure
+    * @throws IOException in case of read write error
+    * @since v0.0.1
+    */
+   public int extract(File file) throws IOException {
+       f = file;
+       if(f.getName().endsWith(".cbr") || f.getName().endsWith(".rar")) {
+           cbrExt = new RARExtractor();     
+           return cbrExt.writeToOutputStream(file, new ByteArrayOutputStream());
+       
+       } else if(file.toString().endsWith(".cbz") || f.getName().endsWith(".zip")) {
            CbzExtractor cbzExt;
            cbzExt = new CbzExtractor();
-           //System.out.print("sdkhdhsl");
            return cbzExt.writeToOutputStream(file, new ByteArrayOutputStream());
-       }
-        else if(file.isDirectory()) {
+       
+       } else if(file.isDirectory()) {
             fExt = new FileExtractor(file.listFiles());    
             return 0;
         }
         return -1;
     }
-    
-    public BufferedImage getImage(int index) throws IOException {
+   
+    /**
+     * 
+     * @param index integer denoting page no
+     * @return BufferedImage at index
+     * @throws IOException 
+     * @since v0.0.1
+     */
+    public static BufferedImage getImage(int index) throws IOException {
             return getImageFromFile(index);
     }
     
+    /**
+     * 
+     * @return no. of images in folder 
+     * @since v0.0.1
+     */
     static int getSize() {
         return FileExtractor.getFileSize();
     }

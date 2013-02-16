@@ -21,16 +21,28 @@ package com;
 import java.io.File;
 
 /**
- *
+ * Extracts directories
  * @author Abhishek Banerjee
+ * @version v0.0.1
+ * @since v0.0.1
  */
 public class FileExtractor extends ExtractorModel {
     
+    /**
+     * 
+     * @param f an array of image files 
+     * @since v0.0.1
+     */
     FileExtractor(File[] f) {
         clear();
         addAll(f);
     }
     
+    /**
+     * 
+     * @return size or no of files in the comic
+     * @since v0.0.1
+     */
     static int getSize() {
         return getFileSize();
     }

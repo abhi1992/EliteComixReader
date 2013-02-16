@@ -18,30 +18,29 @@
 */
 package com;
 
-/**
- *
- * @author Abhishek Banerjee
- */
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-
 import com.github.junrar.Archive;
 import com.github.junrar.exception.RarException;
 import com.github.junrar.exception.RarException.RarExceptionType;
 import com.github.junrar.io.ReadOnlyAccessFile;
 import com.github.junrar.rarfile.FileHeader;
 import java.awt.Dimension;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import java.io.*;
+import java.util.List;
+import javax.swing.*;
 
+/**
+ * This class deals with the rar and cbr files extraction.
+ * @author Abhishek Banerjee
+ * @version v0.0.1
+ * @since v0.0.1
+ */
 public class RARExtractor extends ExtractorModel implements Extractor
 {	
-    
+    /**
+     * 
+     * Constructor
+     * @since v0.0.1
+     */
     public RARExtractor() {
         
         //setOutputStream(new ArrayList<PipedOutputStream>());
@@ -49,22 +48,32 @@ public class RARExtractor extends ExtractorModel implements Extractor
         
     }
     
-    
+    /**
+     * 
+     * @param file the input file name
+     * @param os the output stream to be specified
+     * @return integer denoting success or failure
+     * @since v0.0.1
+     */
     @Override
     public int writeToOutputStream(File file, ByteArrayOutputStream os) {
         if(file.exists()) {
             
         if(file.isDirectory()) {
-            //System.out.print("Entered!!\n");
             return recurseDirectory(file, os);
         } else {
-            //removeAll();
             return extract(file, os);
         }
         }
         return 0;
     }
     
+    /**
+     * 
+     * @param file the name of the input file
+     * @param osi the output stream to write to
+     * @return integer denoting success or failure
+     */
     static int extract(File file, ByteArrayOutputStream osi)
     {
         
@@ -102,8 +111,6 @@ public class RARExtractor extends ExtractorModel implements Extractor
                     for(FileHeader fh : files)
                     {
                         String path = f.getAbsolutePath() + "/" + fh.getFileNameString();
-                        //System.out.println(fh.getFileNameString()
-                          //          .subSequence(0, fh.getFileNameString().indexOf("\\")));
                         File ff = f;
                         if (fh.getFileNameString().contains("\\")) {
                             ff = new File(f.getAbsolutePath()+"/"+fh.getFileNameString()
@@ -111,8 +118,6 @@ public class RARExtractor extends ExtractorModel implements Extractor
                             ff.mkdirs();
                             ff.deleteOnExit();
                             path = f.getAbsolutePath() + "/" + fh.getFileNameString();
-                            //System.out.println(fh.getFileNameString()
-                              //      .subSequence(0, fh.getFileNameString().indexOf("\\")));
                         }
                         
                         ff.deleteOnExit();
@@ -180,6 +185,12 @@ public class RARExtractor extends ExtractorModel implements Extractor
     
     
 
+    /**
+     * 
+     * @param file the input file
+     * @param os the output stream to write to
+     * @return integer denoting success or failure
+     */
    static int recurseDirectory(File file, ByteArrayOutputStream os)
     {
         if(file == null || !file.exists()) {
@@ -208,7 +219,10 @@ public class RARExtractor extends ExtractorModel implements Extractor
     }
     
     
-
+/**
+ * main method for testing
+ * @param args command line arguments
+ */
 public static void main(String[] args)
     {
     JFileChooser f = new JFileChooser();

@@ -21,24 +21,19 @@ package com;
 /**
  *
  * @author Abhishek Banerjee
+ * @since v0.0.1
  */
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-
-
 import java.awt.Dimension;
-import java.io.FileInputStream;
-import java.io.FileOutputStream; 
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
+import java.io.*;
+import java.util.zip.*;
+import javax.swing.*;
 
 public class CbzExtractor extends ExtractorModel implements Extractor
 {	
-    
+    /**
+     * Constructor
+     * @since v0.0.1
+     */
     public CbzExtractor(){
         
         //setOutputStream(new ArrayList<PipedOutputStream>());
@@ -46,7 +41,11 @@ public class CbzExtractor extends ExtractorModel implements Extractor
         clear();
     }
     
-    
+    /**
+     * extracts the specified file
+     * @param file used to extract the specified file
+     * @return an integer denoting success or failure
+     */
     private static int extract(final File file) 
     {
         if(file==null || !file.exists()){
@@ -121,6 +120,10 @@ public class CbzExtractor extends ExtractorModel implements Extractor
     }
     
 
+    /**
+     * 
+     * @param file recuse directory specified 
+     */
     private static void recurseDirectory(File file)
     {
         if(file==null||!file.exists()){
@@ -148,6 +151,12 @@ public class CbzExtractor extends ExtractorModel implements Extractor
 
     }
 
+    /**
+     * 
+     * @param file the name of the specified file
+     * @param os
+     * @return 
+     */
     @Override
     public int writeToOutputStream(File file, ByteArrayOutputStream os) {
         return extract(file);

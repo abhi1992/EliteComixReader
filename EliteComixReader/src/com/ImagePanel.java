@@ -388,15 +388,16 @@ class ImagePanel extends JPanel implements KeyListener
     
     void nextPage(ArchiveManager ext) {
          
-        if(index + 1 <= ArchiveManager.getSize()) {
+        if(index + 1 < ArchiveManager.getSize()) {
             //System.out.println("inside else index = "+ index);
+            index++;
             try {
                     int val = loadImage(ext.getImage(index));
                     //System.out.println("after load image val = "+ val);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
-            index++;
+            
             //System.out.println("index "+index);
             //displayImage(index);
             
@@ -404,12 +405,12 @@ class ImagePanel extends JPanel implements KeyListener
         }
     }
     
-    void goToPage(ArchiveManager ext, int page) {
+    void goToPage(int page) {
          
         if(page <= ArchiveManager.getSize()) {
             //System.out.println("inside else index = "+ index);
             try {
-                    int val = loadImage(ext.getImage(page));
+                    int val = loadImage(ArchiveManager.getImage(page));
                     //System.out.println("after load image val = "+ val);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());

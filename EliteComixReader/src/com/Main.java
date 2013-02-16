@@ -19,11 +19,16 @@
 package com;
 
 /**
- *
+ * Main Class
  * @author Abhishek
+ * @since v0.0.1
  */
 public class Main {
   
+    /**
+     * Main method
+     * @param args command line arguments
+     */
      public static void main(String args[]) {
         ArchiveManager e = new ArchiveManager();
         MainFrame mainFrame = new MainFrame(e);

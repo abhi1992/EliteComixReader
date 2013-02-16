@@ -20,6 +20,7 @@ package com;
 
 import java.awt.Dimension;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.*;
 /**
  *
@@ -28,7 +29,7 @@ import javax.swing.*;
 public class PopupMenu extends JPopupMenu{
     
     private JMenuItem open, left, right, fitWidth, 
-            fullscreen, alwaysOnTop, goTo, shortcuts, about, exit, save;
+            fullscreen, alwaysOnTop, goTo, shortcuts, about, exit, save, addBookmark, bookmarksManager;
     private static ImagePanel imagePanel;
     private static MainFrame mainFrame;
     private static ArchiveManager archiveManager;
@@ -155,6 +156,34 @@ public class PopupMenu extends JPopupMenu{
         shortcuts.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0));
         add(shortcuts);
         
+        addSeparator();
+        
+        addBookmark = new JMenuItem("Add / Remove Bookmark");
+        addBookmark.setIcon(new ImageIcon(getClass().getResource("/Resources/star_none1.png")));
+        addBookmark.addActionListener(new ActionListener() {
+        
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        addBookmark.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
+        add(addBookmark);
+        
+        bookmarksManager = new JMenuItem("Show Bookmarks");
+        bookmarksManager.setIcon(new ImageIcon(getClass().getResource("/Resources/user_bookmarks1.png")));
+        bookmarksManager.addActionListener(new ActionListener() {
+        
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+        bookmarksManager.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0));
+        add(bookmarksManager);
+        
+        addSeparator();
+        
         about = new JMenuItem("Help");
         about.setIcon(new ImageIcon(getClass().getResource("/Resources/help2.png")));
         about.addActionListener(new ActionListener() {
@@ -224,7 +253,7 @@ public class PopupMenu extends JPopupMenu{
             if(res != null) {
                 int page = Integer.parseInt(res);
                 if(page > -1)
-                imagePanel.goToPage(archiveManager, page);
+                    imagePanel.goToPage(page);
             }
         } catch(NumberFormatException e) {
             JOptionPane.showMessageDialog(mainFrame, "Enter Integers only!!");
@@ -234,13 +263,13 @@ public class PopupMenu extends JPopupMenu{
     
     private void jButton7ActionPerformed(ActionEvent evt) {
         //mainFrame.setEnabled(false);
-        new HelpDialog(mainFrame, -1); 
+        new HelpDialog(mainFrame, -1);
         about.transferFocusUpCycle();
     }
     
     private void jButton8ActionPerformed(ActionEvent evt) {
-        mainFrame.dispose();
-        exit.transferFocusUpCycle();
+        BookmarksManager.setLastPageAsBookmark(MainFrame.getFile(), imagePanel.getIndex());
+        System.exit(0);
     }
     
     private void jButton9ActionPerformed(ActionEvent evt) {
@@ -252,6 +281,31 @@ public class PopupMenu extends JPopupMenu{
     private void jButton10ActionPerformed(ActionEvent evt) {
         mainFrame.save();
         save.transferFocusUpCycle();
+    }
+    
+    /**
+     * add bookmark button action
+     * @param evt action event
+     * @return null
+     * @since v0.0.1 
+     */
+    private void jButton11ActionPerformed(ActionEvent evt) {
+        
+        File ff = MainFrame.getFile();
+        if(ff != null) {
+            BookmarksManager.add(ff, imagePanel.getIndex());
+            ToolBar.setAddBookmarkToggle();
+        }
+    }
+    
+    /**
+     * bookmarks manager button action
+     * @param Actionevent evt
+     * @return null
+     * @since v0.0.1 
+     */
+    private void jButton12ActionPerformed(ActionEvent evt) {
+        new BookmarksDialog(mainFrame, 3);
     }
     
   void showPopup(MouseEvent e) {

@@ -55,6 +55,10 @@ class ExtractorModel {
     static File getFile() {
         return file.get(0);
     }
+
+    public static String getAppDir() {
+        return appDir;
+    }
     
     static File getFile(int index) {
         return file.get(index);
@@ -105,13 +109,13 @@ class ExtractorModel {
     }
     
     
-    static BufferedImage getImageFromFile(int index) throws IOException{
+    static BufferedImage getImageFromFile(int index) throws IOException {
         BufferedImage image; 
         image = ImageIO.read(file.get(index));
         return image;
     }
     
-    static BufferedImage getImageFromFile() throws IOException{
+    static BufferedImage getImageFromFile() throws IOException {
         BufferedImage image; 
         image = ImageIO.read(file.get(0));
         file.remove(0);

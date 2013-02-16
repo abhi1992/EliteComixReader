@@ -18,15 +18,22 @@
 */
 package com;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-
+import java.io.*;
 /**
- *
+ * An interface which every file format extractor must implement
  * @author Abhishek Banerjee
+ * @version v0.0.1
+ * @since v0.0.1
  */
 public interface Extractor {
-
+    
+    /**
+     * 
+     * @param file the name of the input file 
+     * @param os the output stream to write to
+     * @return integer denoting success or failure
+     * @since v0.0.1
+     */
     public int writeToOutputStream(File file, ByteArrayOutputStream os);
     
     

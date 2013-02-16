@@ -18,17 +18,15 @@
 */
 package com;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 /**
- *
+ * The dialog to be displayed when Key Board Shortcuts button pressed.
  * @author Abhishek Banerjee
+ * @version v0.0.1
+ * @since v0.0.1
  */
 public class ShortcutsDialog extends JDialog{
     
@@ -37,6 +35,11 @@ public class ShortcutsDialog extends JDialog{
     private JPanel jPanel;
     private JButton jButton;
     
+    /**
+     * Constructor
+     * @param mainFrame the frame on which the dialog is called
+     * @param i an integer denoting cycle focus up
+     */
     ShortcutsDialog(final MainFrame mainFrame, final int i) {
         
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -45,10 +48,8 @@ public class ShortcutsDialog extends JDialog{
                 ToolBar.cycleFocus(i);
             }
         });
-        Point p = mainFrame.getLocation();
-        setLocation(p.x + 50, p.y + 50);
+        
         setTitle("Key Board Shortcuts");
-        //setAutoRequestFocus(true);
         setLayout(new BorderLayout());
         jLabel = new JLabel(
                 new ImageIcon(getClass().getResource("/Resources/keyboard.png")));
@@ -66,6 +67,8 @@ public class ShortcutsDialog extends JDialog{
                 + "<Font size = '5' color = '#990000'><B>Escape</B></Font> - Toggle Fullscreen Mode<br>"
                 + "<Font size = '5' color = '#990000'><B>T</B></Font> - Toggle Always On Top<br>"
                 + "<Font size = '5' color = '#990000'><B>J</B></Font> - Jump To Page<br>"
+                + "<Font size = '5' color = '#990000'><B>B</B></Font> - Add / Remove Bookmark<br>"
+                + "<Font size = '5' color = '#990000'><B>A</B></Font> - Show Bookmarks<br>"
                 + "<Font size = '5' color = '#990000'><B>K</B></Font> - Show Key Board Shortcuts<br>"
                 + "<Font size = '5' color = '#990000'><B>H</B></Font> - Help<br>"
                 + "<Font size = '5' color = '#990000'><B>Q</B></Font> - Quit<br><br>"
@@ -92,13 +95,19 @@ public class ShortcutsDialog extends JDialog{
         getContentPane().add(jLabel, BorderLayout.WEST);
         getContentPane().add(jEditorPane, BorderLayout.CENTER);
         getContentPane().add(jPanel, BorderLayout.SOUTH);
-        setSize(new Dimension(400, 400));
         setMinimumSize(new Dimension(500, 600));
+        Point p = mainFrame.getLocation();
+        setLocation(p.x + Math.abs(mainFrame.getWidth() - getWidth())/2, p.y + 
+                Math.abs(mainFrame.getHeight() - getHeight()) / 2);
         setVisible(true);
         
         pack();
     }
     
+    /**
+     * main method for testing.
+     * @param args to pass command line arguments
+     */
     public static void main(String args[]) {
         ArchiveManager s = new ArchiveManager();
                 MainFrame ff = new MainFrame(s);
