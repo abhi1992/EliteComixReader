@@ -40,14 +40,7 @@ public class ShortcutsDialog extends JDialog{
      * @param mainFrame the frame on which the dialog is called
      * @param i an integer denoting cycle focus up
      */
-    ShortcutsDialog(final MainFrame mainFrame, final int i) {
-        
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                ToolBar.cycleFocus(i);
-            }
-        });
+    ShortcutsDialog(final MainFrame mainFrame) {
         
         setTitle("Key Board Shortcuts");
         setLayout(new BorderLayout());
@@ -84,8 +77,6 @@ public class ShortcutsDialog extends JDialog{
             public void actionPerformed(ActionEvent evt) {
                 
                 dispose();
-                ToolBar.cycleFocus(i);
-                
             }
         });
         jPanel = new JPanel();

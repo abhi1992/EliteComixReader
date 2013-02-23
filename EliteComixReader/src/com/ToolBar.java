@@ -32,7 +32,7 @@ import javax.swing.*;
 public class ToolBar extends JToolBar {
     
     private static JButton open, left, right, about, exit,  fullscreen,  goTo,
-            keyShorcuts, save, bookmarksManager;
+            keyShorcuts, save, bookmarksManager, settings;
     private static JToggleButton fitWidth, alwaysOnTop, addBookmark;
     private static ImagePanel imagePanel;
     private static MainFrame mainFrame;
@@ -50,9 +50,9 @@ public class ToolBar extends JToolBar {
         ToolBar.archiveManager = am;
         setFloatable(false);
         //setBorderPainted(false);
-        setEnabled(false);
-        setFocusable(false);
-        setFocusCycleRoot(false);
+        //setEnabled(false);
+        //setFocusable(false);
+        setFocusCycleRoot(true);
         setLayout(new FlowLayout(FlowLayout.LEFT));
         open = createButton(open, "/Resources/open1.png", KeyEvent.VK_O, "Open Comic");
         open.addActionListener(new ActionListener() {
@@ -186,6 +186,18 @@ public class ToolBar extends JToolBar {
         });
         add(keyShorcuts);
         
+        settings = createButton(settings, "/Resources/configure_shortcuts1.png", 
+                KeyEvent.VK_X, "Settings");
+        settings.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                settings.transferFocusUpCycle();
+                new SettingsDialog(mainFrame);
+            }
+        });
+        add(settings);
+        
         about = createButton(about, "/Resources/help2.png", 
                 KeyEvent.VK_H, "Help");
         about.addActionListener(new ActionListener() {
@@ -207,8 +219,9 @@ public class ToolBar extends JToolBar {
             }
         });
         add(exit);
-        transferFocusUpCycle();
+        
         setAddBookmark();
+        
     }
 
     /**
@@ -279,8 +292,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton0ActionPerformed(ActionEvent evt) {
-     MainFrame.open(archiveManager);
-     open.transferFocusUpCycle();
+        open.transferFocusUpCycle();
+        MainFrame.open(archiveManager);
     }
     
     /**
@@ -290,8 +303,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton1ActionPerformed(ActionEvent evt) {
+        left.transferFocusUpCycle();
      imagePanel.prevPage(archiveManager);
-     left.transferFocusUpCycle();
      setAddBookmark();
     }
     
@@ -302,8 +315,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton2ActionPerformed(ActionEvent evt) {
+        right.transferFocusUpCycle();
     imagePanel.nextPage(archiveManager);
-    right.transferFocusUpCycle();
     setAddBookmark();
     }
     
@@ -314,8 +327,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton3ActionPerformed(ActionEvent evt) {
+        fitWidth.transferFocusUpCycle();
     mainFrame.fitImage(isFitWidthSelected());
-    fitWidth.transferFocusUpCycle();
     }
     
     /**
@@ -325,8 +338,9 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton4ActionPerformed(ActionEvent evt) {
-    mainFrame.fullscreen();
-    fullscreen.transferFocusUpCycle();
+        fullscreen.transferFocusUpCycle();
+        Settings.setFullscreen(!Settings.isFullscreen());
+        mainFrame.fullscreen();
     }
     
     /**
@@ -336,8 +350,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton5ActionPerformed(ActionEvent evt) {
+        alwaysOnTop.transferFocusUpCycle();
     mainFrame.alwaysOnTop();
-    alwaysOnTop.transferFocusUpCycle();
     }
     
     /**
@@ -370,9 +384,9 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton7ActionPerformed(ActionEvent evt) {
-        //mainFrame.setEnabled(false);
-        new HelpDialog(mainFrame, 2);
-        //about.transferFocusUpCycle();
+        about.transferFocusUpCycle();
+        new HelpDialog(mainFrame);
+        //
     }
     
     /**
@@ -382,8 +396,10 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton8ActionPerformed(ActionEvent evt) {
-        if(MainFrame.getFile() != null)
+        if(MainFrame.getFile() != null) {
             BookmarksManager.setLastPageAsBookmark(MainFrame.getFile(), imagePanel.getIndex());
+        }
+        mainFrame.close();
         System.exit(0);
     }
     
@@ -394,8 +410,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton9ActionPerformed(ActionEvent evt) {
-        //mainFrame.setEnabled(false);
-        new ShortcutsDialog(mainFrame, 1);
+        settings.transferFocusUpCycle();
+        new ShortcutsDialog(mainFrame);
         //about.transferFocusUpCycle();
     }
     
@@ -406,8 +422,9 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton10ActionPerformed(ActionEvent evt) {
-        mainFrame.save();
         save.transferFocusUpCycle();
+        mainFrame.save();
+        
     }
     
     /**
@@ -419,7 +436,7 @@ public class ToolBar extends JToolBar {
     private void jButton11ActionPerformed(ActionEvent evt) {
         
         File file = MainFrame.getFile();
-        if(file != null)
+        if(file != null) {
         
             if(addBookmark.isSelected()) {
                 BookmarksManager.add(file, imagePanel.getIndex());
@@ -429,8 +446,10 @@ public class ToolBar extends JToolBar {
                 BookmarksManager.remove(file, imagePanel.getIndex());
                 addBookmark.transferFocusUpCycle();    
             }
-          else
-                addBookmark.setSelected(false);   
+        }
+          else {
+            addBookmark.setSelected(false);
+        }   
     }
     
     /**
@@ -440,7 +459,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     private void jButton12ActionPerformed(ActionEvent evt) {
-        new BookmarksDialog(mainFrame, 3);
+        bookmarksManager.transferFocusUpCycle();
+        new BookmarksDialog(mainFrame);
     }
 
     /**
@@ -450,10 +470,12 @@ public class ToolBar extends JToolBar {
      */
     static void setFitToggle() {
         boolean b = true;
-        if(imagePanel.getMode() == 0)
+        if(imagePanel.getMode() == 0) {
             b = false;
-        else if(imagePanel.getMode() == 1)
+        }
+        else if(imagePanel.getMode() == 1) {
             b = true;
+        }
         fitWidth.setSelected(b);
     }
     
@@ -463,11 +485,13 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1 
      */
     static void setAddBookmarkToggle() {
-        boolean b = true;
-        if(addBookmark.isSelected())
+        boolean b;
+        if(addBookmark.isSelected()) {
             b = false;
-        else
+        }
+        else {
             b = true;
+        }
         addBookmark.setSelected(b);
     }
     

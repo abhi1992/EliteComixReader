@@ -103,6 +103,7 @@ public class BookmarksManager {
      * @param index page no of the comic book to add to bookmarks
      */
     static void setLastPageAsBookmark(File f, int index) {
+        if(f != null) {
         try {
             Bookmarks.setLastPageAsBookmark(f, index);
         } catch (FileNotFoundException ex) {
@@ -115,6 +116,7 @@ public class BookmarksManager {
             }
             
         } catch (IOException ex) {
+        }
         }
     }
     

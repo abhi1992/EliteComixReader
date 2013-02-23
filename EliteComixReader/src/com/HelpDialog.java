@@ -44,16 +44,9 @@ public class HelpDialog extends JDialog{
      * @param mainFrame the frame on which the dialog is called
      * @param i an integer denoting cycle focus up
      */
-    HelpDialog(final MainFrame mainFrame,final int i) {
+    HelpDialog(final MainFrame mainFrame) {
         
         tab = new JTabbedPane();
-        
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                ToolBar.cycleFocus(i);
-            }
-        });
         
         setTitle("Key Board Shortcuts");
         //setAutoRequestFocus(true);
@@ -101,8 +94,6 @@ public class HelpDialog extends JDialog{
             public void actionPerformed(ActionEvent evt) {
                 //mainFrame.setEnabled(true);
                 dispose();
-                
-                ToolBar.cycleFocus(i);
             }
         });
         jPanel1 = new JPanel();
@@ -159,7 +150,6 @@ public class HelpDialog extends JDialog{
             public void actionPerformed(ActionEvent evt) {
                 //mainFrame.setEnabled(true);
                 dispose();
-                ToolBar.cycleFocus(i);
             }
         });
         

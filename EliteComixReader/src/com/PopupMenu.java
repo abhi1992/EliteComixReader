@@ -28,7 +28,7 @@ import javax.swing.*;
  */
 public class PopupMenu extends JPopupMenu{
     
-    private JMenuItem open, left, right, fitWidth, 
+    private JMenuItem open, left, right, fitWidth, settings,
             fullscreen, alwaysOnTop, goTo, shortcuts, about, exit, save, addBookmark, bookmarksManager;
     private static ImagePanel imagePanel;
     private static MainFrame mainFrame;
@@ -144,20 +144,6 @@ public class PopupMenu extends JPopupMenu{
         
         addSeparator();
         
-        shortcuts = new JMenuItem("Key Board Shortcuts");
-        shortcuts.setIcon(new ImageIcon(getClass().getResource("/Resources/keyboard1.png")));
-        shortcuts.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-        shortcuts.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0));
-        add(shortcuts);
-        
-        addSeparator();
-        
         addBookmark = new JMenuItem("Add / Remove Bookmark");
         addBookmark.setIcon(new ImageIcon(getClass().getResource("/Resources/star_none1.png")));
         addBookmark.addActionListener(new ActionListener() {
@@ -184,6 +170,30 @@ public class PopupMenu extends JPopupMenu{
         
         addSeparator();
         
+        shortcuts = new JMenuItem("Key Board Shortcuts");
+        shortcuts.setIcon(new ImageIcon(getClass().getResource("/Resources/keyboard1.png")));
+        shortcuts.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        shortcuts.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0));
+        add(shortcuts);
+        
+        settings = new JMenuItem("Settings");
+        settings.setIcon(new ImageIcon(getClass().getResource("/Resources/configure_shortcuts1.png")));
+        settings.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                new SettingsDialog(mainFrame);
+            }
+        });
+        settings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0));
+        add(settings);
+        
         about = new JMenuItem("Help");
         about.setIcon(new ImageIcon(getClass().getResource("/Resources/help2.png")));
         about.addActionListener(new ActionListener() {
@@ -193,7 +203,7 @@ public class PopupMenu extends JPopupMenu{
                 jButton7ActionPerformed(evt);
             }
         });
-        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0));
+        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0));
         add(about);
         
         exit = new JMenuItem("Exit");
@@ -263,18 +273,21 @@ public class PopupMenu extends JPopupMenu{
     
     private void jButton7ActionPerformed(ActionEvent evt) {
         //mainFrame.setEnabled(false);
-        new HelpDialog(mainFrame, -1);
+        new HelpDialog(mainFrame);
         about.transferFocusUpCycle();
     }
     
     private void jButton8ActionPerformed(ActionEvent evt) {
-        BookmarksManager.setLastPageAsBookmark(MainFrame.getFile(), imagePanel.getIndex());
+        if(MainFrame.getFile() != null) {
+            BookmarksManager.setLastPageAsBookmark(MainFrame.getFile(), imagePanel.getIndex());
+        }
+        mainFrame.close();
         System.exit(0);
     }
     
     private void jButton9ActionPerformed(ActionEvent evt) {
         //mainFrame.setEnabled(false);
-        ShortcutsDialog shortcutsDialog = new ShortcutsDialog(mainFrame, -1);
+        ShortcutsDialog shortcutsDialog = new ShortcutsDialog(mainFrame);
         about.transferFocusUpCycle();
     }
     
@@ -305,7 +318,7 @@ public class PopupMenu extends JPopupMenu{
      * @since v0.0.1 
      */
     private void jButton12ActionPerformed(ActionEvent evt) {
-        new BookmarksDialog(mainFrame, 3);
+        new BookmarksDialog(mainFrame);
     }
     
   void showPopup(MouseEvent e) {

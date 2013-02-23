@@ -58,7 +58,7 @@ class ImagePanel extends JPanel implements KeyListener
         index = 0;
         scale = 1.0;
         loadImage(img);
-        setBackground(Color.black);
+        setBackground(Settings.getDefaultColor());
         
     }
 
@@ -66,7 +66,7 @@ class ImagePanel extends JPanel implements KeyListener
         image = null;
         scale = 1.0;
         index = 0;
-        setBackground(Color.black);
+        setBackground(Settings.getDefaultColor());
     }
    
     @Override
@@ -74,7 +74,7 @@ class ImagePanel extends JPanel implements KeyListener
     {  
         
         super.paintComponent(g); 
-        setBackground(Color.BLACK);
+        setBackground(Settings.getDefaultColor());
         if(image != null){
             Graphics2D g2 = (Graphics2D)g;  
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,  
@@ -95,7 +95,7 @@ class ImagePanel extends JPanel implements KeyListener
         
         }
         else{
-            setBackground(Color.BLACK);
+            setBackground(Settings.getDefaultColor());
         }
     }  
     
@@ -260,8 +260,8 @@ class ImagePanel extends JPanel implements KeyListener
     
     protected Dimension getImageSize()  
     {  
-        int w = (int)(image.getWidth());  
-        int h = (int)(image.getHeight());  
+        int w = image.getWidth();  
+        int h = image.getHeight();  
         return new Dimension(w, h);
     }
    

@@ -42,14 +42,8 @@ public class BookmarksDialog extends JDialog{
      * @param mainFrame the frame on which the dialog is called
      * @param i an integer denoting cycle focus up
      */
-    BookmarksDialog(final MainFrame mainFrame, final int i) {
+    BookmarksDialog(final MainFrame mainFrame) {
         
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                ToolBar.cycleFocus(i);
-            }
-        });
         setResizable(false);
         ArrayList<BufferedImage> a = new ArrayList<>(4);
         a.addAll(BookmarksManager.getBookmarkImages());
@@ -58,7 +52,7 @@ public class BookmarksDialog extends JDialog{
         setLayout(new BorderLayout());
         jLabel = new JLabel(
                 new ImageIcon(getClass().getResource("/Resources/user_bookmarks.png")));
-        title = new JLabel("Double Click on any bookmark to go to that page.");
+        title = new JLabel("Click on any bookmark to go to that page.");
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setFont(new Font("monospaced", 0, 20));
         
@@ -67,7 +61,6 @@ public class BookmarksDialog extends JDialog{
             @Override
             public void mouseClicked(MouseEvent e) {
                     mainFrame.goToImage(Bookmarks.getBookmarksIndex()[0]);
-                    ToolBar.cycleFocus(i);
                     dispose();
             }
             });
@@ -76,7 +69,6 @@ public class BookmarksDialog extends JDialog{
             @Override
             public void mouseClicked(MouseEvent e) {
                     mainFrame.goToImage(Bookmarks.getBookmarksIndex()[1]);
-                    ToolBar.cycleFocus(i);
                     dispose();
             }
             });
@@ -85,7 +77,6 @@ public class BookmarksDialog extends JDialog{
             @Override
             public void mouseClicked(MouseEvent e) {
                     mainFrame.goToImage(Bookmarks.getBookmarksIndex()[2]);
-                    ToolBar.cycleFocus(i);
                     dispose();
             }
             });
@@ -94,7 +85,6 @@ public class BookmarksDialog extends JDialog{
             @Override
             public void mouseClicked(MouseEvent e) {
                     mainFrame.goToImage(Bookmarks.getBookmarksIndex()[3]);
-                    ToolBar.cycleFocus(i);
                     dispose();
             }
             });
@@ -112,7 +102,6 @@ public class BookmarksDialog extends JDialog{
             public void actionPerformed(ActionEvent evt) {
                 
                 dispose();
-                ToolBar.cycleFocus(i);
             }
         });
         

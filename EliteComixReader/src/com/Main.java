@@ -18,6 +18,13 @@
 */
 package com;
 
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 /**
  * Main Class
  * @author Abhishek
@@ -30,9 +37,41 @@ public class Main {
      * @param args command line arguments
      */
      public static void main(String args[]) {
-        ArchiveManager e = new ArchiveManager();
-        MainFrame mainFrame = new MainFrame(e);
-        mainFrame = null;
+         
+        final ArchiveManager arch = new ArchiveManager();
+        MainFrame mainFrame = null;
+        ImagePanel imagePanel;
+        ToolBar t;
+        load();
+        try {
+            if(Settings.getLaf().equals("System")) {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
+            else {
+                UIManager.setLookAndFeel(Settings.getLaf());
+            }
+            
+        } catch (ClassNotFoundException | InstantiationException 
+                    | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                    System.exit(1);
+            }
+        
+        SwingUtilities.invokeLater(new Runnable() {
+
+             @Override
+                public void run() {
+                    new MainFrame(arch);
+                }
+         });
+        //mainFrame = null;
     }
-    
-}
+     
+    static void load() {
+        
+        try {
+            Settings.load();
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            
+        }
+    }
+    }
