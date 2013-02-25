@@ -101,13 +101,17 @@ T - Toggle Always On Top
 
 J - Jump To Page 
 
-A - Add / Remove Bookmark 
+B - Add / Remove Bookmark 
 
-O - Show Bookmarks 
+A - Show Bookmarks 
 
 K - Show Key Board Shortcuts 
 
-H - Help 
+H - Hide Tool Bar 
+
+X - Settings 
+
+Z - Help
 
 Q - Quit  
 
