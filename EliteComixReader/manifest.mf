@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-X-COMMENT: Main-Class will be added automatically by build
+Class-Path: lib/junrar-0.7.jar filedrop.jar org.apache.commons.logging.jar
 

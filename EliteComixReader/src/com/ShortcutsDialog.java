@@ -34,6 +34,7 @@ public class ShortcutsDialog extends JDialog{
     private JEditorPane jEditorPane;
     private JPanel jPanel;
     private JButton jButton;
+    private JScrollPane scroll;
     
     /**
      * Constructor
@@ -57,13 +58,18 @@ public class ShortcutsDialog extends JDialog{
                 + "<Font size = '5' color = '#990000'><B>Left Arrow</B></Font> - Previous Page<br>"
                 + "<Font size = '5' color = '#990000'><B>Right Arrow</B></Font> - Next Page<br>"
                 + "<Font size = '5' color = '#990000'><B>W</B></Font> - Fit Width / Height<br>"
+                + "<Font size = '5' color = '#990000'><B>[</B></Font> - Zoom Out<br>"
+                + "<Font size = '5' color = '#990000'><B>1</B></Font> - Original Image Size<br>"
+                + "<Font size = '5' color = '#990000'><B>]</B></Font> - Zoom In<br>"
                 + "<Font size = '5' color = '#990000'><B>Escape</B></Font> - Toggle Fullscreen Mode<br>"
                 + "<Font size = '5' color = '#990000'><B>T</B></Font> - Toggle Always On Top<br>"
                 + "<Font size = '5' color = '#990000'><B>J</B></Font> - Jump To Page<br>"
                 + "<Font size = '5' color = '#990000'><B>B</B></Font> - Add / Remove Bookmark<br>"
                 + "<Font size = '5' color = '#990000'><B>A</B></Font> - Show Bookmarks<br>"
                 + "<Font size = '5' color = '#990000'><B>K</B></Font> - Show Key Board Shortcuts<br>"
-                + "<Font size = '5' color = '#990000'><B>H</B></Font> - Help<br>"
+                + "<Font size = '5' color = '#990000'><B>H</B></Font> - Hide / Show Toolbar<br>"
+                + "<Font size = '5' color = '#990000'><B>X</B></Font> - Settings / Show Toolbar<br>"
+                + "<Font size = '5' color = '#990000'><B>Z</B></Font> - Help<br>"
                 + "<Font size = '5' color = '#990000'><B>Q</B></Font> - Quit<br><br>"
                 + "<Font size = '5' color = '#333333'><B><i>  Mouse Events</i></B></Font><br>"
                 + "<Font size = '5' color = '#101010'><B>****************************</b></Font><br>"
@@ -81,10 +87,10 @@ public class ShortcutsDialog extends JDialog{
         });
         jPanel = new JPanel();
         jPanel.setLayout(new FlowLayout());
-        
+        scroll = new JScrollPane(jEditorPane);
         jPanel.add(jButton);
         getContentPane().add(jLabel, BorderLayout.WEST);
-        getContentPane().add(jEditorPane, BorderLayout.CENTER);
+        getContentPane().add(scroll, BorderLayout.CENTER);
         getContentPane().add(jPanel, BorderLayout.SOUTH);
         setMinimumSize(new Dimension(500, 600));
         Point p = mainFrame.getLocation();

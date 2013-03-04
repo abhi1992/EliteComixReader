@@ -19,6 +19,7 @@
 package com;
 
 import java.io.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -35,15 +36,15 @@ import org.xml.sax.SAXException;
  */
 public class XmlWriter { 
 
-XmlWriter(String xmlFilePath, String[] tagename, String[] newValue) { 
+XmlWriter(String xmlFilePath, ArrayList<String> tagename, ArrayList<String> newValue) { 
 
     try { 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(xmlFilePath);
         
-        for(int i = 0; i < tagename.length; i++) {
-            replaceValue(doc, tagename[i], newValue[i]);
+        for(int i = 0; i < tagename.size(); i++) {
+            replaceValue(doc, tagename.get(i), newValue.get(i));
         }
         
         Transformer t = TransformerFactory.newInstance().newTransformer();
