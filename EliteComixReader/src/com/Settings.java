@@ -243,7 +243,7 @@ public class Settings {
         
         values.add(getLaf().toString());
         
-        if(!(mainFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH)) {
+        if(mainFrame.getExtendedState() != JFrame.MAXIMIZED_BOTH) {
             tags.add("height");
             tags.add("width");
             tags.add("x");
