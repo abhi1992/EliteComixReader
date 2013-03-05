@@ -33,7 +33,7 @@ import javax.swing.*;
 public class ToolBar extends JToolBar {
 
     private static JButton open, left, right, about, exit,  fullscreen,  goTo,
-            zoomIn, zoomOut,
+            zoomIn, zoomOut, rotateLeft, rotateRight, 
             keyShorcuts, save, bookmarksManager, settings, nextComic, prevComic;
     private static JToggleButton fitWidth, alwaysOnTop, addBookmark, origSize;
     private static ImagePanel imagePanel;
@@ -139,7 +139,7 @@ public class ToolBar extends JToolBar {
         add(nextComic);
 
         addSeparator(new Dimension(10, 30));
-
+        
         fitWidth = new JToggleButton(new ImageIcon(getClass().getResource("/Resources/arrows1.png")));
         fitWidth.setMnemonic(KeyEvent.VK_W);
         fitWidth.setToolTipText("Fit Width");
@@ -151,7 +151,45 @@ public class ToolBar extends JToolBar {
                 jButton3ActionPerformed(evt);
             }
         });
+        fitWidth.setPreferredSize(new Dimension(32, 32));
         add(fitWidth);
+        
+        rotateLeft = createButton(rotateLeft, "/Resources/rotate_ccw.png", 
+                KeyEvent.VK_9
+                , "Rotate Left");
+        rotateLeft.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton18ActionPerformed(evt);
+            }
+        });
+        add(rotateLeft);
+        
+        rotateRight = createButton(rotateRight, "/Resources/rotate_cw.png", 
+                KeyEvent.VK_0
+                , "Rotate Right");
+        rotateRight.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
+        add(rotateRight);
+        
+        fullscreen = createButton(fullscreen, "/Resources/full screen1.png",
+                KeyEvent.VK_ESCAPE, "Fullscreen");
+        fullscreen.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        add(fullscreen);
+        
+        addSeparator(new Dimension(10, 30));
         
         zoomOut = createButton(zoomOut, "/Resources/new_zoom_out.png", 
                 KeyEvent.VK_CLOSE_BRACKET
@@ -189,17 +227,6 @@ public class ToolBar extends JToolBar {
             }
         });
         add(zoomIn);
-        
-        fullscreen = createButton(fullscreen, "/Resources/full screen1.png",
-                KeyEvent.VK_ESCAPE, "Fullscreen");
-        fullscreen.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        add(fullscreen);
 
         addSeparator(new Dimension(10, 30));
         
@@ -576,6 +603,28 @@ public class ToolBar extends JToolBar {
         if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
             mainFrame.zoomOut();
     }
+    
+    /**
+     * Rotate Left
+     * @param evt ActonEvent
+     * @return null
+     * @since v0.0.4
+     */
+    private void jButton18ActionPerformed(ActionEvent evt) {
+        if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
+            mainFrame.rotateLeft();
+    }
+    
+    /**
+     * Rotate Right
+     * @param evt ActonEvent
+     * @return null
+     * @since v0.0.4
+     */
+    private void jButton19ActionPerformed(ActionEvent evt) {
+        if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
+            mainFrame.rotateRight();
+    }
 
     /**
      * sets fit width toggle button state
@@ -583,11 +632,8 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1
      */
     static void setFitToggle() {
-        boolean b = false;
-        if(imagePanel.getMode() == 1) {
-            b = true;
-        }
-        fitWidth.setSelected(b);
+        
+        fitWidth.setSelected(!isFitWidthSelected());
     }
     
     /**

@@ -29,8 +29,10 @@ import javax.swing.*;
 public class PopupMenu extends JPopupMenu{
 
     private JMenuItem open, left, right, fitWidth, settings, origSize, zoomOut,
+            rotateLeft, rotateRight, 
             zoomIn, fullscreen, alwaysOnTop, goTo, shortcuts, nextComic, 
             prevComic, about, exit, save, addBookmark, bookmarksManager;
+    private JMenu zoom, rotate;
     private static ImagePanel imagePanel;
     private static MainFrame mainFrame;
     private static ArchiveManager archiveManager;
@@ -145,42 +147,33 @@ public class PopupMenu extends JPopupMenu{
         fitWidth.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0));
         add(fitWidth);
         
-        zoomOut = new JMenuItem("Zoom Out");
-        zoomOut.setIcon(new ImageIcon(getClass().getResource("/Resources/new_zoom_out.png")));
-        zoomOut.addActionListener(new ActionListener() {
+        rotateLeft = new JMenuItem("Rotate Image Left");
+        rotateLeft.setIcon(new ImageIcon(getClass().getResource("/Resources/rotate_ccw.png")));
+        rotateLeft.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent evt) {
-                jButton16ActionPerformed(evt);
+                jButton18ActionPerformed(evt);
             }
         });
-        zoomOut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET, 0));
-        add(zoomOut);
+        rotateLeft.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, 0));
         
-        origSize = new JMenuItem("Original Image Size");
-        origSize.setIcon(new ImageIcon(getClass().getResource("/Resources/zoom_original.png")));
-        origSize.addActionListener(new ActionListener() {
+        rotateRight = new JMenuItem("Rotate Image Right");
+        rotateRight.setIcon(new ImageIcon(getClass().getResource("/Resources/rotate_cw.png")));
+        rotateRight.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent evt) {
-                jButton15ActionPerformed(evt);
+                jButton19ActionPerformed(evt);
             }
         });
-        origSize.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0));
-        add(origSize);
+        rotateRight.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, 0));
         
-        zoomIn = new JMenuItem("Zoom In");
-        zoomIn.setIcon(new ImageIcon(getClass().getResource("/Resources/new_zoom_in.png")));
-        zoomIn.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                jButton17ActionPerformed(evt);
-            }
-        });
-        zoomIn.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, 0));
-        add(zoomIn);
-
+        rotate = new JMenu("Rotate");
+        rotate.add(rotateLeft);
+        rotate.add(rotateRight);
+        add(rotate);
+        
         fullscreen = new JMenuItem("Toggle Fullscreen Mode");
         fullscreen.setIcon(new ImageIcon(getClass().getResource("/Resources/full screen1.png")));
         fullscreen.addActionListener(new ActionListener() {
@@ -192,7 +185,46 @@ public class PopupMenu extends JPopupMenu{
         });
         fullscreen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         add(fullscreen);
+        
+        zoomOut = new JMenuItem("Zoom Out");
+        zoomOut.setIcon(new ImageIcon(getClass().getResource("/Resources/new_zoom_out.png")));
+        zoomOut.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+        zoomOut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET, 0));
+        
+        origSize = new JMenuItem("Original Image Size");
+        origSize.setIcon(new ImageIcon(getClass().getResource("/Resources/zoom_original.png")));
+        origSize.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+        origSize.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0));
+        
+        zoomIn = new JMenuItem("Zoom In");
+        zoomIn.setIcon(new ImageIcon(getClass().getResource("/Resources/new_zoom_in.png")));
+        zoomIn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
+        zoomIn.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, 0));
+        
+        zoom = new JMenu("Zoom");
+        zoom.add(zoomOut);
+        zoom.add(origSize);
+        zoom.add(zoomIn);
+        add(zoom);
+        
         alwaysOnTop = new JMenuItem("Always On Top");
         alwaysOnTop.setIcon(new ImageIcon(getClass().getResource("/Resources/alwaysontop.png")));
         alwaysOnTop.addActionListener(new ActionListener() {
@@ -438,6 +470,28 @@ public class PopupMenu extends JPopupMenu{
             mainFrame.zoomIn();
     }
 
+    /**
+     * Rotate Left
+     * @param evt ActonEvent
+     * @return null
+     * @since v0.0.4
+     */
+    private void jButton18ActionPerformed(ActionEvent evt) {
+        if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
+            mainFrame.rotateLeft();
+    }
+    
+    /**
+     * Rotate Right
+     * @param evt ActonEvent
+     * @return null
+     * @since v0.0.4
+     */
+    private void jButton19ActionPerformed(ActionEvent evt) {
+        if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
+            mainFrame.rotateRight();
+    }
+    
   void showPopup(MouseEvent e) {
 
         show(e.getComponent(), e.getX(), e.getY());

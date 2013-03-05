@@ -206,9 +206,11 @@ public class MainFrame extends JFrame {
             else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) {
                 imagePanel.zoomIn();
             }
+            else if(e.getKeyCode() == KeyEvent.VK_9) {
+                rotateLeft();
+            }
             else if(e.getKeyCode() == KeyEvent.VK_0) {
-                imagePanel.setTransform(90);
-                imagePanel.repaint();
+                rotateRight();
             }
             else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
@@ -397,6 +399,19 @@ public class MainFrame extends JFrame {
         if(ToolBar.isOrigSizeSelected())
             ToolBar.setOrigSizeToggle();
     }
+    
+    void rotateLeft() {
+        if(imagePanel.getOrientation() > 0)
+            imagePanel.setOrientation(imagePanel.getOrientation() - 1);
+        else
+            imagePanel.setOrientation(3);
+        imagePanel.repaint();
+    }
+    
+    void rotateRight() {
+        imagePanel.setOrientation(Math.abs(imagePanel.getOrientation() + 1 )% 4);
+        imagePanel.repaint();
+    }
 
     void fullscreen() {
 
@@ -413,13 +428,16 @@ public class MainFrame extends JFrame {
         }
         else {
             t.setVisible(!Settings.isFullscreen());
-            //Settings.setFullscreen(false);
+            
             dispose();
             setUndecorated(false);
             GraphicsEnvironment ge =
                     GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice gs = ge.getDefaultScreenDevice();
             gs.setFullScreenWindow(null);
+            
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        
             validate();
             setVisible(true);
         }

@@ -30,11 +30,10 @@ import java.io.IOException;
 import javax.swing.*;
 
 class ImagePanel extends JPanel {
-
-    private boolean trans = false;
+    
     private short mode = 1;
     private BufferedImage image;
-    private double scale, x, y, theta = 0;
+    private double scale, x, y;
     private int origWidth, origHeight, imageWidth, imageHeight, frameWidth,
             frameHeight, index, zoomPixel, zoomMultiplier;
     private AffineTransform at;
@@ -54,7 +53,8 @@ class ImagePanel extends JPanel {
         index = 0;
         scale = 1.0;
         zoomPixel = 20;
-        zoomMultiplier = 1;
+        zoomMultiplier = 0;
+        orientation = 0;
         loadImage(img);
 
         setBackground(Settings.getDefaultColor());
@@ -77,51 +77,78 @@ class ImagePanel extends JPanel {
             Graphics2D g2 = (Graphics2D)g;
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                                 RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            if(!trans) {
-                adjustImage();
+//            if(!trans) {
+                //adjustImage();
                 frameWidth  = MainFrame.getScrollPaneSize().width;
                 frameHeight = MainFrame.getScrollPaneSize().height;
-                imageWidth  = getImageSize().width;
-                imageHeight = getImageSize().height;
+                if(orientation % 2 == 0) {
+                    imageWidth  = getImageSize().width;
+                    imageHeight = getImageSize().height;
+                }
+                else {
+                    imageWidth  = getImageSize().height;
+                    imageHeight = getImageSize().width;
+                }
                 //System.out.println(mode);
                 fit(mode);
                 //x = (frameWidth - imageWidth) / 2;
-                setTransform(theta);
+                setTransform();
                 
                 //adjustImage();
-            }
+//            }
 
             g2.drawRenderedImage(image, at);
-            trans = false;
-
         }
         else {
             setBackground(Settings.getDefaultColor());
         }
     }
+//
+//    void adjustImage() {
+//
+//        if(y<0 && MainFrame.getScrollPaneSize().height < frameHeight) {
+//            y += (frameHeight - MainFrame.getScrollPaneSize().height) / scale;
+//        }
+//        if(y<0 && MainFrame.getScrollPaneSize().width < frameWidth) {
+//            y +=  (frameWidth - MainFrame.getScrollPaneSize().width)/ scale;
+//        }
+//        if(y>0 && orientation == 0) {
+//            y = 0;
+//        }
+//        
+//        
+//    }
 
-    void adjustImage() {
-
-        if(y<0 && MainFrame.getScrollPaneSize().height < frameHeight) {
-            y += (frameHeight - MainFrame.getScrollPaneSize().height) / scale;
+    void setTransform() {
+        //Center the image
+        //Third Transform
+        if(orientation == 0) {
+            at = AffineTransform.getTranslateInstance(x, y);
         }
-        if(y<0 && MainFrame.getScrollPaneSize().width < frameWidth) {
-            y +=  (frameWidth - MainFrame.getScrollPaneSize().width)/ scale;
+        else if(orientation == 1) {
+            at = AffineTransform.getTranslateInstance(x, y);
         }
-        if(y>0) {
-            y = 0;
+        else if(orientation == 2) {
+            at = AffineTransform.getTranslateInstance(x, y);
         }
-
-    }
-
-    void setTransform(double ptheta) {
-        at = AffineTransform.getTranslateInstance(x, y);
-        if(ptheta != 0) {
-            trans = false;
-            rotateClockwise90(ptheta);
+        else if(orientation == 3) {
+            at = AffineTransform.getTranslateInstance(x, y);
         }
+        if (orientation == 0) {
+            at.quadrantRotate(orientation);
+        }
+        else if(orientation == 1) {
+            at.quadrantRotate(orientation);
+        }
+        else if(orientation == 2) {
+            at.quadrantRotate(orientation);
+        }
+        else if(orientation == 3) {
+            at.quadrantRotate(orientation);
+        }
+        
         at.scale(scale, scale);
-        theta = ptheta;
+        
     }
 
     void toggleMode(boolean b) {
@@ -141,8 +168,10 @@ class ImagePanel extends JPanel {
 
 
     void fit(short b) {
+        
         int oldImageWidth = imageWidth;
         int oldImageHeight = imageHeight;
+        
         if(b == 0) {
             
             imageWidth = frameWidth;
@@ -155,6 +184,7 @@ class ImagePanel extends JPanel {
             
         }
         else if(b == 2) {
+            //imageHeight *= scale;
             imageHeight += zoomPixel * zoomMultiplier;
             imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
             if(imageHeight < frameHeight + zoomPixel) {
@@ -165,6 +195,7 @@ class ImagePanel extends JPanel {
             
         }
         else if(b == 3) {
+            //imageHeight *= scale;
             imageHeight += zoomPixel * zoomMultiplier;
             imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
             if(imageHeight < frameHeight + zoomPixel) {
@@ -181,10 +212,44 @@ class ImagePanel extends JPanel {
                 imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
             }
         }
-        setScale((double)imageWidth / origWidth);
-        x = (frameWidth - imageWidth) / 2;
-        y = 0;
         setPreferredSize(new Dimension(imageWidth, imageHeight));
+        if(orientation % 2 != 0) {
+            swapDimensions();
+        }
+        
+        if(orientation == 0) {
+            x = (frameWidth - imageWidth) / 2;
+            y = 0;
+            setScale((double)imageWidth / origWidth);
+        }
+        else if(orientation == 1) {
+            setScale((double)imageWidth / origWidth);
+            if(imageHeight <= frameWidth)
+                x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
+            else
+                x = imageHeight;
+            y = 0;
+            //System.out.println(x + " "+imageHeight+" " + getImageSize().height * scale);
+        }
+        else if(orientation == 2) {
+            
+            x = imageWidth + (frameWidth - imageWidth) / 2;
+            
+            y = imageHeight;
+            setScale((double)imageWidth / origWidth);
+        }
+        else if(orientation == 3) {
+            setScale((double)imageWidth / origWidth);
+            if(imageHeight <= frameWidth)
+                x = (Math.abs(imageHeight - frameWidth) / 2);
+            else
+                x = 0;
+            
+                y = imageWidth;
+            if(mode == 1)
+                y = frameHeight;
+        }
+        
         revalidate();
     }
 
@@ -196,6 +261,10 @@ class ImagePanel extends JPanel {
         return orientation;
     }
 
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
+
     void zoomOut() {
         setMode( (short) 2);
         if(imageHeight > frameHeight + zoomPixel)
@@ -205,6 +274,8 @@ class ImagePanel extends JPanel {
 
     void zoomIn() {
         setMode( (short) 3);
+        if(zoomMultiplier <= -20)
+            zoomMultiplier += 2;
         if(zoomMultiplier <= 50)
             zoomMultiplier++;
         repaint();
@@ -216,48 +287,6 @@ class ImagePanel extends JPanel {
         else
             setMode((short) 1);
         repaint();
-    }
-
-    void rotateClockwise90(double ptheta) {
-        theta += ptheta;
-        x = (MainFrame.getScrollPaneSize().width - imageWidth) / 2;
-        y = 0;
-        orientation = 1;
-
-
-        //System.out.println("x = "+x+"\n imagewidth="+imageWidth+"\nimageheight"+getWidth()+"\n------\n");
-        at = AffineTransform.getTranslateInstance(x, y);
-        //System.out.print("x = "+x+"\n y = "+y+"\n");
-
-        x = (double) x + imageWidth;
-        setY(frameHeight);
-
-        at.rotate(Math.toRadians(90), x, y);
-        //System.out.print("x = "+x+"\n y = "+y+"\n scale: "+scale+"\n");
-
-        swapDimensions();
-
-        int oldImageWidth = imageWidth;
-        int oldImageHeight = imageHeight;
-        imageWidth = frameWidth;
-        imageHeight = (imageWidth * oldImageHeight) / oldImageWidth;
-        setScale((double) imageWidth / origHeight);
-
-
-        x = (frameWidth - imageWidth) / 2;
-
-        //System.out.print("x = "+x+"\n y = "+y+"\nscale: "+scale+"\n");
-
-        //x = x - (oldImageWidth + (frameWidth - oldImageWidth) / 2);
-        //System.out.print("x = "+x+"\n y = "+y+"\n scale: "+scale+"\n");
-        //x = 20;
-        //
-        //System.out.println("y = "+y);
-        //y = y + (frameHeight - imageHeight) / 2;
-        //y = 360;
-        //System.out.print("y = "+y);
-        at.translate(x, y);
-        trans = true;
     }
 
     void setBackgroundColor(Color c) {
@@ -282,8 +311,6 @@ class ImagePanel extends JPanel {
 
     void setScale(double s) {
         scale = s;
-        //scale = s;
-        //revalidate();
         repaint();
     }
 
@@ -329,34 +356,13 @@ class ImagePanel extends JPanel {
         return frameHeight;
     }
 
-
-
-//    int loadImage(ArrayList<BufferedImage> input)
-//    {
-//        pages = input;
-//        if(index < pages.size() && !pages.isEmpty()) {
-//
-//            image = pages.get(index);
-//            origWidth = getImageSize().width;
-//            origHeight = getImageSize().height;
-//            y=0;
-//
-//            return 0;
-//        }
-//
-//
-//        return -1;
-//    }
-
     int loadImage(BufferedImage input) {
-        //pages.add(input);
         if(input != null) {
 
             image = input;
             origWidth = getImageSize().width;
             origHeight = getImageSize().height;
             y=0;
-            //setPreferredSize(new Dimension(origWidth, origHeight));
             return 0;
         }
         return -1;
@@ -369,9 +375,6 @@ class ImagePanel extends JPanel {
             origWidth = getImageSize().width;
             origHeight = getImageSize().height;
             y=0;
-            
-            setPreferredSize(new Dimension(origWidth, origHeight));
-            revalidate();
         }
             
     }
@@ -381,7 +384,6 @@ class ImagePanel extends JPanel {
             index--;
             try {
                     int val = loadImage(ext.getImage(index));
-                    //System.out.println("after load image val = "+ val);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
@@ -392,18 +394,13 @@ class ImagePanel extends JPanel {
     void nextPage(ArchiveManager ext) {
 
         if(index + 1 < ArchiveManager.getSize()) {
-            //System.out.println("inside else index = "+ index);
             index++;
             try {
                     int val = loadImage(ext.getImage(index));
-                    //System.out.println("after load image val = "+ val);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
-
-            //System.out.println("index "+index);
-            //displayImage(index);
-
+            
             repaint();
         }
     }
@@ -411,23 +408,18 @@ class ImagePanel extends JPanel {
     void goToPage(int page) {
 
         if(page <= ArchiveManager.getSize()) {
-            //System.out.println("inside else index = "+ index);
             try {
                     int val = loadImage(ArchiveManager.getImage(page));
-                    //System.out.println("after load image val = "+ val);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
             index = page;
-            //System.out.println("index "+index);
-            //displayImage(index);
-
             repaint();
         }
     }
 
     public static void main(String args[]) {
-        //new MainFrame("file:\\E:\\pic\\a.jpg");
+        
     }
 
 }
