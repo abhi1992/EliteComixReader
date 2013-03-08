@@ -503,7 +503,7 @@ public class Settings {
     public static void setSize(Dimension size) {
         Settings.size = size;
     }
-
+    
     public static boolean isMaximized() {
         return maximized;
     }

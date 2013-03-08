@@ -53,7 +53,7 @@ public class HelpDialog extends JDialog{
         //setAutoRequestFocus(true);
         setLayout(new BorderLayout());
         jLabel1 = new JLabel(
-                new ImageIcon(getClass().getResource("/Resources/about2.png")));
+                new ImageIcon(getClass().getResource("/Resources/elite_comix_reader.png")));
         aboutPane = new JEditorPane();
         aboutPane.setContentType("text/html");
         aboutPane.setEditable(false);
