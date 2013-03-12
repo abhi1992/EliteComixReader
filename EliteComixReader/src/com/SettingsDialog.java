@@ -34,12 +34,15 @@ public class SettingsDialog extends JDialog{
 
     private JLabel jLabel1, jLabel2, color, lafLabel;
     private JTabbedPane tab;
-    private JPanel jPanel1, jPanel2, generalPanel, viewPanel, generalCenterPanel, viewCenterPanel, lafPanel, colorPanel,
-            comicsPathPanel;
+    private JPanel jPanel1, jPanel2, generalPanel, viewPanel, generalCenterPanel,
+            viewCenterPanel, lafPanel, colorPanel,
+            comicsPathPanel, scrollPanel;
     private JButton jButton1, jButton2, chooseColor, browse;
     private JComboBox<String> laf;
     private JTextField comicsPath;
-
+    private JRadioButton none, thin, normal;
+    private ButtonGroup scrollGroup;
+    
     /**
      * Constructor
      * @param mainFrame the frame on which the dialog is called
@@ -104,14 +107,49 @@ public class SettingsDialog extends JDialog{
             }
         });
         browse.setFocusable(false);
+        
+        scrollPanel = new JPanel();
+        scrollPanel.setBorder(BorderFactory.createTitledBorder("Set Scroll Bar Size"));
+        scrollGroup = new ButtonGroup();
+        none = new JRadioButton("None");
+        none.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                setScrollBarSize(1);
+            }
+        });
+        thin = new JRadioButton("Thin");
+        thin.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                setScrollBarSize(2);
+            }
+        });
+        normal = new JRadioButton("Normal");
+        normal.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                setScrollBarSize(3);
+            }
+        });
+        scrollGroup.add(none);
+        scrollGroup.add(thin);
+        scrollGroup.add(normal);
+        scrollPanel.add(none);
+        scrollPanel.add(thin);
+        scrollPanel.add(normal);
+        
+        
         comicsPathPanel.add(comicsPath);
         comicsPathPanel.add(browse);
 
         generalCenterPanel = new JPanel();
         generalCenterPanel.setLayout(new GridLayout(2,1));
 
-        generalCenterPanel.add(colorPanel);
+        generalCenterPanel.add(scrollPanel);
         generalCenterPanel.add(comicsPathPanel);
         generalPanel = new JPanel(new BorderLayout());
         generalPanel.add(jLabel1, BorderLayout.WEST);
@@ -145,7 +183,7 @@ public class SettingsDialog extends JDialog{
         jPanel2.add(jButton2);
 
         viewCenterPanel = new JPanel();
-        viewCenterPanel.setLayout(new GridLayout());
+        viewCenterPanel.setLayout(new GridLayout(2, 1));
         lafPanel = new JPanel();
         lafPanel.setBorder(BorderFactory.createTitledBorder("Look And Feel"));
         lafPanel.setLayout(new FlowLayout());
@@ -162,6 +200,7 @@ public class SettingsDialog extends JDialog{
 
         lafPanel.add(laf);
         lafPanel.add(lafLabel);
+        viewCenterPanel.add(colorPanel);
         viewCenterPanel.add(lafPanel);
         //centerPanel.add(themePanel);
         viewPanel.add(viewCenterPanel, BorderLayout.CENTER);
@@ -223,6 +262,21 @@ public class SettingsDialog extends JDialog{
             }
         }
     }
+    
+    void setScrollBarSize(int i) {
+        if(i == 1) {
+            Settings.setScrollSize(0);
+        }
+        else if(i == 2) {
+            Settings.setScrollSize(10);
+        }
+        else {
+            Settings.setScrollSize(20);
+        
+        }
+    MainFrame.setScrollBarSize();
+    }
+    
     /**
      * main method for testing.
      * @param args to pass command line arguments

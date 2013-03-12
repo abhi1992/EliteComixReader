@@ -239,6 +239,7 @@ class ImagePanel extends JPanel {
                 }
                 else
                     y = Math.abs(frameHeight - imageHeight) / 2;
+                
                 setPreferredSize(new Dimension(imageWidth, imageHeight));
                 swapDimensions();
                 setScale((double)imageWidth / origWidth);
@@ -286,30 +287,64 @@ class ImagePanel extends JPanel {
             
         }
         else if(b == ZOOM_OUT) {
-            if(orientation %2 == 0) {
-                imageHeight = constHeight - Math.abs(zoomPixel * zoomMultiplier);
-                imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
-            }
-            else {
-                imageHeight = constHeight - Math.abs(zoomPixel * zoomMultiplier);
-                imageWidth = (imageHeight * oldImageHeight) / oldImageWidth;
-            }
-            if(orientation == 0) {
-                x = (frameWidth - imageWidth) / 2;
-
-                if(imageHeight >= imageWidth && !(mode == 0 && imageHeight <= frameHeight)
-                        && !(mode == 1 && imageWidth <= frameWidth))
-                    y = 0;
-                else
-                    y = Math.abs(frameHeight - imageHeight) / 2;
-                setPreferredSize(new Dimension(imageWidth, imageHeight));
-                setScale((double)imageWidth / origWidth);
-            }
+            if(orientation == STRAIGHT) {
+                    
+                    imageHeight = constHeight - Math.abs(zoomPixel * zoomMultiplier);
+                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+                    x = (frameWidth - imageWidth) / 2;
+                    
+                    if(imageHeight >= imageWidth || imageWidth > imageHeight)
+                        y = 0;
+                    else
+                        y = Math.abs(frameHeight - imageHeight) / 2;
+                    setPreferredSize(new Dimension(imageWidth, imageHeight));
+                    setScale((double)imageWidth / origWidth);
+                }
+                else if(orientation == LEFT) {
+                    imageHeight = constWidth - Math.abs(zoomPixel * zoomMultiplier);
+                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+                    setScale((double)imageWidth / origWidth);
+                    
+                    if(frameWidth > imageWidth && imageWidth > imageHeight)
+                        x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
+                    else
+                        x = imageHeight;
+                    
+                    if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+                        y = 0;
+                    }
+                    else
+                        y = Math.abs(frameHeight - imageWidth) / 2;
+                    
+                    setPreferredSize(new Dimension(imageWidth, imageHeight));
+                    swapDimensions();
+                }
+                else if(orientation == UPSIDE ) {
+                    imageHeight = constHeight - Math.abs(zoomPixel * zoomMultiplier);
+                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+                    x = imageWidth + (frameWidth - imageWidth) / 2;
+                    y = imageHeight;
+                    setPreferredSize(new Dimension(imageWidth, imageHeight));
+                    setScale((double)imageWidth / origWidth);
+                }
+                else if(orientation == RIGHT) {
+                    imageWidth = constHeight - Math.abs(zoomPixel * zoomMultiplier);
+                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
+                    setScale((double)imageWidth / origWidth);
+                    
+                    if(imageHeight <= frameWidth)
+                        x = (Math.abs(imageHeight - frameWidth) / 2);
+                    else
+                        x = 0;
+                  
+                    y = imageWidth;
+                }
             if(imageHeight < frameHeight) {
                 imageHeight = frameHeight;
                 imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
                 setMode((short)1);
             }
+            
         }
         else if(b == ZOOM_IN) {
                 if(orientation == STRAIGHT) {
@@ -326,20 +361,21 @@ class ImagePanel extends JPanel {
                     setScale((double)imageWidth / origWidth);
                 }
                 else if(orientation == LEFT) {
-                    imageWidth = constHeight + Math.abs(zoomPixel * zoomMultiplier);
-                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
+                    imageHeight = constWidth + Math.abs(zoomPixel * zoomMultiplier);
+                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
                     setScale((double)imageWidth / origWidth);
                     
                     if(frameWidth > imageWidth && imageWidth > imageHeight)
                         x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
                     else
-                        x = imageHeight;
+                        x = imageWidth;
                     
                     if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
                         y = 0;
                     }
                     else
                         y = Math.abs(frameHeight - imageWidth) / 2;
+                    
                     setPreferredSize(new Dimension(imageWidth, imageHeight));
                     swapDimensions();
                 }
@@ -347,33 +383,103 @@ class ImagePanel extends JPanel {
                     imageHeight = constHeight + Math.abs(zoomPixel * zoomMultiplier);
                     imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
                     x = imageWidth + (frameWidth - imageWidth) / 2;
-                    System.out.println(" " + imageHeight+" " + imageWidth);
-                    if(imageHeight >= imageWidth)
-                        y = imageHeight;
-                    else
-                        y = imageHeight + Math.abs(frameHeight - imageHeight) / 2;
+                    y = imageHeight;
                     setPreferredSize(new Dimension(imageWidth, imageHeight));
                     setScale((double)imageWidth / origWidth);
                 }
+                else if(orientation == RIGHT) {
+                    imageWidth = constHeight + Math.abs(zoomPixel * zoomMultiplier);
+                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
+                    setScale((double)imageWidth / origWidth);
+                    
+                    if(imageHeight <= frameWidth)
+                        x = (Math.abs(imageHeight - frameWidth) / 2);
+                    else
+                        x = 0;
+                  
+                    y = imageWidth;
+                }
                 
-                //knkkn
-            else {
-                imageHeight = constHeight - Math.abs(zoomPixel * zoomMultiplier);
-                imageWidth = (imageHeight * oldImageHeight) / oldImageWidth;
-            }
-            if(imageHeight < frameHeight) {
-                imageHeight = frameHeight;
-                imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
-                setMode((short)1);
-            }
+//            if(imageHeight < frameHeight) {
+//                imageHeight = frameHeight;
+//                imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+//                setMode((short)1);
+//            }
             setPreferredSize(new Dimension(imageWidth, imageHeight));
         }
         else if(b == ORIG_SIZE) {
+        if(orientation == STRAIGHT) {
             imageHeight = origHeight;
-            imageWidth = origWidth;
-            if(imageHeight < frameHeight) {
-                
+            imageWidth = origWidth; 
+            x = 0;
+            if(frameWidth > imageWidth)
+                x = Math.abs(frameWidth - imageWidth) / 2;
+
+            if(imageHeight >= imageWidth && !(mode == 0 && imageHeight <= frameHeight)
+                    && !(mode == 1 && imageWidth <= frameWidth))
+                y = 0;
+            else
+                y = Math.abs(frameHeight - imageHeight) / 2;
+            
+            setPreferredSize(new Dimension(imageWidth, imageHeight));
+            setScale((double)imageWidth / origWidth);
+        //setScale((double)imageWidth / origWidth);
+        }
+        else if(orientation == LEFT) {
+            imageHeight = origWidth;
+            imageWidth = origHeight;
+            
+            if(frameWidth > imageWidth && imageWidth > imageHeight)
+                x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
+            else
+                x = imageWidth;
+
+            if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+                y = 0;
             }
+            else
+                y = Math.abs(frameHeight - imageWidth) / 2;
+                    
+            setPreferredSize(new Dimension(imageWidth, imageHeight));
+            swapDimensions();
+            
+            setScale((double)imageWidth / origWidth);
+        }
+        else if(orientation == RIGHT) {
+            imageWidth = origHeight;
+            imageHeight = origWidth;
+            if(frameWidth > imageWidth && imageWidth > imageHeight)
+                x = (Math.abs(imageHeight - frameWidth) / 2);
+            else
+                x = 0;
+            if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+                y = imageHeight;
+            }
+            else
+                y = Math.abs(frameHeight - imageWidth) / 2;
+             
+            setPreferredSize(new Dimension(imageWidth, imageHeight));
+            swapDimensions();
+            
+            setScale((double)imageWidth / origWidth);
+                }
+        else if(orientation == UPSIDE) {
+            imageHeight = origHeight;
+            imageWidth = origWidth; 
+            x = imageWidth;
+            if(frameWidth > imageWidth)
+                x = imageWidth + Math.abs(frameWidth - imageWidth) / 2;
+
+            if(imageHeight >= imageWidth)
+                y = 0;
+            else
+                y = Math.abs(frameHeight - imageHeight) / 2;
+            
+            y = imageHeight;
+            setPreferredSize(new Dimension(imageWidth, imageHeight));
+            setScale((double)imageWidth / origWidth);
+        //setScale((double)imageWidth / origWidth);
+        }  
         }
         
 //        if(orientation % 2 != 0) {
@@ -457,10 +563,10 @@ class ImagePanel extends JPanel {
         
         constHeight = imageHeight;
         constWidth = imageWidth;
-        repaint();
         if(imageHeight >= frameHeight && zoomMultiplier > -20)
+            repaint();
             zoomMultiplier--;
-        repaint();
+        
         }
         
     }
@@ -469,12 +575,16 @@ class ImagePanel extends JPanel {
         setMode( (short) 3);
         constHeight = imageHeight;
         constWidth = imageWidth;
-        if(zoomMultiplier <= -20)
+        if(zoomMultiplier <= -20) {
+            repaint();
             zoomMultiplier += 2;
-        if(zoomMultiplier <= 5)
+        }
+            
+        if(zoomMultiplier <= 5) {
+            repaint();
             zoomMultiplier++;
+        }
         
-        repaint();
     }
     
     void origSize(boolean val) {

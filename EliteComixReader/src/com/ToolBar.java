@@ -33,7 +33,7 @@ import javax.swing.*;
 public class ToolBar extends JToolBar {
 
     private static JButton open, left, right, about, exit,  fullscreen,  goTo,
-            zoomIn, zoomOut, rotateLeft, rotateRight, 
+            zoomIn, zoomOut, rotateLeft, rotateRight, translator,  
             keyShorcuts, save, bookmarksManager, settings, nextComic, prevComic;
     private static JToggleButton fitWidth, alwaysOnTop, addBookmark, origSize;
     private static ImagePanel imagePanel;
@@ -269,7 +269,18 @@ public class ToolBar extends JToolBar {
             }
         });
         add(bookmarksManager);
-
+        
+//        translator = createButton(translator, "/Resources/translate1.png",
+//                KeyEvent.VK_R, "Translator");
+//        translator.addActionListener(new ActionListener() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//                jButton20ActionPerformed(evt);
+//            }
+//        });
+//        add(translator);
+        
         addSeparator(new Dimension(10, 30));
 
         keyShorcuts = createButton(keyShorcuts, "/Resources/keyboard1.png",
@@ -624,6 +635,16 @@ public class ToolBar extends JToolBar {
     private void jButton19ActionPerformed(ActionEvent evt) {
         if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
             mainFrame.rotateRight();
+    }
+    
+    /**
+     * Translator
+     * @param evt ActonEvent
+     * @return null
+     * @since v0.0.4
+     */
+    private void jButton20ActionPerformed(ActionEvent evt) {
+        new TranslatorDialog(mainFrame);
     }
 
     /**

@@ -58,7 +58,8 @@ public class Settings {
     private static ArrayList<String> fileList;
     private static short index;
     private static String comicsPath;
-
+    private static String clientId, clientSecret;
+    
     /**
      *
      * @throws ParserConfigurationException
@@ -186,6 +187,12 @@ public class Settings {
                         scrollSize = Integer.parseInt(child.getTextContent().trim());
                         //System.out.print(scrollSize);
                         break;
+                    case "clientId":
+                        clientId = child.getTextContent().trim();
+                        break;
+                    case "clientSecret":
+                        clientSecret = child.getTextContent().trim();
+                        break;
                     default :
                         break;
                 }
@@ -271,6 +278,10 @@ public class Settings {
         values.add(Settings.getComicsPath());
         tags.add("scrollBar");
         values.add(Integer.toString(Settings.getScrollSize()));
+        tags.add("clientId");
+        values.add(Settings.getClientId());
+        tags.add("clientSecret");
+        values.add(Settings.getClientSecret());
         new XmlWriter(ExtractorModel.getAppDir() + "/Properties.xml", tags, values);
     }
 
@@ -394,6 +405,14 @@ public class Settings {
             BaseNode = doc.createElement("scrollBar");
             BaseNode.appendChild(doc.createTextNode("10"));
             rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement("clientId");
+            BaseNode.appendChild(doc.createTextNode("null"));
+            rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement("clientSecret");
+            BaseNode.appendChild(doc.createTextNode("null"));
+            rootElement.appendChild(BaseNode);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -430,6 +449,22 @@ public class Settings {
 
     public static String getComicsPath() {
         return comicsPath;
+    }
+
+    public static String getClientId() {
+        return clientId;
+    }
+
+    public static String getClientSecret() {
+        return clientSecret;
+    }
+
+    public static void setClientSecret(String clientSecret) {
+        Settings.clientSecret = clientSecret;
+    }
+
+    public static void setClientId(String clientId) {
+        Settings.clientId = clientId;
     }
 
     public static void setComicsPath(String comicsPath) {

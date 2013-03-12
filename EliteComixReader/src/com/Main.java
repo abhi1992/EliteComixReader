@@ -36,12 +36,10 @@ public class Main {
      * Main method
      * @param args command line arguments
      */
-     public static void main(String args[]) {
+     public static void main(final String args[]) {
          
         final ArchiveManager arch = new ArchiveManager();
-        MainFrame mainFrame = null;
-        ImagePanel imagePanel;
-        ToolBar t;
+        //MainFrame mainFrame = null;
         load();
         try {
             if(Settings.getLaf().equals("System")) {
@@ -60,7 +58,10 @@ public class Main {
 
              @Override
                 public void run() {
-                    new MainFrame(arch);
+                    if(args.length == 0)
+                        new MainFrame(arch);
+                    else
+                        new MainFrame(args[0], arch);
                 }
          });
         //mainFrame = null;

@@ -51,14 +51,19 @@ public class MainFrame extends JFrame {
         initComponents(ext);
     }
 
-
+    public MainFrame (String file, ArchiveManager ext){
+        super("Elite Comix Reader");
+        initComponents(ext);
+        JOptionPane.showConfirmDialog(rootPane, "iT woRkS!!");
+        displayComic(ext, new File(file));
+        Settings.loadFileList(new File(file));
+    }
 
     /**
      *
      * @param ext
      */
-    private void initComponents(final ArchiveManager ext)
-    {
+    private void initComponents(final ArchiveManager ext) {
         setSize(Settings.getSize());
         setLocation(Settings.getX(), Settings.getY());
         setAlwaysOnTop(Settings.isAlwaysOnTop());
@@ -70,7 +75,6 @@ public class MainFrame extends JFrame {
         scrollPane = new JScrollPane();
         scrollPane.setBorder(null);
         
-
         imagePanel = new ImagePanel();
         scrollPane.setViewportView(imagePanel);
         scrollPane.setHorizontalScrollBarPolicy(
@@ -104,6 +108,10 @@ public class MainFrame extends JFrame {
                 imagePanel.setMode((short)1);
                 //scrollPane.revalidate();
                 imagePanel.repaint();
+                if(ToolBar.isFitWidthSelected())
+                ToolBar.setFitToggle();
+                if(ToolBar.isOrigSizeSelected())
+                    ToolBar.setOrigSizeToggle();
             }
         });
 
@@ -154,7 +162,7 @@ public class MainFrame extends JFrame {
             //System.out.println(" " + getPreferredSize()+" ");
         }
         else {
-            System.out.println(" " + getPreferredSize()+" "+Settings.getSize());
+            //System.out.println(" " + getPreferredSize()+" "+Settings.getSize());
             setPreferredSize(getPreferredSize());
             validate();
         }
@@ -355,10 +363,17 @@ public class MainFrame extends JFrame {
     }
     
     public static Dimension getScrollPaneSize() {
-        return new Dimension(scrollPane.getWidth() - 10, 
-                scrollPane.getHeight() - 10);
+        return new Dimension(scrollPane.getWidth() - Settings.getScrollSize(), 
+                scrollPane.getHeight() - Settings.getScrollSize());
     }
-
+    
+    static void setScrollBarSize() {
+        scrollPane.getHorizontalScrollBar().setPreferredSize(
+                new Dimension(Settings.getScrollSize(), Settings.getScrollSize()));
+        scrollPane.getVerticalScrollBar().setPreferredSize(
+                new Dimension(Settings.getScrollSize(), Settings.getScrollSize()));
+    }
+    
     static void scale(Double scale, ImagePanel imagePanel) {
         imagePanel.setScale(scale);
     }

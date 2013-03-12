@@ -204,7 +204,7 @@ public class HelpDialog extends JDialog{
             }
         });
         setModalityType(
-           Dialog.ModalityType.APPLICATION_MODAL);
+           Dialog.ModalityType.TOOLKIT_MODAL);
 
         setVisible(true);
 
