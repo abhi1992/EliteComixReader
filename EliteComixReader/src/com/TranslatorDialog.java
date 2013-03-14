@@ -70,25 +70,25 @@ public class TranslatorDialog extends JDialog{
             }
         });
         info = new JLabel("You will need a microsoft azure account to use this  feature.");
-        final LanguageTranslator languageTranslator = new LanguageTranslator();
+//        final LanguageTranslator languageTranslator = new LanguageTranslator();
         
-        if(!"null".equals(Settings.getClientSecret())) {
-            LanguageTranslator.setId(Settings.getClientId(), Settings.getClientSecret());
-            logIn.setText("Log Out");
-        }
+//        if(!"null".equals(Settings.getClientSecret())) {
+//            LanguageTranslator.setId(Settings.getClientId(), Settings.getClientSecret());
+//            logIn.setText("Log Out");
+//        }
         
         translate.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                translateActionPerformed(languageTranslator);
+//                translateActionPerformed(languageTranslator);
             }
         
         });
         
         try {
-            from = new JComboBox<>(LanguageTranslator.getAvailableLanguages());
-            to = new JComboBox<>(LanguageTranslator.getAvailableLanguages());
+//            from = new JComboBox<>(LanguageTranslator.getAvailableLanguages());
+//            to = new JComboBox<>(LanguageTranslator.getAvailableLanguages());
             to.removeItemAt(0);
         }
         catch(Exception e) {
@@ -152,19 +152,19 @@ public class TranslatorDialog extends JDialog{
         setVisible(true);
     }
     
-    private void translateActionPerformed(LanguageTranslator languageTranslator) {
-        languageTranslator.setLanguage1(from.getSelectedItem().toString());
-        languageTranslator.setLanguage2(to.getSelectedItem().toString());
-        System.out.println(""+languageTranslator.getLanguage1());
-        if(!"".equals(input.getText())) {
-            try {
-                output.setText(languageTranslator.Translate(input.getText()));
-                
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex);
-            }
-        }
-    }
+//    private void translateActionPerformed(LanguageTranslator languageTranslator) {
+//        languageTranslator.setLanguage1(from.getSelectedItem().toString());
+//        languageTranslator.setLanguage2(to.getSelectedItem().toString());
+//        System.out.println(""+languageTranslator.getLanguage1());
+//        if(!"".equals(input.getText())) {
+//            try {
+//                output.setText(languageTranslator.Translate(input.getText()));
+//                
+//            } catch (Exception ex) {
+//                JOptionPane.showMessageDialog(this, ex);
+//            }
+//        }
+//    }
     
     private void registerActionPerformed() {
         if(Desktop.isDesktopSupported()) {
@@ -181,9 +181,9 @@ public class TranslatorDialog extends JDialog{
     
     private void logInActionPerformed() {
         if("Log In".equals(logIn.getText())) {
-            new TranslatorLogin(this);
+//            new TranslatorLogin(this);
         } else {
-            Settings.setClientSecret("null");
+//            Settings.setClientSecret("null");
             setLogInButtonText();
         }
     }

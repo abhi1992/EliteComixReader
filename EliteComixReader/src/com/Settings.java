@@ -41,6 +41,7 @@ import org.xml.sax.SAXException;
  * @version v0.0.2
  * @since v0.0.2
  */
+
 public class Settings {
 
     private static String laf;
@@ -50,15 +51,16 @@ public class Settings {
     private static boolean maximized, fullscreen, alwaysOnTop;
     private static int X, Y, scrollSize;
     private static ArrayList<String> availableLaf;
-    static final String DECORATION_ARG = "decoration:";
-    static final String DEFAULT_DECORATION = "default";
-    static final String SYSTEM_DECORATION = "system";
-    static final String NO_DECORATION = "none";
-    private static String decorationStyle = NO_DECORATION;
+//    static final String DECORATION_ARG = "decoration:";
+//    static final String DEFAULT_DECORATION = "default";
+//    static final String SYSTEM_DECORATION = "system";
+//    static final String NO_DECORATION = "none";
+//    private static String decorationStyle = NO_DECORATION;
     private static ArrayList<String> fileList;
     private static short index;
     private static String comicsPath;
-    private static String clientId, clientSecret;
+//    private static String clientId, clientSecret;
+    
     
     /**
      *
@@ -187,12 +189,12 @@ public class Settings {
                         scrollSize = Integer.parseInt(child.getTextContent().trim());
                         //System.out.print(scrollSize);
                         break;
-                    case "clientId":
-                        clientId = child.getTextContent().trim();
-                        break;
-                    case "clientSecret":
-                        clientSecret = child.getTextContent().trim();
-                        break;
+//                    case "clientId":
+//                        clientId = child.getTextContent().trim();
+//                        break;
+//                    case "clientSecret":
+//                        clientSecret = child.getTextContent().trim();
+//                        break;
                     default :
                         break;
                 }
@@ -278,10 +280,10 @@ public class Settings {
         values.add(Settings.getComicsPath());
         tags.add("scrollBar");
         values.add(Integer.toString(Settings.getScrollSize()));
-        tags.add("clientId");
-        values.add(Settings.getClientId());
-        tags.add("clientSecret");
-        values.add(Settings.getClientSecret());
+//        tags.add("clientId");
+//        values.add(Settings.getClientId());
+//        tags.add("clientSecret");
+//        values.add(Settings.getClientSecret());
         new XmlWriter(ExtractorModel.getAppDir() + "/Properties.xml", tags, values);
     }
 
@@ -406,13 +408,13 @@ public class Settings {
             BaseNode.appendChild(doc.createTextNode("10"));
             rootElement.appendChild(BaseNode);
             
-            BaseNode = doc.createElement("clientId");
-            BaseNode.appendChild(doc.createTextNode("null"));
-            rootElement.appendChild(BaseNode);
-            
-            BaseNode = doc.createElement("clientSecret");
-            BaseNode.appendChild(doc.createTextNode("null"));
-            rootElement.appendChild(BaseNode);
+//            BaseNode = doc.createElement("clientId");
+//            BaseNode.appendChild(doc.createTextNode("null"));
+//            rootElement.appendChild(BaseNode);
+//            
+//            BaseNode = doc.createElement("clientSecret");
+//            BaseNode.appendChild(doc.createTextNode("null"));
+//            rootElement.appendChild(BaseNode);
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -443,37 +445,37 @@ public class Settings {
         return laf;
     }
 
-    public static String getDecorationStyle() {
-        return decorationStyle;
-    }
+//    public static String getDecorationStyle() {
+//        return decorationStyle;
+//    }
 
     public static String getComicsPath() {
         return comicsPath;
     }
 
-    public static String getClientId() {
-        return clientId;
-    }
-
-    public static String getClientSecret() {
-        return clientSecret;
-    }
-
-    public static void setClientSecret(String clientSecret) {
-        Settings.clientSecret = clientSecret;
-    }
-
-    public static void setClientId(String clientId) {
-        Settings.clientId = clientId;
-    }
+//    public static String getClientId() {
+//        return clientId;
+//    }
+//
+//    public static String getClientSecret() {
+//        return clientSecret;
+//    }
+//
+//    public static void setClientSecret(String clientSecret) {
+//        Settings.clientSecret = clientSecret;
+//    }
+//
+//    public static void setClientId(String clientId) {
+//        Settings.clientId = clientId;
+//    }
 
     public static void setComicsPath(String comicsPath) {
         Settings.comicsPath = comicsPath;
     }
 
-    public static void setDecorationStyle(String decorationStyle) {
-        Settings.decorationStyle = decorationStyle;
-    }
+//    public static void setDecorationStyle(String decorationStyle) {
+//        Settings.decorationStyle = decorationStyle;
+//    }
 
     public static Dimension getSize() {
         return size;

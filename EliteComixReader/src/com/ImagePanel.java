@@ -82,15 +82,6 @@ class ImagePanel extends JPanel {
             
             frameWidth  = MainFrame.getScrollPaneSize().width;
             frameHeight = MainFrame.getScrollPaneSize().height;
-            
-//            if(orientation % 2 == 0) {
-//                imageWidth  = getImageSize().width;
-//                imageHeight = getImageSize().height;
-//            }
-//            else {
-//                imageWidth  = getImageSize().height;
-//                imageHeight = getImageSize().width;
-//            }
             fit(mode);
             setTransform();
             g2.drawRenderedImage(image, at);
@@ -300,25 +291,25 @@ class ImagePanel extends JPanel {
                     setPreferredSize(new Dimension(imageWidth, imageHeight));
                     setScale((double)imageWidth / origWidth);
                 }
-                else if(orientation == LEFT) {
-                    imageHeight = constWidth - Math.abs(zoomPixel * zoomMultiplier);
-                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
-                    setScale((double)imageWidth / origWidth);
-                    
-                    if(frameWidth > imageWidth && imageWidth > imageHeight)
-                        x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
-                    else
-                        x = imageHeight;
-                    
-                    if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
-                        y = 0;
-                    }
-                    else
-                        y = Math.abs(frameHeight - imageWidth) / 2;
-                    
-                    setPreferredSize(new Dimension(imageWidth, imageHeight));
-                    swapDimensions();
-                }
+//                else if(orientation == LEFT) {
+//                    imageHeight = constWidth - Math.abs(zoomPixel * zoomMultiplier);
+//                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+//                    setScale((double)imageWidth / origWidth);
+//                    
+//                    if(frameWidth > imageWidth && imageWidth > imageHeight)
+//                        x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
+//                    else
+//                        x = imageHeight;
+//                    
+//                    if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+//                        y = 0;
+//                    }
+//                    else
+//                        y = Math.abs(frameHeight - imageWidth) / 2;
+//                    
+//                    setPreferredSize(new Dimension(imageWidth, imageHeight));
+//                    swapDimensions();
+//                }
                 else if(orientation == UPSIDE ) {
                     imageHeight = constHeight - Math.abs(zoomPixel * zoomMultiplier);
                     imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
@@ -327,18 +318,18 @@ class ImagePanel extends JPanel {
                     setPreferredSize(new Dimension(imageWidth, imageHeight));
                     setScale((double)imageWidth / origWidth);
                 }
-                else if(orientation == RIGHT) {
-                    imageWidth = constHeight - Math.abs(zoomPixel * zoomMultiplier);
-                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
-                    setScale((double)imageWidth / origWidth);
-                    
-                    if(imageHeight <= frameWidth)
-                        x = (Math.abs(imageHeight - frameWidth) / 2);
-                    else
-                        x = 0;
-                  
-                    y = imageWidth;
-                }
+//                else if(orientation == RIGHT) {
+//                    imageWidth = constHeight - Math.abs(zoomPixel * zoomMultiplier);
+//                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
+//                    setScale((double)imageWidth / origWidth);
+//                    
+//                    if(imageHeight <= frameWidth)
+//                        x = (Math.abs(imageHeight - frameWidth) / 2);
+//                    else
+//                        x = 0;
+//                  
+//                    y = imageWidth;
+//                }
             if(imageHeight < frameHeight) {
                 imageHeight = frameHeight;
                 imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
@@ -360,25 +351,26 @@ class ImagePanel extends JPanel {
                     setPreferredSize(new Dimension(imageWidth, imageHeight));
                     setScale((double)imageWidth / origWidth);
                 }
-                else if(orientation == LEFT) {
-                    imageHeight = constWidth + Math.abs(zoomPixel * zoomMultiplier);
-                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
-                    setScale((double)imageWidth / origWidth);
-                    
-                    if(frameWidth > imageWidth && imageWidth > imageHeight)
-                        x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
-                    else
-                        x = imageWidth;
-                    
-                    if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
-                        y = 0;
-                    }
-                    else
-                        y = Math.abs(frameHeight - imageWidth) / 2;
-                    
-                    setPreferredSize(new Dimension(imageWidth, imageHeight));
-                    swapDimensions();
-                }
+//                else if(orientation == LEFT) {
+//                    imageHeight = constWidth + Math.abs(zoomPixel * zoomMultiplier);
+//                    imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+//                    setScale((double)imageWidth / origWidth);
+//                    
+//                    if(frameWidth > imageWidth && imageWidth > imageHeight)
+//                        x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
+//                    else
+//                        x = imageWidth;
+//
+//                    if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+//                        y = 0;
+//                    }
+//                    else
+//                        y = Math.abs(frameHeight - imageWidth) / 2;
+//                    
+//                    setPreferredSize(new Dimension(imageWidth, imageHeight));
+//                    swapDimensions();
+//                    setScale((double)imageWidth / origWidth);
+//                }
                 else if(orientation == UPSIDE ) {
                     imageHeight = constHeight + Math.abs(zoomPixel * zoomMultiplier);
                     imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
@@ -387,99 +379,99 @@ class ImagePanel extends JPanel {
                     setPreferredSize(new Dimension(imageWidth, imageHeight));
                     setScale((double)imageWidth / origWidth);
                 }
-                else if(orientation == RIGHT) {
-                    imageWidth = constHeight + Math.abs(zoomPixel * zoomMultiplier);
-                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
-                    setScale((double)imageWidth / origWidth);
-                    
-                    if(imageHeight <= frameWidth)
-                        x = (Math.abs(imageHeight - frameWidth) / 2);
-                    else
-                        x = 0;
-                  
-                    y = imageWidth;
-                }
+//                else if(orientation == RIGHT) {
+//                    imageWidth = constHeight + Math.abs(zoomPixel * zoomMultiplier);
+//                    imageHeight = (imageWidth * oldImageWidth) / oldImageHeight;
+//                    setScale((double)imageWidth / origWidth);
+//                    
+//                    if(imageHeight <= frameWidth)
+//                        x = (Math.abs(imageHeight - frameWidth) / 2);
+//                    else
+//                        x = 0;
+//                  
+//                    y = imageWidth;
+//                }
                 
-//            if(imageHeight < frameHeight) {
-//                imageHeight = frameHeight;
-//                imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
-//                setMode((short)1);
-//            }
+            if(imageHeight < frameHeight) {
+                imageHeight = frameHeight;
+                imageWidth = (imageHeight * oldImageWidth) / oldImageHeight;
+                setMode((short)1);
+            }
             setPreferredSize(new Dimension(imageWidth, imageHeight));
         }
         else if(b == ORIG_SIZE) {
-        if(orientation == STRAIGHT) {
-            imageHeight = origHeight;
-            imageWidth = origWidth; 
-            x = 0;
-            if(frameWidth > imageWidth)
-                x = Math.abs(frameWidth - imageWidth) / 2;
-
-            if(imageHeight >= imageWidth && !(mode == 0 && imageHeight <= frameHeight)
-                    && !(mode == 1 && imageWidth <= frameWidth))
-                y = 0;
-            else
-                y = Math.abs(frameHeight - imageHeight) / 2;
-            
-            setPreferredSize(new Dimension(imageWidth, imageHeight));
-            setScale((double)imageWidth / origWidth);
-        //setScale((double)imageWidth / origWidth);
-        }
-        else if(orientation == LEFT) {
-            imageHeight = origWidth;
-            imageWidth = origHeight;
-            
-            if(frameWidth > imageWidth && imageWidth > imageHeight)
-                x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
-            else
-                x = imageWidth;
-
-            if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
-                y = 0;
-            }
-            else
-                y = Math.abs(frameHeight - imageWidth) / 2;
-                    
-            setPreferredSize(new Dimension(imageWidth, imageHeight));
-            swapDimensions();
-            
-            setScale((double)imageWidth / origWidth);
-        }
-        else if(orientation == RIGHT) {
-            imageWidth = origHeight;
-            imageHeight = origWidth;
-            if(frameWidth > imageWidth && imageWidth > imageHeight)
-                x = (Math.abs(imageHeight - frameWidth) / 2);
-            else
+            if(orientation == STRAIGHT) {
+                imageHeight = origHeight;
+                imageWidth = origWidth; 
                 x = 0;
-            if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
-                y = imageHeight;
-            }
-            else
-                y = Math.abs(frameHeight - imageWidth) / 2;
-             
-            setPreferredSize(new Dimension(imageWidth, imageHeight));
-            swapDimensions();
-            
-            setScale((double)imageWidth / origWidth);
-                }
-        else if(orientation == UPSIDE) {
-            imageHeight = origHeight;
-            imageWidth = origWidth; 
-            x = imageWidth;
-            if(frameWidth > imageWidth)
-                x = imageWidth + Math.abs(frameWidth - imageWidth) / 2;
+                if(frameWidth > imageWidth)
+                    x = Math.abs(frameWidth - imageWidth) / 2;
 
-            if(imageHeight >= imageWidth)
-                y = 0;
-            else
-                y = Math.abs(frameHeight - imageHeight) / 2;
-            
-            y = imageHeight;
-            setPreferredSize(new Dimension(imageWidth, imageHeight));
-            setScale((double)imageWidth / origWidth);
-        //setScale((double)imageWidth / origWidth);
-        }  
+                if(imageHeight >= imageWidth && !(mode == 0 && imageHeight <= frameHeight)
+                        && !(mode == 1 && imageWidth <= frameWidth))
+                    y = 0;
+                else
+                    y = Math.abs(frameHeight - imageHeight) / 2;
+
+                setPreferredSize(new Dimension(imageWidth, imageHeight));
+                setScale((double)imageWidth / origWidth);
+            //setScale((double)imageWidth / origWidth);
+            }
+            else if(orientation == LEFT) {
+                imageHeight = origWidth;
+                imageWidth = origHeight;
+
+                if(frameWidth > imageWidth && imageWidth > imageHeight)
+                    x = (imageHeight + Math.abs(imageHeight - frameWidth) / 2);
+                else
+                    x = imageWidth;
+
+                if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+                    y = 0;
+                }
+                else
+                    y = Math.abs(frameHeight - imageWidth) / 2;
+
+                setPreferredSize(new Dimension(imageWidth, imageHeight));
+                swapDimensions();
+
+                setScale((double)imageWidth / origWidth);
+            }
+            else if(orientation == RIGHT) {
+                imageWidth = origHeight;
+                imageHeight = origWidth;
+                if(frameWidth > imageWidth && imageWidth > imageHeight)
+                    x = (Math.abs(imageHeight - frameWidth) / 2);
+                else
+                    x = 0;
+                if(imageHeight < imageWidth  || imageHeight >= frameHeight) {
+                    y = imageHeight;
+                }
+                else
+                    y = Math.abs(frameHeight - imageWidth) / 2;
+
+                setPreferredSize(new Dimension(imageWidth, imageHeight));
+                swapDimensions();
+
+                setScale((double)imageWidth / origWidth);
+                    }
+            else if(orientation == UPSIDE) {
+                imageHeight = origHeight;
+                imageWidth = origWidth; 
+                x = imageWidth;
+                if(frameWidth > imageWidth)
+                    x = imageWidth + Math.abs(frameWidth - imageWidth) / 2;
+
+                if(imageHeight >= imageWidth)
+                    y = 0;
+                else
+                    y = Math.abs(frameHeight - imageHeight) / 2;
+
+                y = imageHeight;
+                setPreferredSize(new Dimension(imageWidth, imageHeight));
+                setScale((double)imageWidth / origWidth);
+            //setScale((double)imageWidth / origWidth);
+            }  
         }
         
 //        if(orientation % 2 != 0) {
@@ -689,7 +681,7 @@ class ImagePanel extends JPanel {
         if(index - 1 >= 0) {
             index--;
             try {
-                    int val = loadImage(ext.getImage(index));
+                    int val = loadImage(ArchiveManager.getImage(index));
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
@@ -702,7 +694,7 @@ class ImagePanel extends JPanel {
         if(index + 1 < ArchiveManager.getSize()) {
             index++;
             try {
-                    int val = loadImage(ext.getImage(index));
+                    int val = loadImage(ArchiveManager.getImage(index));
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }

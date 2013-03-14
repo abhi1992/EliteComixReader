@@ -464,9 +464,8 @@ public class MainFrame extends JFrame {
         if(b) {
             t.setVisible(!Settings.isFullscreen());
             dispose();
-            if (Settings.NO_DECORATION.equals(Settings.getDecorationStyle())) {
+//            if (Settings.NO_DECORATION.equals(Settings.getDecorationStyle()))
             setUndecorated(true);
-            }
             GraphicsEnvironment ge =
             GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice gs = ge.getDefaultScreenDevice();
@@ -483,9 +482,6 @@ public class MainFrame extends JFrame {
             GraphicsDevice gs = ge.getDefaultScreenDevice();
             gs.setFullScreenWindow(null);
             
-            
-            //Settings.setDecorationStyle(Settings.DEFAULT_DECORATION);
-            //Settings.setLookAndFeel(true, "default");
             setVisible(true);
         }
 

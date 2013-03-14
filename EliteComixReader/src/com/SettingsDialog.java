@@ -32,15 +32,18 @@ import javax.swing.*;
 
 public class SettingsDialog extends JDialog{
 
-    private JLabel jLabel1, jLabel2, color, lafLabel;
+    private JLabel jLabel1, jLabel2, color, lafLabel, advancedLabel;
     private JTabbedPane tab;
     private JPanel jPanel1, jPanel2, generalPanel, viewPanel, generalCenterPanel,
-            viewCenterPanel, lafPanel, colorPanel,
-            comicsPathPanel, scrollPanel;
-    private JButton jButton1, jButton2, chooseColor, browse;
+            viewCenterPanel, lafPanel, colorPanel, advancedPanel,
+            advancedCenterPanel, advancedBasePanel,
+            comicsPathPanel, scrollPanel, resetToDefaultsPanel;
+    private JButton jButton1, jButton2, chooseColor, browse, advancedClose;
     private JComboBox<String> laf;
     private JTextField comicsPath;
     private JRadioButton none, thin, normal;
+    private JCheckBox viewChkBox, comicsPathChkBox, extractDirChkBox, 
+            keyShortcutsChkBox;
     private ButtonGroup scrollGroup;
     
     /**
@@ -205,9 +208,25 @@ public class SettingsDialog extends JDialog{
         //centerPanel.add(themePanel);
         viewPanel.add(viewCenterPanel, BorderLayout.CENTER);
         viewPanel.add(jPanel2, BorderLayout.SOUTH);
-
+        
         tab.addTab("View", viewPanel);
-
+        
+//        resetToDefaultsPanel = new JPanel();
+//        resetToDefaultsPanel.setBorder(BorderFactory.createTitledBorder("Reset To Defaults"));
+//        
+//        
+//        advancedCenterPanel = new JPanel(new GridLayout(0, 1));
+//        advancedLabel = new JLabel(new ImageIcon(getClass().getResource("/Resources/advancedsettings.png")));
+//        advancedClose = new JButton("Close");
+//        advancedBasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+//        advancedBasePanel.add(advancedClose);
+//        
+//        advancedPanel = new JPanel(new BorderLayout());
+//        advancedPanel.add(advancedCenterPanel, BorderLayout.CENTER);
+//        advancedPanel.add(advancedLabel, BorderLayout.WEST);
+//        advancedPanel.add(advancedBasePanel, BorderLayout.SOUTH);
+//        tab.addTab("Advanced", advancedPanel);
+        
         setMinimumSize(new Dimension(500, 600));
         Point p = new Point(0, 0);
         if(mainFrame != null) {
