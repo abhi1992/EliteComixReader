@@ -48,7 +48,7 @@ public class Settings {
     private static Dimension size;
     private static short fitWidth;
     private static Color defaultColor;
-    private static boolean maximized, fullscreen, alwaysOnTop;
+    private static boolean maximized, fullscreen, alwaysOnTop, loadingImage;
     private static int X, Y, scrollSize;
     private static ArrayList<String> availableLaf;
 //    static final String DECORATION_ARG = "decoration:";
@@ -497,12 +497,20 @@ public class Settings {
         return scrollSize;
     }
 
+    public static boolean isLoadingImage() {
+        return loadingImage;
+    }
+    
     public static boolean isFullscreen() {
         return fullscreen;
     }
-
+    
     public static boolean isAlwaysOnTop() {
         return alwaysOnTop;
+    }
+
+    public static void setLoadingImage(boolean loadingImage) {
+        Settings.loadingImage = loadingImage;
     }
 
     public static void setScrollSize(int scrollSize) {

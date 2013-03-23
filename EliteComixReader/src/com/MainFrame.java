@@ -282,7 +282,9 @@ public class MainFrame extends JFrame {
     }
 
     static void open(ArchiveManager e) {
-
+        imagePanel.setEmptyImage();
+        Settings.setLoadingImage(true);
+        imagePanel.repaint();
         JFileChooser chooser = new JFileChooser(Settings.getComicsPath());
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("."));
@@ -306,6 +308,8 @@ public class MainFrame extends JFrame {
         displayComic(e, file);
         Settings.loadFileList(file);
         chooser = null;
+        Settings.setLoadingImage(false);
+        imagePanel.repaint();
     }
 
     void save() {
@@ -513,7 +517,9 @@ public class MainFrame extends JFrame {
      * @since v0.0.1
      */
     static void displayComic(ArchiveManager ext, File f) {
+        
         try {
+            
             BufferedImage a = null;
                 try {
                     int success = ext.extract(f);
@@ -543,12 +549,11 @@ public class MainFrame extends JFrame {
                 setScrollPaneView();
                 
             }
-
+            
         }
             catch(NullPointerException r) {
             }
         ToolBar.refreshPage();
-    //Settings.loadFileList(f);
     }
 
     /**

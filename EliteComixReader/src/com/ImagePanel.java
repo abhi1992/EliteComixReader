@@ -75,7 +75,14 @@ class ImagePanel extends JPanel {
 
         super.paintComponent(g);
         setBackground(Settings.getDefaultColor());
-        if(image != null) {
+        if(Settings.isLoadingImage()) {
+                //g.setColor(Color.red);
+                g.setColor(Color.gray);
+            g.setFont(new Font("Times New Roman", Font.BOLD, 30));
+                g.drawString("Loading...", getX() + Math.abs(getWidth() - 150)/2, 
+                        getY() + Math.abs(getHeight()) / 2);
+            }
+        else if(image != null) {
             Graphics2D g2 = (Graphics2D)g;
             g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                                 RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -85,6 +92,13 @@ class ImagePanel extends JPanel {
             fit(mode);
             setTransform();
             g2.drawRenderedImage(image, at);
+            g2 = null;
+        }
+        else {
+            g.setColor(Color.gray);
+            g.setFont(new Font("Times New Roman", Font.BOLD, 30));
+            g.drawString("Press O to open a comic", getX() + Math.abs(getWidth() - 280)/2, 
+                        getY() + Math.abs(getHeight()) / 2);
         }
     }
 
