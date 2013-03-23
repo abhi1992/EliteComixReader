@@ -246,14 +246,12 @@ public class MainFrame extends JFrame {
             }
             else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
-                imagePanel.nextPage(ext);
-                scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMinimum());
-                ToolBar.setAddBookmark();
+                nextPage(ext);
+                
             }
             else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                imagePanel.prevPage(ext);
-                scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-                ToolBar.setAddBookmark();
+                
+                prevPage(ext);
             }
             else if(e.getKeyCode() == KeyEvent.VK_S) {
                 save();
@@ -338,22 +336,36 @@ public class MainFrame extends JFrame {
     }
 
     void jumpToPage() {
-        try{
+        try {
             String res = JOptionPane.showInputDialog(this, "Enter page no: "
-            +"( 0 - " + ArchiveManager.getSize() +" )");
+            +"( 1 - " + ArchiveManager.getSize() +" )");
             //System.out.print(res);
             if(res != null) {
                 int page = Integer.parseInt(res);
-                if(page > -1) {
-                    imagePanel.goToPage(page);
+                if(page > 0) {
+                    imagePanel.goToPage(page - 1);
                 }
             }
         }catch(NumberFormatException e){
-        JOptionPane.showMessageDialog(this, "Enter Integers only!!");
+            JOptionPane.showMessageDialog(this, "Enter Integers only!!");
         }
-
+        ToolBar.refreshPage();
     }
 
+    void prevPage(ArchiveManager ext) {
+        imagePanel.prevPage(ext);
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+        ToolBar.setAddBookmark();
+        ToolBar.refreshPage();
+    }
+    
+    void nextPage(ArchiveManager ext) {
+        imagePanel.nextPage(ext);
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMinimum());
+        ToolBar.setAddBookmark();
+        ToolBar.refreshPage();
+    }
+    
     static File getFile() {
         return file;
     }
@@ -529,12 +541,13 @@ public class MainFrame extends JFrame {
                 imagePanel.loadImage(a);
                 imagePanel.repaint();
                 setScrollPaneView();
-                //
+                
             }
 
         }
             catch(NullPointerException r) {
             }
+        ToolBar.refreshPage();
     //Settings.loadFileList(f);
     }
 

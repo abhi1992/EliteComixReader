@@ -45,6 +45,7 @@ public class BookmarksDialog extends JDialog{
     BookmarksDialog(final MainFrame mainFrame) {
         
         setResizable(false);
+        setFocusable(false);
         ArrayList<BufferedImage> a = new ArrayList<>(4);
         a.addAll(BookmarksManager.getBookmarkImages());
         
@@ -119,8 +120,10 @@ public class BookmarksDialog extends JDialog{
         setLocation(p.x + (Math.abs(mainFrame.getWidth() - getWidth())) / 2, p.y + 
                 Math.abs(mainFrame.getHeight() - getHeight()) / 2);
         setVisible(true);
-        jButton.transferFocusUpCycle();
-        pack();
+        setModalityType(
+           Dialog.ModalityType.TOOLKIT_MODAL);
+        //jButton.transferFocusUpCycle();
+        //pack();
     }
     
     /**

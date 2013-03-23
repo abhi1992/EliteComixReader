@@ -323,13 +323,11 @@ public class PopupMenu extends JPopupMenu{
     }
 
     private void jButton1ActionPerformed(ActionEvent evt) {
-         imagePanel.prevPage(archiveManager);
-         left.transferFocusUpCycle();
+         mainFrame.prevPage(archiveManager);
     }
 
     private void jButton2ActionPerformed(ActionEvent evt) {
-        imagePanel.nextPage(archiveManager);
-        right.transferFocusUpCycle();
+        mainFrame.nextPage(archiveManager);
     }
 
     private void jButton3ActionPerformed(ActionEvent evt) {
@@ -349,18 +347,7 @@ public class PopupMenu extends JPopupMenu{
     }
 
     private void jButton6ActionPerformed(ActionEvent evt) {
-        try {
-            String res = JOptionPane.showInputDialog(mainFrame, "Enter page no: "
-            +"( 0 - " + ArchiveManager.getSize() +" )");
-            //System.out.print(res);
-            if(res != null) {
-                int page = Integer.parseInt(res);
-                if(page > -1)
-                    imagePanel.goToPage(page);
-            }
-        } catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(mainFrame, "Enter Integers only!!");
-        }
+        mainFrame.jumpToPage();
     }
 
     private void jButton7ActionPerformed(ActionEvent evt) {

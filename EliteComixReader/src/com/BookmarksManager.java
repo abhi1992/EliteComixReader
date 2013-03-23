@@ -16,6 +16,7 @@
 *    along with Elite Comix Reader.  If not, see <http://www.gnu.org/licenses/>.
 * 
 */
+
 package com;
 
 import java.awt.image.BufferedImage;
