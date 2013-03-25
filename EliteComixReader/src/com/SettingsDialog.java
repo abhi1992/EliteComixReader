@@ -36,14 +36,14 @@ public class SettingsDialog extends JDialog{
     private JTabbedPane tab;
     private JPanel jPanel1, jPanel2, generalPanel, viewPanel, generalCenterPanel,
             viewCenterPanel, lafPanel, colorPanel, advancedPanel,
-            advancedCenterPanel, advancedBasePanel,
+            advancedCenterPanel, advancedBasePanel, showPageNoPanel,
             comicsPathPanel, scrollPanel, resetToDefaultsPanel;
     private JButton jButton1, jButton2, chooseColor, browse, advancedClose;
     private JComboBox<String> laf;
     private JTextField comicsPath;
     private JRadioButton none, thin, normal;
     private JCheckBox viewChkBox, comicsPathChkBox, extractDirChkBox, 
-            keyShortcutsChkBox;
+            keyShortcutsChkBox, showPageNo;
     private ButtonGroup scrollGroup;
     
     /**
@@ -138,6 +138,20 @@ public class SettingsDialog extends JDialog{
                 setScrollBarSize(3);
             }
         });
+        showPageNo = new JCheckBox("Show Page Number");
+        showPageNo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                ToolBar.showPageNumber(!ToolBar.isPageNumberVisible());
+                repaint();
+            }
+        });
+        showPageNo.setSelected(ToolBar.isPageNumberVisible());
+        showPageNoPanel = new JPanel();
+        showPageNoPanel.setBorder(BorderFactory.createTitledBorder("Page Info"));
+        showPageNoPanel.add(showPageNo);
+        
         scrollGroup.add(none);
         scrollGroup.add(thin);
         scrollGroup.add(normal);
@@ -150,9 +164,10 @@ public class SettingsDialog extends JDialog{
         comicsPathPanel.add(browse);
 
         generalCenterPanel = new JPanel();
-        generalCenterPanel.setLayout(new GridLayout(2,1));
+        generalCenterPanel.setLayout(new GridLayout(3,1));
 
         generalCenterPanel.add(scrollPanel);
+        generalCenterPanel.add(showPageNoPanel);
         generalCenterPanel.add(comicsPathPanel);
         generalPanel = new JPanel(new BorderLayout());
         generalPanel.add(jLabel1, BorderLayout.WEST);
