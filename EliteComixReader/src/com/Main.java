@@ -18,6 +18,7 @@
 */
 package com;
 
+import java.io.File;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -40,7 +41,13 @@ public class Main {
         final ArchiveManager arch = new ArchiveManager();
         
         //MainFrame mainFrame = null;
-        load();
+        try {
+            load();
+        } catch(Exception e) {
+            File f = new File(ExtractorModel.getAppDir() + "/Properties.xml");
+            f.delete();
+            load();
+        }
         try {
             if(Settings.getLaf().equals("System")) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
