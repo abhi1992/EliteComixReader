@@ -447,6 +447,9 @@ public class MainFrame extends JFrame {
             t.setVisible(!Settings.isFullscreen());
             
             Settings.setMaximized(getExtendedState() == JFrame.MAXIMIZED_BOTH);
+            //dispose();
+            //setVisible(false);
+            setExtendedState(JFrame.NORMAL);
             dispose();
             setUndecorated(true);
             GraphicsEnvironment ge =
@@ -468,7 +471,7 @@ public class MainFrame extends JFrame {
             
             //System.out.println(" " + " "+getFrameSize());
 //            if(Settings.isMaximized())
-//                setExtendedState(JFrame.MAXIMIZED_BOTH);
+                setExtendedState(JFrame.NORMAL);
             setPreferredSize(Settings.getSize());
             validate();
             setVisible(true);

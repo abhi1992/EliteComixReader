@@ -18,13 +18,17 @@
 */
 package com;
 
-import java.awt.*;
-import java.io.*;
+//import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 import javax.swing.JFrame;
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -32,7 +36,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.*;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -83,14 +91,14 @@ public class Settings {
                 if(child instanceof Element) {
                     Element childElement = (Element) child;
                 switch(childElement.getTagName()) {
-                    case "laf":
+                    case "Laf":
                         availableLaf = new ArrayList<>();
                         NodeList n = child.getChildNodes();
                         for(int j = 0; j < n.getLength(); j++)
                         {
                             Node fd = n.item(j);
                             if((fd instanceof Element)) {
-
+                                
                                 if(fd.getNodeName().equals("Default")) {
                                     laf = fd.getTextContent().trim();
                                 }
@@ -102,7 +110,7 @@ public class Settings {
                         availableLaf.add("System");
                         break;
 
-                    case "size":
+                    case "Size":
                         int h = 0,w = 0;
                         n = child.getChildNodes();
                         for(int j = 0; j < n.getLength(); j++)
@@ -110,11 +118,11 @@ public class Settings {
                             Node fd = n.item(j);
                             if((fd instanceof Element)) {
 
-                                if(fd.getNodeName().equals("height")) {
+                                if(fd.getNodeName().equals("Height")) {
                                     h = Integer.parseInt(fd.getTextContent().trim());
                                 }
 
-                                if(fd.getNodeName().equals("width")) {
+                                if(fd.getNodeName().equals("Width")) {
                                     w = Integer.parseInt(fd.getTextContent().trim());
                                 }
                             }
@@ -122,7 +130,7 @@ public class Settings {
                         size = new Dimension(w, h);
                         break;
 
-                    case "location":
+                    case "Location":
                         h = 0;
                         w = 0;
                         n = child.getChildNodes();
@@ -130,11 +138,11 @@ public class Settings {
                             Node fd = n.item(j);
                             if((fd instanceof Element)) {
 
-                                if(fd.getNodeName().equals("x")) {
+                                if(fd.getNodeName().equals("X")) {
                                     h = Integer.parseInt(fd.getTextContent().trim());
                                 }
 
-                                if(fd.getNodeName().equals("y")) {
+                                if(fd.getNodeName().equals("Y")) {
                                     w = Integer.parseInt(fd.getTextContent().trim());
                                 }
                             }
@@ -156,45 +164,53 @@ public class Settings {
                         alwaysOnTop = Boolean.parseBoolean(child.getTextContent().trim());
                         break;
 
-                    case "maximized" :
-                      maximized =  Boolean.parseBoolean(child.getTextContent().trim());
+                    case "Maximized" :
+                      maximized =  false;
                         break;
 
-                    case "color" :
+                    case "Color" :
                         int r = 0, g = 0, b = 0;
                         n = child.getChildNodes();
                         for(int j = 0; j < n.getLength(); j++) {
                             Node fd = n.item(j);
                             if((fd instanceof Element)) {
 
-                                if(fd.getNodeName().equals("red")) {
+                                if(fd.getNodeName().equals("Red")) {
                                     r = Integer.parseInt(fd.getTextContent().trim());
                                 }
 
-                                if(fd.getNodeName().equals("green")) {
+                                if(fd.getNodeName().equals("Green")) {
                                     g = Integer.parseInt(fd.getTextContent().trim());
                                 }
 
-                                if(fd.getNodeName().equals("blue")) {
+                                if(fd.getNodeName().equals("Blue")) {
                                     b = Integer.parseInt(fd.getTextContent().trim());
                                 }
                             }
                         }
                         setDefaultColor(new Color(r, g, b));
                         break;
-                    case "comicsPath":
+                    case "ComicsPath":
                         comicsPath = child.getTextContent().trim();
                         break;
-                    case "scrollBar":
+                    case "ScrollBar":
                         scrollSize = Integer.parseInt(child.getTextContent().trim());
                         //System.out.print(scrollSize);
                         break;
-//                    case "clientId":
-//                        clientId = child.getTextContent().trim();
-//                        break;
-//                    case "clientSecret":
-//                        clientSecret = child.getTextContent().trim();
-//                        break;
+                    case "Keys":
+                        n = child.getChildNodes();
+                        for(int j = 0; j < n.getLength(); j++) {
+                            Node fd = n.item(j);
+                            if((fd instanceof Element)) {
+                                for(String di : Constants.defaultTags) {
+                                    if(fd.getNodeName().equals(di))
+                                        Constants.assignedKeys.add(
+                                                Integer.parseInt(fd.getTextContent().trim()));
+                                    }
+                            }
+                        }
+                        
+                        break;
                     default :
                         break;
                 }
@@ -248,42 +264,39 @@ public class Settings {
     public static void store(MainFrame mainFrame) {
         
         ArrayList<String> tags = new ArrayList<>(), values = new ArrayList<>();
-        tags.add("Default");
+        tags.add(Constants.defaultTags[2]);
         
         values.add(getLaf().toString());
         
         if(mainFrame.getExtendedState() != JFrame.MAXIMIZED_BOTH) {
-            tags.add("height");
-            tags.add("width");
-            tags.add("x");
-            tags.add("y");
+            tags.add(Constants.defaultTags[7]);
+            tags.add(Constants.defaultTags[8]);
+            tags.add(Constants.defaultTags[10]);
+            tags.add(Constants.defaultTags[11]);
             values.add(Integer.toString(mainFrame.getFrameSize().height));
             values.add(Integer.toString(mainFrame.getFrameSize().width));
             values.add(Integer.toString(mainFrame.getX()));
             values.add(Integer.toString(mainFrame.getY()));
         }
-        tags.add("maximized");
-        values.add(Boolean.toString(mainFrame.getExtendedState() == JFrame.MAXIMIZED_BOTH));
+        tags.add(Constants.defaultTags[15]);
+        values.add(Boolean.toString(false));
         tags.add("fitWidth");
         values.add(Short.toString(getFitWidth()));
         tags.add("fullscreen");
         values.add(Boolean.toString(isFullscreen()));
         tags.add("alwaysOnTop");
         values.add(Boolean.toString(isAlwaysOnTop()));
-        tags.add("red");
+        tags.add(Constants.defaultTags[17]);
         values.add(Integer.toString(getDefaultColor().getRed()));
-        tags.add("green");
+        tags.add(Constants.defaultTags[18]);
         values.add(Integer.toString(getDefaultColor().getGreen()));
-        tags.add("blue");
+        tags.add(Constants.defaultTags[19]);
         values.add(Integer.toString(getDefaultColor().getBlue()));
-        tags.add("comicsPath");
+        tags.add(Constants.defaultTags[20]);
         values.add(Settings.getComicsPath());
-        tags.add("scrollBar");
+        tags.add(Constants.defaultTags[21]);
         values.add(Integer.toString(Settings.getScrollSize()));
-//        tags.add("clientId");
-//        values.add(Settings.getClientId());
-//        tags.add("clientSecret");
-//        values.add(Settings.getClientSecret());
+        
         new XmlWriter(ExtractorModel.getAppDir() + "/Properties.xml", tags, values);
     }
 
@@ -325,97 +338,107 @@ public class Settings {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("Properties");
+            Element rootElement = doc.createElement(Constants.defaultTags[0]);
             doc.appendChild(rootElement);
 
-            Element BaseNode = doc.createElement("laf");
+            Element BaseNode = doc.createElement(Constants.defaultTags[1]);
             rootElement.appendChild(BaseNode);
 
-            Element node = doc.createElement("Default");
-            node.appendChild(doc.createTextNode("System"));
+            Element node = doc.createElement(Constants.defaultTags[2]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[2]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("Nimbus");
-            node.appendChild(doc.createTextNode("javax.swing.plaf.nimbus.NimbusLookAndFeel"));
+            node = doc.createElement(Constants.defaultTags[3]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[3]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("Motif");
-            node.appendChild(doc.createTextNode("com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
+            node = doc.createElement(Constants.defaultTags[4]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[4]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("Metal");
-            node.appendChild(doc.createTextNode("javax.swing.plaf.metal.MetalLookAndFeel"));
+            node = doc.createElement(Constants.defaultTags[5]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[5]));
             BaseNode.appendChild(node);
 
-            BaseNode = doc.createElement("size");
+            BaseNode = doc.createElement(Constants.defaultTags[6]);
             rootElement.appendChild(BaseNode);
 
-            node = doc.createElement("height");
-            node.appendChild(doc.createTextNode("300"));
+            node = doc.createElement(Constants.defaultTags[7]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[7]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("width");
-            node.appendChild(doc.createTextNode("200"));
+            node = doc.createElement(Constants.defaultTags[8]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[8]));
             BaseNode.appendChild(node);
 
-            BaseNode = doc.createElement("location");
+            BaseNode = doc.createElement(Constants.defaultTags[9]);
             rootElement.appendChild(BaseNode);
 
-            node = doc.createElement("x");
-            node.appendChild(doc.createTextNode("50"));
+            node = doc.createElement(Constants.defaultTags[10]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[10]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("y");
-            node.appendChild(doc.createTextNode("50"));
+            node = doc.createElement(Constants.defaultTags[11]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[11]));
             BaseNode.appendChild(node);
 
-            BaseNode = doc.createElement("fitWidth");
-            BaseNode.appendChild(doc.createTextNode("1"));
+            BaseNode = doc.createElement(Constants.defaultTags[12]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[12]));
             rootElement.appendChild(BaseNode);
 
-            BaseNode = doc.createElement("fullscreen");
-            BaseNode.appendChild(doc.createTextNode("false"));
+            BaseNode = doc.createElement(Constants.defaultTags[13]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[13]));
             rootElement.appendChild(BaseNode);
 
-            BaseNode = doc.createElement("alwaysOnTop");
-            BaseNode.appendChild(doc.createTextNode("false"));
+            BaseNode = doc.createElement(Constants.defaultTags[14]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[14]));
             rootElement.appendChild(BaseNode);
 
-            BaseNode = doc.createElement("maximized");
-            BaseNode.appendChild(doc.createTextNode("true"));
+            BaseNode = doc.createElement(Constants.defaultTags[15]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[15]));
             rootElement.appendChild(BaseNode);
 
-            BaseNode = doc.createElement("color");
+            BaseNode = doc.createElement(Constants.defaultTags[16]);
             rootElement.appendChild(BaseNode);
 
-            node = doc.createElement("red");
-            node.appendChild(doc.createTextNode("0"));
+            node = doc.createElement(Constants.defaultTags[17]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[17]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("green");
-            node.appendChild(doc.createTextNode("0"));
+            node = doc.createElement(Constants.defaultTags[18]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[18]));
             BaseNode.appendChild(node);
 
-            node = doc.createElement("blue");
-            node.appendChild(doc.createTextNode("0"));
+            node = doc.createElement(Constants.defaultTags[19]);
+            node.appendChild(doc.createTextNode(Constants.defaultValues[19]));
             BaseNode.appendChild(node);
 
-            BaseNode = doc.createElement("comicsPath");
-            BaseNode.appendChild(doc.createTextNode("user.home"));
-            rootElement.appendChild(BaseNode);
-            
-            BaseNode = doc.createElement("scrollBar");
-            BaseNode.appendChild(doc.createTextNode("10"));
+            BaseNode = doc.createElement(Constants.defaultTags[20]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[20]));
             rootElement.appendChild(BaseNode);
             
-//            BaseNode = doc.createElement("clientId");
-//            BaseNode.appendChild(doc.createTextNode("null"));
-//            rootElement.appendChild(BaseNode);
-//            
-//            BaseNode = doc.createElement("clientSecret");
-//            BaseNode.appendChild(doc.createTextNode("null"));
-//            rootElement.appendChild(BaseNode);
-
+            BaseNode = doc.createElement(Constants.defaultTags[21]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[21]));
+            rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement(Constants.defaultTags[22]);
+            
+            boolean start = false;
+            int count = 0;
+            for(String i : Constants.defaultTags) {
+                
+                if(start) {
+                    node = doc.createElement(i);
+                    node.appendChild(doc.createTextNode(Constants.defaultValues[count]));
+                    BaseNode.appendChild(node);
+                }
+                if(i.matches("Keys")) {
+                    start = true;
+                }
+                count++;
+            }
+            rootElement.appendChild(BaseNode);
+            //ToDo Work here
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");

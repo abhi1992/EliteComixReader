@@ -38,6 +38,7 @@ public class Main {
      public static void main(final String args[]) {
          
         final ArchiveManager arch = new ArchiveManager();
+        
         //MainFrame mainFrame = null;
         load();
         try {
