@@ -71,7 +71,7 @@ public class CbzExtractor extends ExtractorModel implements Extractor
                     
                     
                     while(entry != null) {
-                        File f = new File(appDir);
+                        File f = new File(Settings.getExtractDir());
                         //os = new ByteArrayOutputStream();
                         //System.out.println("entryname " + entry.getName());
                         os.reset();

@@ -300,7 +300,7 @@ public class ToolBar extends JToolBar {
         page = new JTextField();
         page.setEditable(false);
         page.setText(""+imagePanel.getIndex());
-        //page.setMinimumSize(new Dimension(24, 24));
+        page.setVisible(Settings.isPageNo());
         page.setPreferredSize(new Dimension(24, 24));
         page.setHorizontalAlignment(JTextField.CENTER);
         add(page);
@@ -308,6 +308,7 @@ public class ToolBar extends JToolBar {
         totalPages = new JLabel();
         totalPages.setText(" / " + ArchiveManager.getSize());
         totalPages.setPreferredSize(new Dimension(24, 24));
+        totalPages.setVisible(Settings.isPageNo());
         add(totalPages);
         
         settings = createButton(settings, "/Resources/configure_shortcuts1.png",

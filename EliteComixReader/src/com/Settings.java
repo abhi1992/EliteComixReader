@@ -52,11 +52,12 @@ import org.xml.sax.SAXException;
 
 public class Settings {
 
-    private static String laf;
+    private static String laf, ExtractDir;
     private static Dimension size;
     private static short fitWidth;
     private static Color defaultColor;
-    private static boolean maximized, fullscreen, alwaysOnTop, loadingImage;
+    private static boolean maximized, fullscreen, alwaysOnTop, loadingImage
+            , PageNo, Info;
     private static int X, Y, scrollSize;
     private static ArrayList<String> availableLaf;
 //    static final String DECORATION_ARG = "decoration:";
@@ -197,6 +198,15 @@ public class Settings {
                         scrollSize = Integer.parseInt(child.getTextContent().trim());
                         //System.out.print(scrollSize);
                         break;
+                    case "ExtractDir":
+                        ExtractDir = child.getTextContent().trim();
+                        break;
+                    case "PageNo":
+                        PageNo = Boolean.parseBoolean(child.getTextContent().trim());
+                        break;
+                    case "Info":
+                        Info = Boolean.parseBoolean(child.getTextContent().trim());
+                        break;
                     case "Keys":
                         n = child.getChildNodes();
                         for(int j = 0; j < n.getLength(); j++) {
@@ -296,7 +306,12 @@ public class Settings {
         values.add(Settings.getComicsPath());
         tags.add(Constants.defaultTags[21]);
         values.add(Integer.toString(Settings.getScrollSize()));
-        
+        tags.add(Constants.defaultTags[22]);
+        values.add(ExtractDir);
+        tags.add(Constants.defaultTags[23]);
+        values.add(Boolean.toString(PageNo));
+        tags.add(Constants.defaultTags[24]);
+        values.add(Boolean.toString(Info));
         new XmlWriter(ExtractorModel.getAppDir() + "/Properties.xml", tags, values);
     }
 
@@ -422,6 +437,18 @@ public class Settings {
             rootElement.appendChild(BaseNode);
             
             BaseNode = doc.createElement(Constants.defaultTags[22]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[22]));
+            rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement(Constants.defaultTags[23]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[23]));
+            rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement(Constants.defaultTags[24]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[24]));
+            rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement(Constants.defaultTags[25]);
             
             boolean start = false;
             int count = 0;
@@ -476,30 +503,34 @@ public class Settings {
         return comicsPath;
     }
 
-//    public static String getClientId() {
-//        return clientId;
-//    }
-//
-//    public static String getClientSecret() {
-//        return clientSecret;
-//    }
-//
-//    public static void setClientSecret(String clientSecret) {
-//        Settings.clientSecret = clientSecret;
-//    }
-//
-//    public static void setClientId(String clientId) {
-//        Settings.clientId = clientId;
-//    }
+    public static String getExtractDir() {
+        return ExtractDir;
+    }
+
+    public static boolean isInfo() {
+        return Info;
+    }
+
+    public static void setPageNo(boolean PageNo) {
+        Settings.PageNo = PageNo;
+    }
+
+    public static boolean isPageNo() {
+        return PageNo;
+    }
+
+    public static void setInfo(boolean Info) {
+        Settings.Info = Info;
+    }
+
+    public static void setExtractDir(String ExtractDir) {
+        Settings.ExtractDir = ExtractDir;
+    }
 
     public static void setComicsPath(String comicsPath) {
         Settings.comicsPath = comicsPath;
     }
-
-//    public static void setDecorationStyle(String decorationStyle) {
-//        Settings.decorationStyle = decorationStyle;
-//    }
-
+    
     public static Dimension getSize() {
         return size;
     }

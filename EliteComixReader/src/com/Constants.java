@@ -32,18 +32,19 @@ public class Constants {
     public static final String defaultValues[] = {"", "", "System", "javax.swing.plaf.nimbus.NimbusLookAndFeel"
         , "com.sun.java.swing.plaf.motif.MotifLookAndFeel", "javax.swing.plaf.metal.MetalLookAndFeel"
         , "", "500", "500", "", "50", "50", "1", "false", "false", "false", "" 
-        , "0", "0", "0" , "user.home", "10", "", "79", "83", "37", "39", "74"
-        , "114", "115", "87", "57", "48", "27", "91", "49", "93", "84", "65", "66"
-        , "75", "88", "72", "81", "112"}, 
+        , "0", "0", "0" , "user.home", "10", "user.home", "false", "false", ""
+        , "79", "83", "37", "39", "74", "114", "115", "87", "57", "48", "27"
+        , "91", "49", "93", "84", "65", "66", "75", "88", "72", "81", "112"}, 
             
             defaultTags[] = {"Properties", "Laf"
                 , "Default", "Nimbus", "Motif", "Metal", "Size", "Height", "Width"
                 , "Location", "X", "Y", "fitWidth", "fullscreen", "alwaysOnTop", "Maximized"
-                , "Color", "Red", "Green", "Blue", "ComicsPath", "Scrollbar", "Keys", "Open"
+                , "Color", "Red", "Green", "Blue", "ComicsPath", "Scrollbar"
+                , "ExtractDir", "PageNo", "Info", "Keys", "Open"
                 , "Save", "Left", "Right", "GoTO", "PrevComic", "NextComic", "FitWidth"
                 , "RotateLeft", "RotateRight", "Fullscreen", "ZoomOut", "OrigImage", "ZoomIn"
                 , "AlwaysOnTop", "AddBookmark", "BookmarksManager", "KeyboardShortcuts"
-                , "Settings", "Help", "Exit", "ToolBar"};    
+                , "Settings", "Help", "Exit", "ToolBar"};
     public static ArrayList<Integer> availableKeys, assignedKeys;
     
     public Constants() {
@@ -54,6 +55,14 @@ public class Constants {
     
     void setAssignedKeys() {
         
+    }
+    
+    public static void removeAllAssignedKeys() {
+        assignedKeys.removeAll(assignedKeys);
+    }
+    
+    public static void addAssignedKey(int value) {
+        assignedKeys.add(value);
     }
     
     void setAvailableKeys() {

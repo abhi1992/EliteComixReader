@@ -173,8 +173,8 @@ public class MainFrame extends JFrame {
         int s = Settings.getScrollSize();
         scrollPane.getVerticalScrollBar().setPreferredSize (new Dimension(s, s));
         scrollPane.getHorizontalScrollBar().setPreferredSize (new Dimension(s,s));
-        scrollPane.setViewportView(imagePanel);
-        scrollPane.revalidate();
+        //scrollPane.setViewportView(imagePanel);
+        //scrollPane.revalidate();
     }
 
     void close() {
