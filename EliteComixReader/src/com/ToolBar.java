@@ -418,7 +418,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1
      */
     private void jButton0ActionPerformed(ActionEvent evt) {
-        MainFrame.open(archiveManager);
+        mainFrame.open(archiveManager);
     }
 
     /**

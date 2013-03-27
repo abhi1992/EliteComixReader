@@ -318,7 +318,7 @@ public class PopupMenu extends JPopupMenu{
     }
 
     private void jButton0ActionPerformed(ActionEvent evt) {
-         MainFrame.open(archiveManager);
+         mainFrame.open(archiveManager);
          open.transferFocusUpCycle();
     }
 

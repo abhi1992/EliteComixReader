@@ -54,6 +54,8 @@ class ExtractorModel {
     }
     
     static File getFile() {
+        if(file.isEmpty())
+            return null;
         return file.get(0);
     }
 

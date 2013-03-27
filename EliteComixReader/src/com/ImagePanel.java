@@ -27,6 +27,8 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.*;
 
 class ImagePanel extends JPanel {
@@ -99,6 +101,18 @@ class ImagePanel extends JPanel {
             g.setFont(new Font("Times New Roman", Font.BOLD, 30));
             g.drawString("Press O to open a comic", getX() + Math.abs(getWidth() - 280)/2, 
                         getY() + Math.abs(getHeight()) / 2);
+        }
+        if(Settings.isPageInfo()) {
+            g.setColor(Color.GRAY);
+            g.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+            g.drawString(getIndex() +" / "+ArchiveManager.getSize(), 20, 20);
+        }
+        if(Settings.isTimeInfo()) {
+            
+            g.setColor(Color.GRAY);
+            g.setFont(new Font("Times New Roman", Font.ITALIC, 15));
+            Calendar c = Calendar.getInstance();
+            g.drawString(c.get(Calendar.HOUR_OF_DAY) + " : " + c.get(Calendar.MINUTE), 20, 40);
         }
     }
 

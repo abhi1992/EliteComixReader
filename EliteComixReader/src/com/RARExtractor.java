@@ -104,9 +104,11 @@ public class RARExtractor extends ExtractorModel implements Extractor
                     }
                     List<FileHeader> files = arc.getFileHeaders();
                     int i = 0;
-                    File f = new File(Settings.getExtractDir());
-                    
-                    
+                    String n = Settings.getExtractDir();
+                    if(Settings.getExtractDir().equals("user.home")) {
+                        n = System.getProperty("user.home") + "/.EliteComixReader";
+                    }
+                    File f = new File(n);
                     
                     for(FileHeader fh : files)
                     {

@@ -25,8 +25,12 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import net.iharder.dnd.FileDrop;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -69,7 +73,11 @@ public class MainFrame extends JFrame {
         setAlwaysOnTop(Settings.isAlwaysOnTop());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(200, 200));
-        setTitle("Elite Comix Reader");
+        if(ArchiveManager.getFile() == null)
+            setTitle("Elite Comix Reader");
+        else {
+            setTitle("Elite Comix Reader - " + ArchiveManager.getFile().getName());
+        }
         ImageIcon img = new ImageIcon(getClass().getResource("/Resources/elite_comix_reader_small.png"));
         setIconImage(img.getImage());
         scrollPane = new JScrollPane();
@@ -181,7 +189,19 @@ public class MainFrame extends JFrame {
         if(MainFrame.getFile() != null) {
             BookmarksManager.setLastPageAsBookmark(MainFrame.getFile(), imagePanel.getIndex());
         }
+        try {
         Settings.store(MainFrame.this);
+        } catch(Exception e) {
+            File f = new File(ExtractorModel.getAppDir() + "/Properties.xml");
+            f.delete();
+            try {
+                Settings.load();
+                Settings.store(MainFrame.this);
+            } catch (Exception ex) {
+                //Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(1);
+            }
+        }
         System.exit(0);
     }
 
@@ -281,7 +301,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    static void open(ArchiveManager e) {
+    void open(ArchiveManager e) {
         imagePanel.setEmptyImage();
         Settings.setLoadingImage(true);
         imagePanel.repaint();
@@ -310,6 +330,10 @@ public class MainFrame extends JFrame {
         chooser = null;
         Settings.setLoadingImage(false);
         imagePanel.repaint();
+        if(ArchiveManager.getFile() == null)
+            setTitle("Elite Comix Reader");
+        else
+            setTitle("Elite Comix Reader - " + file.getName());
     }
 
     void save() {

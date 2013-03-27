@@ -45,7 +45,7 @@ public class SettingsDialog extends JDialog{
     private JTextField comicsPath, extractPath;
     private JRadioButton none, thin, normal;
     private JCheckBox viewChkBox, comicsPathChkBox, extractDirChkBox, 
-            keyShortcutsChkBox, selectAll, showPageNo;
+            keyShortcutsChkBox, selectAll, showPageNo, pageNo, time;
     private ButtonGroup scrollGroup;
     
     /**
@@ -149,7 +149,7 @@ public class SettingsDialog extends JDialog{
             normal.setSelected(true);
         }
         
-        showPageNo = new JCheckBox("Show Page Number");
+        showPageNo = new JCheckBox("Show Page Number on ToolBar");
         showPageNo.addActionListener(new ActionListener() {
 
             @Override
@@ -160,9 +160,33 @@ public class SettingsDialog extends JDialog{
             }
         });
         showPageNo.setSelected(ToolBar.isPageNumberVisible());
-        showPageNoPanel = new JPanel();
+        showPageNoPanel = new JPanel(new GridLayout(0, 1));
         showPageNoPanel.setBorder(BorderFactory.createTitledBorder("Page Info"));
         showPageNoPanel.add(showPageNo);
+        
+        pageNo = new JCheckBox("Show Page Number on Panel");
+        pageNo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                Settings.setPageInfo(!Settings.isPageInfo());
+                mainFrame.repaint();
+            }
+        });
+        pageNo.setSelected(Settings.isPageInfo());
+        showPageNoPanel.add(pageNo);
+        
+        time = new JCheckBox("Show Time on Panel");
+        time.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                Settings.setTimeInfo(!Settings.isTimeInfo());
+                mainFrame.repaint();
+            }
+        });
+        time.setSelected(Settings.isTimeInfo());
+        showPageNoPanel.add(time);
         
         scrollGroup.add(none);
         scrollGroup.add(thin);
@@ -279,8 +303,10 @@ public class SettingsDialog extends JDialog{
         extractDirPanel.setBorder(BorderFactory.createTitledBorder("Set Extracting Directory"));
         extractPath = new JTextField();
         extractPath.setEditable(false);
-        extractPath.setText(Settings.getExtractDir());
         
+        extractPath.setText(Settings.getExtractDir());
+        if(Settings.getExtractDir().equals("user.home"))
+            extractPath.setText(System.getProperty(Settings.getExtractDir()) + "\\.EliteComixReader");
         extractPath.setPreferredSize(new Dimension(250, 25));
         extractDirBrowse = new JButton("Browse");
         extractDirBrowse.addActionListener(new ActionListener() {
@@ -338,7 +364,12 @@ public class SettingsDialog extends JDialog{
     }
 
     private void browsePathActionPerformed(MainFrame mainFrame) {
-        JFileChooser chooser = new JFileChooser(Settings.getComicsPath());
+        String n = Settings.getExtractDir();
+        if(n.equals("user.home")) {
+            n = System.getProperty(n) + "\\.EliteComixReader";
+        }
+        JFileChooser chooser = new JFileChooser(n);
+        
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("."));
         chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {

@@ -57,7 +57,7 @@ public class Settings {
     private static short fitWidth;
     private static Color defaultColor;
     private static boolean maximized, fullscreen, alwaysOnTop, loadingImage
-            , PageNo, Info;
+            , PageNo, timeInfo, pageInfo;
     private static int X, Y, scrollSize;
     private static ArrayList<String> availableLaf;
 //    static final String DECORATION_ARG = "decoration:";
@@ -204,8 +204,11 @@ public class Settings {
                     case "PageNo":
                         PageNo = Boolean.parseBoolean(child.getTextContent().trim());
                         break;
-                    case "Info":
-                        Info = Boolean.parseBoolean(child.getTextContent().trim());
+                    case "timeInfo":
+                        timeInfo = Boolean.parseBoolean(child.getTextContent().trim());
+                        break;
+                    case "pageInfo":
+                        pageInfo = Boolean.parseBoolean(child.getTextContent().trim());
                         break;
                     case "Keys":
                         n = child.getChildNodes();
@@ -311,7 +314,9 @@ public class Settings {
         tags.add(Constants.defaultTags[23]);
         values.add(Boolean.toString(PageNo));
         tags.add(Constants.defaultTags[24]);
-        values.add(Boolean.toString(Info));
+        values.add(Boolean.toString(timeInfo));
+        tags.add(Constants.defaultTags[25]);
+        values.add(Boolean.toString(pageInfo));
         new XmlWriter(ExtractorModel.getAppDir() + "/Properties.xml", tags, values);
     }
 
@@ -449,6 +454,10 @@ public class Settings {
             rootElement.appendChild(BaseNode);
             
             BaseNode = doc.createElement(Constants.defaultTags[25]);
+            BaseNode.appendChild(doc.createTextNode(Constants.defaultValues[25]));
+            rootElement.appendChild(BaseNode);
+            
+            BaseNode = doc.createElement(Constants.defaultTags[26]);
             
             boolean start = false;
             int count = 0;
@@ -507,8 +516,12 @@ public class Settings {
         return ExtractDir;
     }
 
-    public static boolean isInfo() {
-        return Info;
+    public static boolean isPageInfo() {
+        return pageInfo;
+    }
+    
+    public static boolean isTimeInfo() {
+        return timeInfo;
     }
 
     public static void setPageNo(boolean PageNo) {
@@ -519,8 +532,12 @@ public class Settings {
         return PageNo;
     }
 
-    public static void setInfo(boolean Info) {
-        Settings.Info = Info;
+    public static void setPageInfo(boolean Info) {
+        Settings.pageInfo = Info;
+    }
+    
+    public static void setTimeInfo(boolean Info) {
+        Settings.timeInfo = Info;
     }
 
     public static void setExtractDir(String ExtractDir) {

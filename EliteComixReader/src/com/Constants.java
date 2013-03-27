@@ -32,7 +32,7 @@ public class Constants {
     public static final String defaultValues[] = {"", "", "System", "javax.swing.plaf.nimbus.NimbusLookAndFeel"
         , "com.sun.java.swing.plaf.motif.MotifLookAndFeel", "javax.swing.plaf.metal.MetalLookAndFeel"
         , "", "500", "500", "", "50", "50", "1", "false", "false", "false", "" 
-        , "0", "0", "0" , "user.home", "10", "user.home", "false", "false", ""
+        , "0", "0", "0" , "user.home", "10", "user.home", "false", "false", "false", ""
         , "79", "83", "37", "39", "74", "114", "115", "87", "57", "48", "27"
         , "91", "49", "93", "84", "65", "66", "75", "88", "72", "81", "112"}, 
             
@@ -40,7 +40,7 @@ public class Constants {
                 , "Default", "Nimbus", "Motif", "Metal", "Size", "Height", "Width"
                 , "Location", "X", "Y", "fitWidth", "fullscreen", "alwaysOnTop", "Maximized"
                 , "Color", "Red", "Green", "Blue", "ComicsPath", "Scrollbar"
-                , "ExtractDir", "PageNo", "Info", "Keys", "Open"
+                , "ExtractDir", "PageNo", "timeInfo", "pageInfo", "Keys", "Open"
                 , "Save", "Left", "Right", "GoTO", "PrevComic", "NextComic", "FitWidth"
                 , "RotateLeft", "RotateRight", "Fullscreen", "ZoomOut", "OrigImage", "ZoomIn"
                 , "AlwaysOnTop", "AddBookmark", "BookmarksManager", "KeyboardShortcuts"
