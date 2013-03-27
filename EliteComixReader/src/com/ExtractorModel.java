@@ -50,7 +50,7 @@ class ExtractorModel {
         fileSize = 0;
         File f = new File(appDir);
         f.mkdirs();
-        Constants c = new Constants();
+        //Constants c = new Constants();
     }
     
     static File getFile() {

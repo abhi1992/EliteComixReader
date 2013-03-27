@@ -59,6 +59,13 @@ public class SettingsDialog extends JDialog{
         setTitle("Settings");
         setLayout(new BorderLayout());
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                mainFrame.repaint();
+            }
+        });
+        
         jPanel1 = new JPanel();
         jPanel1.setLayout(new FlowLayout());
 
@@ -262,6 +269,9 @@ public class SettingsDialog extends JDialog{
         
         tab.addTab("View", viewPanel);
         
+        KeysPanel k = new KeysPanel(this);
+        tab.addTab("Keys", k);
+        
         resetToDefaultsPanel = new JPanel(new BorderLayout());
         resetToDefaultsPanel.setBorder(BorderFactory.createTitledBorder("Reset To Defaults"));
         
@@ -338,6 +348,7 @@ public class SettingsDialog extends JDialog{
         advancedPanel.add(advancedLabel, BorderLayout.WEST);
         advancedPanel.add(advancedBasePanel, BorderLayout.SOUTH);
         tab.addTab("Advanced", advancedPanel);
+        
         
         setMinimumSize(new Dimension(500, 600));
         Point p = new Point(0, 0);
@@ -469,7 +480,8 @@ public class SettingsDialog extends JDialog{
                 for(String i : Constants.defaultTags) {
 
                     if(start) {
-                        Constants.addAssignedKey(ans);
+                        Constants.addAssignedKey(
+                                Integer.parseInt(Constants.defaultValues[count]));
                     }
                     if(i.matches("Keys")) {
                         start = true;
@@ -485,6 +497,7 @@ public class SettingsDialog extends JDialog{
                 Settings.setComicsPath(Constants.defaultValues[20]);
             }
         }
+        
     }
     
     void setScrollBarSize(int i) {

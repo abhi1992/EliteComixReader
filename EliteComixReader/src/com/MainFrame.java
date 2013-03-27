@@ -74,9 +74,9 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(200, 200));
         if(ArchiveManager.getFile() == null)
-            setTitle("Elite Comix Reader");
+            setTitle("Elite Comix Reader 0.0.8");
         else {
-            setTitle("Elite Comix Reader - " + ArchiveManager.getFile().getName());
+            setTitle("Elite Comix Reader 0.0.8 - " + ArchiveManager.getFile().getName());
         }
         ImageIcon img = new ImageIcon(getClass().getResource("/Resources/elite_comix_reader_small.png"));
         setIconImage(img.getImage());
@@ -212,74 +212,74 @@ public class MainFrame extends JFrame {
     }
 
     private void keyPressedAction(KeyEvent e, ArchiveManager ext) {
-
-        if(e.getKeyCode() == KeyEvent.VK_O) {
+        
+        if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.OPEN - Constants.START_VAL))  {
             open(ext);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_Q) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.EXIT - Constants.START_VAL))  {
             close();
         }
-        else if(e.getKeyCode() == KeyEvent.VK_K) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.KEYBOARDS_SHORTCUTS - Constants.START_VAL))  {
             new ShortcutsDialog(this);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_X) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.SETTINGS - Constants.START_VAL))  {
             new SettingsDialog(this);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_Z) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL))  {
             new HelpDialog(this);
         }
-        else if(!imagePanel.isImageEmpty(imagePanel.getIndex())) {
+        else if(!imagePanel.isImageEmpty(imagePanel.getIndex()))  {
             if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                 moveScrollDown();
             }
             else if(e.getKeyCode() == KeyEvent.VK_UP) {
                 moveScrollUp();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.FULLSCREEN - Constants.START_VAL))  {
                 Settings.setFullscreen(!Settings.isFullscreen());
                 fullscreen();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_W) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.FIT_WIDTH - Constants.START_VAL))  {
                 ToolBar.setFitToggle();
                 imagePanel.toggleMode(ToolBar.isFitWidthSelected());
                 fitImage(ToolBar.isFitWidthSelected());
             }
-            else if(e.getKeyCode() == KeyEvent.VK_H) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.TOOL_BAR - Constants.START_VAL))  {
                 toolBarStatus = !toolBarStatus;
                 t.setVisible(toolBarStatus);
             }
-            else if(e.getKeyCode() == KeyEvent.VK_T) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ALWAYS_ON_TOP - Constants.START_VAL))  {
                 alwaysOnTop();
                 ToolBar.setAlwaysOnTopToggle();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ZOOM_OUT - Constants.START_VAL))  {
                 zoomOut();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ZOOM_IN - Constants.START_VAL))  {
                 zoomIn();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_9) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ROTATE_LEFT - Constants.START_VAL))  {
                 rotateLeft();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_0) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ROTATE_RIGHT - Constants.START_VAL))  {
                 rotateRight();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.RIGHT - Constants.START_VAL))  {
 
                 nextPage(ext);
                 
             }
-            else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.LEFT - Constants.START_VAL))  {
                 
                 prevPage(ext);
             }
-            else if(e.getKeyCode() == KeyEvent.VK_S) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.SAVE - Constants.START_VAL))  {
                 save();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_B) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ADD_BOOKMARK - Constants.START_VAL))  {
                 File ff = MainFrame.getFile();
                 if(ff != null) {
-                    if(!ToolBar.isAddBookmarkSelected()) {
+                    if(!ToolBar.isAddBookmarkSelected())  {
                         BookmarksManager.add(ff, imagePanel.getIndex());
                     }
                     else {
@@ -288,13 +288,13 @@ public class MainFrame extends JFrame {
                     ToolBar.setAddBookmarkToggle();
                 }
             }
-            else if(e.getKeyCode() == KeyEvent.VK_A) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.BOOKMARKS_MANAGER - Constants.START_VAL))  {
                 new BookmarksDialog(this);
             }
-            else if(e.getKeyCode() == KeyEvent.VK_J) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.GOTO - Constants.START_VAL))  {
                 jumpToPage();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_1) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ORIGIMAGE - Constants.START_VAL))  {
                 imagePanel.origSize(ToolBar.isOrigSizeSelected());
                 ToolBar.setOrigSizeToggle();
             }
@@ -330,10 +330,10 @@ public class MainFrame extends JFrame {
         chooser = null;
         Settings.setLoadingImage(false);
         imagePanel.repaint();
-        if(ArchiveManager.getFile() == null)
-            setTitle("Elite Comix Reader");
+        if(file == null)
+            setTitle("Elite Comix Reader 0.0.8");
         else
-            setTitle("Elite Comix Reader - " + file.getName());
+            setTitle("Elite Comix Reader 0.0.8 - " + file.getName());
     }
 
     void save() {
@@ -537,6 +537,10 @@ public class MainFrame extends JFrame {
         Settings.setAlwaysOnTop(!Settings.isAlwaysOnTop());
     }
 
+    void refresh() {
+        imagePanel.repaint();
+    }
+    
     /**
      *
      * @param ext ArchiveManager instance

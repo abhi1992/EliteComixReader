@@ -235,7 +235,7 @@ public class Settings {
             createPropertiesFile();
             load();
         }
-
+        //System.out.println(Constants.assignedKeys.size());
     }
 
     static void loadFileList(File ff) {
@@ -317,6 +317,10 @@ public class Settings {
         values.add(Boolean.toString(timeInfo));
         tags.add(Constants.defaultTags[25]);
         values.add(Boolean.toString(pageInfo));
+        for(int i = 0; i < Constants.getAssignedKeys().size(); i++) {
+            tags.add(Constants.defaultTags[i + Constants.START_VAL]);
+            values.add(Integer.toString(Constants.getAssignedKeys().get(i)));
+        }
         new XmlWriter(ExtractorModel.getAppDir() + "/Properties.xml", tags, values);
     }
 

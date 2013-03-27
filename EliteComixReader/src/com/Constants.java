@@ -45,7 +45,14 @@ public class Constants {
                 , "RotateLeft", "RotateRight", "Fullscreen", "ZoomOut", "OrigImage", "ZoomIn"
                 , "AlwaysOnTop", "AddBookmark", "BookmarksManager", "KeyboardShortcuts"
                 , "Settings", "Help", "Exit", "ToolBar"};
-    public static ArrayList<Integer> availableKeys, assignedKeys;
+    public static ArrayList<Integer> availableKeys = new ArrayList<>(), 
+            assignedKeys = new ArrayList<>();
+    public static final short OPEN = 27, SAVE = 28, LEFT = 29, RIGHT = 30, GOTO = 31
+            , PREV_COMIC = 32, NEXT_COMIC = 33, FIT_WIDTH = 34, ROTATE_LEFT = 35, 
+            ROTATE_RIGHT = 36, FULLSCREEN = 37, ZOOM_OUT = 38, ORIGIMAGE = 39, 
+            ZOOM_IN = 40, ALWAYS_ON_TOP = 41, ADD_BOOKMARK = 42, BOOKMARKS_MANAGER = 43,
+            KEYBOARDS_SHORTCUTS = 44, SETTINGS = 45, HELP = 46, EXIT = 47, TOOL_BAR = 48
+            , START_VAL = 27;
     
     public Constants() {
         availableKeys = new ArrayList<>();
@@ -53,8 +60,9 @@ public class Constants {
         
     }
     
-    void setAssignedKeys() {
-        
+    public static void addAssignedKey(int i, int val) {
+        assignedKeys.remove(i);
+        assignedKeys.add(i, val);
     }
     
     public static void removeAllAssignedKeys() {
@@ -72,6 +80,11 @@ public class Constants {
             }
         }
     }
+
+    public static ArrayList<Integer> getAssignedKeys() {
+        return assignedKeys;
+    }
+    
     
     public ArrayList<String> getAssignedKeyNames() {
         ArrayList<String> arr = new ArrayList();

@@ -24,6 +24,7 @@ package com;
  */
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -99,7 +100,9 @@ class ImagePanel extends JPanel {
         else {
             g.setColor(Color.gray);
             g.setFont(new Font("Times New Roman", Font.BOLD, 30));
-            g.drawString("Press O to open a comic", getX() + Math.abs(getWidth() - 280)/2, 
+            g.drawString("Press " + KeyEvent.getKeyText(
+                    Constants.assignedKeys.get(Constants.OPEN - Constants.START_VAL))
+                    + " to open a comic", getX() + Math.abs(getWidth() - 280)/2, 
                         getY() + Math.abs(getHeight()) / 2);
         }
         if(Settings.isPageInfo()) {
