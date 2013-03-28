@@ -32,14 +32,22 @@ import javax.swing.*;
 
 public class SettingsDialog extends JDialog{
 
-    private JLabel jLabel1, jLabel2, color, lafLabel;
+    private JLabel jLabel1, jLabel2, color, lafLabel, advancedLabel;
     private JTabbedPane tab;
-    private JPanel jPanel1, jPanel2, generalPanel, viewPanel, generalCenterPanel, viewCenterPanel, lafPanel, colorPanel,
-            comicsPathPanel;
-    private JButton jButton1, jButton2, chooseColor, browse;
+    private JPanel jPanel1, jPanel2, generalPanel, viewPanel, generalCenterPanel,
+            viewCenterPanel, lafPanel, colorPanel, advancedPanel, extractDirPanel,
+            advancedCenterPanel, advancedBasePanel, showPageNoPanel, 
+            comicsPathPanel, scrollPanel, resetToDefaultsPanel,
+            resetEastPanel, resetWestPanel, resetCenterPanel, resetSouthPanel;
+    private JButton jButton1, jButton2, chooseColor, comicsPathBrowse,
+            extractDirBrowse, advancedClose, reset;
     private JComboBox<String> laf;
-    private JTextField comicsPath;
-
+    private JTextField comicsPath, extractPath;
+    private JRadioButton none, thin, normal;
+    private JCheckBox viewChkBox, comicsPathChkBox, extractDirChkBox, 
+            keyShortcutsChkBox, selectAll, showPageNo, pageNo, time;
+    private ButtonGroup scrollGroup;
+    
     /**
      * Constructor
      * @param mainFrame the frame on which the dialog is called
@@ -51,6 +59,13 @@ public class SettingsDialog extends JDialog{
         setTitle("Settings");
         setLayout(new BorderLayout());
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                mainFrame.repaint();
+            }
+        });
+        
         jPanel1 = new JPanel();
         jPanel1.setLayout(new FlowLayout());
 
@@ -95,23 +110,107 @@ public class SettingsDialog extends JDialog{
         comicsPath.setEditable(false);
         comicsPath.setText(Settings.getComicsPath());
         comicsPath.setPreferredSize(new Dimension(250, 25));
-        browse = new JButton("Browse");
-        browse.addActionListener(new ActionListener() {
+        comicsPathBrowse = new JButton("Browse");
+        comicsPathBrowse.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent evt) {
                 comicsPathActionPerformed(mainFrame);
             }
         });
-        browse.setFocusable(false);
+        comicsPathBrowse.setFocusable(false);
+        
+        scrollPanel = new JPanel();
+        scrollPanel.setBorder(BorderFactory.createTitledBorder("Set Scroll Bar Size"));
+        scrollGroup = new ButtonGroup();
+        none = new JRadioButton("None");
+        none.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                setScrollBarSize(1);
+            }
+        });
+        
+        thin = new JRadioButton("Thin");
+        thin.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                setScrollBarSize(2);
+            }
+        });
+        normal = new JRadioButton("Normal");
+        normal.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                setScrollBarSize(3);
+            }
+        });
+        if(Settings.getScrollSize() == 0) {
+            none.setSelected(true);
+        } else if(Settings.getScrollSize() == 10) {
+            thin.setSelected(true);
+        } else {
+            normal.setSelected(true);
+        }
+        
+        showPageNo = new JCheckBox("Show Page Number on ToolBar");
+        showPageNo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                ToolBar.showPageNumber(!ToolBar.isPageNumberVisible());
+                Settings.setPageNo(ToolBar.isPageNumberVisible());
+                repaint();
+            }
+        });
+        showPageNo.setSelected(ToolBar.isPageNumberVisible());
+        showPageNoPanel = new JPanel(new GridLayout(0, 1));
+        showPageNoPanel.setBorder(BorderFactory.createTitledBorder("Page Info"));
+        showPageNoPanel.add(showPageNo);
+        
+        pageNo = new JCheckBox("Show Page Number on Panel");
+        pageNo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                Settings.setPageInfo(!Settings.isPageInfo());
+                mainFrame.repaint();
+            }
+        });
+        pageNo.setSelected(Settings.isPageInfo());
+        showPageNoPanel.add(pageNo);
+        
+        time = new JCheckBox("Show Time on Panel");
+        time.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                Settings.setTimeInfo(!Settings.isTimeInfo());
+                mainFrame.repaint();
+            }
+        });
+        time.setSelected(Settings.isTimeInfo());
+        showPageNoPanel.add(time);
+        
+        scrollGroup.add(none);
+        scrollGroup.add(thin);
+        scrollGroup.add(normal);
+        scrollPanel.add(none);
+        scrollPanel.add(thin);
+        scrollPanel.add(normal);
+        
+        
         comicsPathPanel.add(comicsPath);
-        comicsPathPanel.add(browse);
+        comicsPathPanel.add(comicsPathBrowse);
 
         generalCenterPanel = new JPanel();
-        generalCenterPanel.setLayout(new GridLayout(2,1));
+        generalCenterPanel.setLayout(new GridLayout(3,1));
 
-        generalCenterPanel.add(colorPanel);
+        generalCenterPanel.add(scrollPanel);
+        generalCenterPanel.add(showPageNoPanel);
         generalCenterPanel.add(comicsPathPanel);
         generalPanel = new JPanel(new BorderLayout());
         generalPanel.add(jLabel1, BorderLayout.WEST);
@@ -145,7 +244,7 @@ public class SettingsDialog extends JDialog{
         jPanel2.add(jButton2);
 
         viewCenterPanel = new JPanel();
-        viewCenterPanel.setLayout(new GridLayout());
+        viewCenterPanel.setLayout(new GridLayout(2, 1));
         lafPanel = new JPanel();
         lafPanel.setBorder(BorderFactory.createTitledBorder("Look And Feel"));
         lafPanel.setLayout(new FlowLayout());
@@ -162,13 +261,95 @@ public class SettingsDialog extends JDialog{
 
         lafPanel.add(laf);
         lafPanel.add(lafLabel);
+        viewCenterPanel.add(colorPanel);
         viewCenterPanel.add(lafPanel);
         //centerPanel.add(themePanel);
         viewPanel.add(viewCenterPanel, BorderLayout.CENTER);
         viewPanel.add(jPanel2, BorderLayout.SOUTH);
-
+        
         tab.addTab("View", viewPanel);
+        
+        KeysPanel k = new KeysPanel(this);
+        tab.addTab("Keys", k);
+        
+        resetToDefaultsPanel = new JPanel(new BorderLayout());
+        resetToDefaultsPanel.setBorder(BorderFactory.createTitledBorder("Reset To Defaults"));
+        
+        selectAll = createChkBox(selectAll, "Reset All");
+        viewChkBox = createChkBox(viewChkBox, "Reset View");
+        keyShortcutsChkBox = createChkBox(keyShortcutsChkBox, "Reset Key Shortcuts");
+        comicsPathChkBox = createChkBox(comicsPathChkBox, "Reset Comics Path");
+        extractDirChkBox = createChkBox(extractDirChkBox, "Reset Extracting Directory");
+        
+        resetEastPanel = new JPanel();
+        resetWestPanel = new JPanel();
+        resetCenterPanel = new JPanel(new GridLayout(0, 1));
+        resetSouthPanel = new JPanel();
+        
+        resetCenterPanel.add(selectAll);
+        resetCenterPanel.add(comicsPathChkBox);
+        resetCenterPanel.add(extractDirChkBox);
+        resetCenterPanel.add(keyShortcutsChkBox);
+        resetCenterPanel.add(viewChkBox);
+        
+        reset = new JButton("Reset");
+        
+        reset.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                resetActionPerformed(mainFrame);
+            }
+        });
+        resetSouthPanel.add(reset);
+        resetToDefaultsPanel.add(resetEastPanel, BorderLayout.EAST);
+        resetToDefaultsPanel.add(resetWestPanel, BorderLayout.WEST);
+        resetToDefaultsPanel.add(resetCenterPanel, BorderLayout.CENTER);
+        resetToDefaultsPanel.add(resetSouthPanel, BorderLayout.SOUTH);
+        advancedCenterPanel = new JPanel(new GridLayout(0, 1));
+        advancedCenterPanel.add(resetToDefaultsPanel);
+        
+        extractDirPanel = new JPanel();
+        extractDirPanel.setBorder(BorderFactory.createTitledBorder("Set Extracting Directory"));
+        extractPath = new JTextField();
+        extractPath.setEditable(false);
+        
+        extractPath.setText(Settings.getExtractDir());
+        if(Settings.getExtractDir().equals("user.home"))
+            extractPath.setText(System.getProperty(Settings.getExtractDir()) + "\\.EliteComixReader");
+        extractPath.setPreferredSize(new Dimension(250, 25));
+        extractDirBrowse = new JButton("Browse");
+        extractDirBrowse.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                browsePathActionPerformed(mainFrame);
+            }
+        });
+        extractDirBrowse.setFocusable(false);
+        extractDirPanel.add(extractPath);
+        extractDirPanel.add(extractDirBrowse);
+        advancedCenterPanel.add(extractDirPanel);
+        
+        advancedLabel = new JLabel(new ImageIcon(getClass().getResource("/Resources/advancedsettings.png")));
+        advancedClose = new JButton("Close");
+        advancedClose.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                dispose();
+            }
+        });
+        advancedBasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        advancedBasePanel.add(advancedClose);
+        
+        advancedPanel = new JPanel(new BorderLayout());
+        advancedPanel.add(advancedCenterPanel, BorderLayout.CENTER);
+        advancedPanel.add(advancedLabel, BorderLayout.WEST);
+        advancedPanel.add(advancedBasePanel, BorderLayout.SOUTH);
+        tab.addTab("Advanced", advancedPanel);
+        
+        
         setMinimumSize(new Dimension(500, 600));
         Point p = new Point(0, 0);
         if(mainFrame != null) {
@@ -193,6 +374,34 @@ public class SettingsDialog extends JDialog{
         transferFocusBackward();
     }
 
+    private void browsePathActionPerformed(MainFrame mainFrame) {
+        String n = Settings.getExtractDir();
+        if(n.equals("user.home")) {
+            n = System.getProperty(n) + "\\.EliteComixReader";
+        }
+        JFileChooser chooser = new JFileChooser(n);
+        
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        //chooser.setCurrentDirectory(new File("."));
+        chooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
+
+            @Override
+            public boolean accept(File f) {
+
+                return f.isDirectory();
+             }
+
+            @Override
+            public String getDescription() { return "All files"; }});
+
+        chooser.showOpenDialog(this);
+        File file = chooser.getSelectedFile();
+        if(file != null) {
+            Settings.setExtractDir(file.getAbsolutePath());
+            extractPath.setText(file.getAbsolutePath());
+        }
+    }
+    
     private void comicsPathActionPerformed(MainFrame mainFrame) {
         JFileChooser chooser = new JFileChooser(Settings.getComicsPath());
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -223,6 +432,87 @@ public class SettingsDialog extends JDialog{
             }
         }
     }
+    
+    private JCheckBox createChkBox(JCheckBox chk, String label) {
+        chk = new JCheckBox(label);
+        addChkBoxAction(chk);
+        return chk;
+    }
+    
+    private void addChkBoxAction(final JCheckBox chk) {
+        chk.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                resetChkBoxAction(chk);
+            }
+        });
+    }
+    
+    private void resetChkBoxAction(JCheckBox chk) {
+        
+        switch(chk.getText()) {
+            case "Reset All" :
+                viewChkBox.setSelected(selectAll.isSelected());
+                comicsPathChkBox.setSelected(selectAll.isSelected());
+                extractDirChkBox.setSelected(selectAll.isSelected());
+                keyShortcutsChkBox.setSelected(selectAll.isSelected());
+                break;
+            default:
+                break;
+        }
+    }
+    
+    private void resetActionPerformed(MainFrame mainFrame) {
+        int ans = JOptionPane.showConfirmDialog(this, "This Will Delete all Previously"
+                + " saved settings.\n Do you wish to continue ??", "Reset Settings"
+                , JOptionPane.YES_NO_CANCEL_OPTION);
+        if(ans == 0) {
+            if(viewChkBox.isSelected()) {
+                Settings.setDefaultColor(Color.BLACK);
+                Settings.setScrollSize(0);
+                mainFrame.repaint();
+            }
+            if(keyShortcutsChkBox.isSelected()) {
+                Constants.removeAllAssignedKeys();
+                boolean start = false;
+                int count = 0;
+                for(String i : Constants.defaultTags) {
+
+                    if(start) {
+                        Constants.addAssignedKey(
+                                Integer.parseInt(Constants.defaultValues[count]));
+                    }
+                    if(i.matches("Keys")) {
+                        start = true;
+                    }
+                    count++;
+                }
+                
+            }
+            if(extractDirChkBox.isSelected()) {
+                Settings.setExtractDir(Constants.defaultValues[22]);
+            }
+            if(comicsPathChkBox.isSelected()) {
+                Settings.setComicsPath(Constants.defaultValues[20]);
+            }
+        }
+        
+    }
+    
+    void setScrollBarSize(int i) {
+        if(i == 1) {
+            Settings.setScrollSize(0);
+        }
+        else if(i == 2) {
+            Settings.setScrollSize(10);
+        }
+        else {
+            Settings.setScrollSize(20);
+        }
+    MainFrame.setScrollBarSize();
+    }
+    
     /**
      * main method for testing.
      * @param args to pass command line arguments
@@ -231,5 +521,4 @@ public class SettingsDialog extends JDialog{
         ArchiveManager s = new ArchiveManager();
         //MainFrame ff = new MainFrame(s);
     }
-
 }

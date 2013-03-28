@@ -25,8 +25,14 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
 import net.iharder.dnd.FileDrop;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -51,27 +57,41 @@ public class MainFrame extends JFrame {
         initComponents(ext);
     }
 
-
+    public MainFrame (String file, ArchiveManager ext){
+        super("Elite Comix Reader");
+        initComponents(ext);
+        JOptionPane.showConfirmDialog(rootPane, "iT woRkS!!");
+        displayComic(ext, new File(file));
+        Settings.loadFileList(new File(file));
+    }
 
     /**
      *
      * @param ext
      */
-    private void initComponents(final ArchiveManager ext)
-    {
+    private void initComponents(final ArchiveManager ext) {
         setSize(Settings.getSize());
         setLocation(Settings.getX(), Settings.getY());
         setAlwaysOnTop(Settings.isAlwaysOnTop());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(200, 200));
-        setTitle("Elite Comix Reader");
+        if(ArchiveManager.getFile() == null)
+            setTitle("Elite Comix Reader 0.0.8");
+        else {
+            setTitle("Elite Comix Reader 0.0.8 - " + ArchiveManager.getFile().getName());
+        }
+        ImageIcon img = new ImageIcon(getClass().getResource("/Resources/elite_comix_reader_small.png"));
+        setIconImage(img.getImage());
         scrollPane = new JScrollPane();
         scrollPane.setBorder(null);
-
+        
         imagePanel = new ImagePanel();
         scrollPane.setViewportView(imagePanel);
-        scrollPane.getVerticalScrollBar().setSize(10, 10);
-        scrollPane.getHorizontalScrollBar().setSize(10, 10);
+        scrollPane.setHorizontalScrollBarPolicy(
+            JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(
+            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        setScrollPaneView();
         t = new ToolBar(imagePanel, this, ext);
 
         popupMenu = new PopupMenu(imagePanel, this, ext);
@@ -84,6 +104,24 @@ public class MainFrame extends JFrame {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 close();
 
+            }
+        });
+        
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
+        
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                imagePanel.setMode((short)1);
+                //scrollPane.revalidate();
+                imagePanel.repaint();
+                if(ToolBar.isFitWidthSelected())
+                ToolBar.setFitToggle();
+                if(ToolBar.isOrigSizeSelected())
+                    ToolBar.setOrigSizeToggle();
             }
         });
 
@@ -102,6 +140,7 @@ public class MainFrame extends JFrame {
                     fullscreen();
                 }
                 if(e.getButton() == MouseEvent.BUTTON3) {
+                    popupMenu.setAccelerator();
                     popupMenu.showPopup(e);
                 }
             }
@@ -128,19 +167,44 @@ public class MainFrame extends JFrame {
         t.transferFocusUpCycle();
     }
 
+    void formWindowStateChanged(java.awt.event.WindowEvent evt) {
+        if(evt.getNewState() == JFrame.MAXIMIZED_BOTH) {
+            //Settings.setSize(evt.getOppositeWindow().getPreferredSize());
+            //System.out.println(" " + getPreferredSize()+" ");
+        }
+        else {
+            //System.out.println(" " + getPreferredSize()+" "+Settings.getSize());
+            setPreferredSize(getPreferredSize());
+            validate();
+        }
+    }
+    
     static void setScrollPaneView() {
-        scrollPane.setViewportView(imagePanel);
+        
         int s = Settings.getScrollSize();
         scrollPane.getVerticalScrollBar().setPreferredSize (new Dimension(s, s));
         scrollPane.getHorizontalScrollBar().setPreferredSize (new Dimension(s,s));
-        scrollPane.revalidate();
+        //scrollPane.setViewportView(imagePanel);
+        //scrollPane.revalidate();
     }
 
     void close() {
         if(MainFrame.getFile() != null) {
             BookmarksManager.setLastPageAsBookmark(MainFrame.getFile(), imagePanel.getIndex());
         }
+        try {
         Settings.store(MainFrame.this);
+        } catch(Exception e) {
+            File f = new File(ExtractorModel.getAppDir() + "/Properties.xml");
+            f.delete();
+            try {
+                Settings.load();
+                Settings.store(MainFrame.this);
+            } catch (Exception ex) {
+                //Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                System.exit(1);
+            }
+        }
         System.exit(0);
     }
 
@@ -151,85 +215,85 @@ public class MainFrame extends JFrame {
     }
 
     private void keyPressedAction(KeyEvent e, ArchiveManager ext) {
-
-        if(e.getKeyCode() == KeyEvent.VK_O) {
+        
+        if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.OPEN - Constants.START_VAL))  {
             open(ext);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_Q) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.EXIT - Constants.START_VAL))  {
             close();
         }
-        else if(e.getKeyCode() == KeyEvent.VK_K) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.KEYBOARDS_SHORTCUTS - Constants.START_VAL))  {
             new ShortcutsDialog(this);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_X) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.SETTINGS - Constants.START_VAL))  {
             new SettingsDialog(this);
         }
-        else if(e.getKeyCode() == KeyEvent.VK_Z) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL))  {
             new HelpDialog(this);
         }
-        else if(!imagePanel.isImageEmpty(imagePanel.getIndex())) {
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.PAGE_NO - Constants.START_VAL))  {
+            ToolBar.showPageNumber(!ToolBar.isPageNumberVisible());
+        }
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.PAGE_INFO - Constants.START_VAL))  {
+            Settings.setPageInfo(!Settings.isPageInfo());
+            repaint();
+        }
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.TIME - Constants.START_VAL))  {
+            Settings.setTimeInfo(!Settings.isTimeInfo());
+            repaint();
+        }
+        else if(!imagePanel.isImageEmpty(imagePanel.getIndex()))  {
             if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-                //moveDown();
                 moveScrollDown();
             }
             else if(e.getKeyCode() == KeyEvent.VK_UP) {
-//                if(imagePanel.getImageHeight() > imagePanel.getFrameHeight()) {
-//                    if( Math.abs(imagePanel.getYPos() + 5) <
-//                            imagePanel.getImageHeight() - imagePanel.getFrameHeight()
-//                        && imagePanel.getYPos() + 5 <= 0) {
-//                        imagePanel.setY(imagePanel.getYPos() + 5);
-//                        imagePanel.repaint();
-//                    }
-//                }
                 moveScrollUp();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.FULLSCREEN - Constants.START_VAL))  {
                 Settings.setFullscreen(!Settings.isFullscreen());
                 fullscreen();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_W) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.FIT_WIDTH - Constants.START_VAL))  {
                 ToolBar.setFitToggle();
                 imagePanel.toggleMode(ToolBar.isFitWidthSelected());
                 fitImage(ToolBar.isFitWidthSelected());
             }
-            else if(e.getKeyCode() == KeyEvent.VK_H) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.TOOL_BAR - Constants.START_VAL))  {
                 toolBarStatus = !toolBarStatus;
                 t.setVisible(toolBarStatus);
             }
-            else if(e.getKeyCode() == KeyEvent.VK_T) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ALWAYS_ON_TOP - Constants.START_VAL))  {
                 alwaysOnTop();
                 ToolBar.setAlwaysOnTopToggle();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_OPEN_BRACKET) {
-                imagePanel.zoomOut();
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ZOOM_OUT - Constants.START_VAL))  {
+                zoomOut();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_CLOSE_BRACKET) {
-                imagePanel.zoomIn();
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ZOOM_IN - Constants.START_VAL))  {
+                zoomIn();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_9) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ROTATE_LEFT - Constants.START_VAL))  {
                 rotateLeft();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_0) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ROTATE_RIGHT - Constants.START_VAL))  {
                 rotateRight();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.RIGHT - Constants.START_VAL))  {
 
-                imagePanel.nextPage(ext);
-                scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMinimum());
-                ToolBar.setAddBookmark();
+                nextPage(ext);
+                
             }
-            else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                imagePanel.prevPage(ext);
-                scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-                ToolBar.setAddBookmark();
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.LEFT - Constants.START_VAL))  {
+                
+                prevPage(ext);
             }
-            else if(e.getKeyCode() == KeyEvent.VK_S) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.SAVE - Constants.START_VAL))  {
                 save();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_B) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ADD_BOOKMARK - Constants.START_VAL))  {
                 File ff = MainFrame.getFile();
                 if(ff != null) {
-                    if(!ToolBar.isAddBookmarkSelected()) {
+                    if(!ToolBar.isAddBookmarkSelected())  {
                         BookmarksManager.add(ff, imagePanel.getIndex());
                     }
                     else {
@@ -238,21 +302,59 @@ public class MainFrame extends JFrame {
                     ToolBar.setAddBookmarkToggle();
                 }
             }
-            else if(e.getKeyCode() == KeyEvent.VK_A) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.BOOKMARKS_MANAGER - Constants.START_VAL))  {
                 new BookmarksDialog(this);
             }
-            else if(e.getKeyCode() == KeyEvent.VK_J) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.GOTO - Constants.START_VAL))  {
                 jumpToPage();
             }
-            else if(e.getKeyCode() == KeyEvent.VK_1) {
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.ORIGIMAGE - Constants.START_VAL))  {
                 imagePanel.origSize(ToolBar.isOrigSizeSelected());
                 ToolBar.setOrigSizeToggle();
             }
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.PREV_COMIC - Constants.START_VAL))  {
+                prevComic(ext);
+            }
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.NEXT_COMIC - Constants.START_VAL))  {
+                nextComic(ext);
+            }
+        }
+    }
+    
+    public void prevComic(ArchiveManager ext) {
+        
+        File h = Settings.getPrevComicFile();
+        if(h != null) {
+            imagePanel.setEmptyImage();
+            Settings.setLoadingImage(true);
+            paint(getGraphics());
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
+            MainFrame.displayComic(ext, h);
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
+            Settings.setLoadingImage(false);
+            repaint();
+        }
+    }
+    
+    public void nextComic(ArchiveManager ext) {
+        File h = Settings.getNextComicFile();
+        if(h != null) {
+            imagePanel.setEmptyImage();
+            Settings.setLoadingImage(true);
+            paint(getGraphics());
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
+            
+            MainFrame.displayComic(ext, h);
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
+            Settings.setLoadingImage(false);
+            repaint();
         }
     }
 
-    static void open(ArchiveManager e) {
-
+    void open(ArchiveManager e) {
+        imagePanel.setEmptyImage();
+        Settings.setLoadingImage(true);
+        imagePanel.repaint();
         JFileChooser chooser = new JFileChooser(Settings.getComicsPath());
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //chooser.setCurrentDirectory(new File("."));
@@ -276,6 +378,12 @@ public class MainFrame extends JFrame {
         displayComic(e, file);
         Settings.loadFileList(file);
         chooser = null;
+        Settings.setLoadingImage(false);
+        imagePanel.repaint();
+        if(file == null)
+            setTitle("Elite Comix Reader 0.0.8");
+        else
+            setTitle("Elite Comix Reader 0.0.8 - " + file.getName());
     }
 
     void save() {
@@ -305,48 +413,37 @@ public class MainFrame extends JFrame {
         scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() - 10);
     }
 
-    private void moveDown() {
-
-        if(imagePanel.getOrientation() == 0) {
-            if(imagePanel.getImageHeight() > imagePanel.getFrameHeight()) {
-                if(Math.abs(imagePanel.getYPos() - 3) < imagePanel.getImageHeight()
-                        - imagePanel.getFrameHeight() && imagePanel.getYPos() - 3 <= 0) {
-                    imagePanel.setY(imagePanel.getYPos() - 3);
-                    imagePanel.repaint();
-                }
-            }
-        }
-        else if(imagePanel.getOrientation() == 1) {
-
-            if(imagePanel.getImageHeight() > imagePanel.getFrameHeight()) {
-
-                if(Math.abs(imagePanel.getXPos() - 3) < imagePanel.getImageHeight()
-                        - imagePanel.getFrameHeight()
-                            && imagePanel.getXPos() - 3 <= 0) {
-                    imagePanel.setX(imagePanel.getXPos() - 3);
-                    imagePanel.repaint();
-                }
-            }
-        }
-    }
-
     void jumpToPage() {
-        try{
+        try {
             String res = JOptionPane.showInputDialog(this, "Enter page no: "
-            +"( 0 - " + ArchiveManager.getSize() +" )");
+            +"( 1 - " + ArchiveManager.getSize() +" )");
             //System.out.print(res);
             if(res != null) {
                 int page = Integer.parseInt(res);
-                if(page > -1) {
-                    imagePanel.goToPage(page);
+                if(page > 0) {
+                    imagePanel.goToPage(page - 1);
                 }
             }
         }catch(NumberFormatException e){
-        JOptionPane.showMessageDialog(this, "Enter Integers only!!");
+            JOptionPane.showMessageDialog(this, "Enter Integers only!!");
         }
-
+        ToolBar.refreshPage();
     }
 
+    void prevPage(ArchiveManager ext) {
+        imagePanel.prevPage(ext);
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+        ToolBar.setAddBookmark();
+        ToolBar.refreshPage();
+    }
+    
+    void nextPage(ArchiveManager ext) {
+        imagePanel.nextPage(ext);
+        scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMinimum());
+        ToolBar.setAddBookmark();
+        ToolBar.refreshPage();
+    }
+    
     static File getFile() {
         return file;
     }
@@ -356,12 +453,17 @@ public class MainFrame extends JFrame {
     }
     
     public static Dimension getScrollPaneSize() {
-        return new Dimension(scrollPane.getWidth() - (scrollPane.getVerticalScrollBar().isShowing() ?
-                scrollPane.getVerticalScrollBar().getWidth() : 0), 
-                scrollPane.getHeight() - (scrollPane.getHorizontalScrollBar().isShowing() ?
-                scrollPane.getHorizontalScrollBar().getWidth() : 0));
+        return new Dimension(scrollPane.getWidth() - Settings.getScrollSize(), 
+                scrollPane.getHeight() - Settings.getScrollSize());
     }
-
+    
+    static void setScrollBarSize() {
+        scrollPane.getHorizontalScrollBar().setPreferredSize(
+                new Dimension(Settings.getScrollSize(), Settings.getScrollSize()));
+        scrollPane.getVerticalScrollBar().setPreferredSize(
+                new Dimension(Settings.getScrollSize(), Settings.getScrollSize()));
+    }
+    
     static void scale(Double scale, ImagePanel imagePanel) {
         imagePanel.setScale(scale);
     }
@@ -417,6 +519,11 @@ public class MainFrame extends JFrame {
 
         if(Settings.isFullscreen()) {
             t.setVisible(!Settings.isFullscreen());
+            
+            Settings.setMaximized(getExtendedState() == JFrame.MAXIMIZED_BOTH);
+            //dispose();
+            //setVisible(false);
+            setExtendedState(JFrame.NORMAL);
             dispose();
             setUndecorated(true);
             GraphicsEnvironment ge =
@@ -436,8 +543,10 @@ public class MainFrame extends JFrame {
             GraphicsDevice gs = ge.getDefaultScreenDevice();
             gs.setFullScreenWindow(null);
             
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
-                        
+            //System.out.println(" " + " "+getFrameSize());
+//            if(Settings.isMaximized())
+                setExtendedState(JFrame.NORMAL);
+            setPreferredSize(Settings.getSize());
             validate();
             setVisible(true);
         }
@@ -448,9 +557,8 @@ public class MainFrame extends JFrame {
         if(b) {
             t.setVisible(!Settings.isFullscreen());
             dispose();
-            if (Settings.NO_DECORATION.equals(Settings.getDecorationStyle())) {
+//            if (Settings.NO_DECORATION.equals(Settings.getDecorationStyle()))
             setUndecorated(true);
-            }
             GraphicsEnvironment ge =
             GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice gs = ge.getDefaultScreenDevice();
@@ -466,8 +574,7 @@ public class MainFrame extends JFrame {
             GraphicsEnvironment.getLocalGraphicsEnvironment();
             GraphicsDevice gs = ge.getDefaultScreenDevice();
             gs.setFullScreenWindow(null);
-            //Settings.setDecorationStyle(Settings.DEFAULT_DECORATION);
-            //Settings.setLookAndFeel(true, "default");
+            
             setVisible(true);
         }
 
@@ -480,6 +587,10 @@ public class MainFrame extends JFrame {
         Settings.setAlwaysOnTop(!Settings.isAlwaysOnTop());
     }
 
+    void refresh() {
+        imagePanel.repaint();
+    }
+    
     /**
      *
      * @param ext ArchiveManager instance
@@ -487,15 +598,21 @@ public class MainFrame extends JFrame {
      * @since v0.0.1
      */
     static void displayComic(ArchiveManager ext, File f) {
+        
         try {
+            
             BufferedImage a = null;
                 try {
                     int success = ext.extract(f);
                     if(success == 0) {
                         imagePanel.setIndex(0);
-
+                        
                         if(imagePanel.getIndex() <= ArchiveManager.getSize()
                                 && ArchiveManager.getSize() != 0) {
+//                            File arr[] = new File[ArchiveManager.getSize()];
+//                                  arr =  (File[]) ArchiveManager.getFileArray().toArray();
+//                                    Arrays.sort(arr);
+//                            ArchiveManager.setFileArray(arr);
                             a = ArchiveManager.getImage(imagePanel.getIndex());
                             BookmarksManager.load(f);
                             ToolBar.setAddBookmark();
@@ -515,13 +632,13 @@ public class MainFrame extends JFrame {
                 imagePanel.loadImage(a);
                 imagePanel.repaint();
                 setScrollPaneView();
-                //
+                
             }
-
+            
         }
             catch(NullPointerException r) {
             }
-    //Settings.loadFileList(f);
+        ToolBar.refreshPage();
     }
 
     /**
@@ -533,8 +650,4 @@ public class MainFrame extends JFrame {
         //MainFrame mainFrame = new MainFrame(e);
         //mainFrame = null;
     }
-
-
-
-
 }

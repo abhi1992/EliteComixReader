@@ -33,13 +33,14 @@ import javax.swing.*;
 public class ToolBar extends JToolBar {
 
     private static JButton open, left, right, about, exit,  fullscreen,  goTo,
-            zoomIn, zoomOut, rotateLeft, rotateRight, 
+            zoomIn, zoomOut, rotateLeft, rotateRight, translator,  
             keyShorcuts, save, bookmarksManager, settings, nextComic, prevComic;
     private static JToggleButton fitWidth, alwaysOnTop, addBookmark, origSize;
     private static ImagePanel imagePanel;
     private static MainFrame mainFrame;
     private static ArchiveManager archiveManager;
-
+    private static JTextField page;
+    private static JLabel totalPages;
     /**
      * ToolBar Constructor
      *
@@ -269,7 +270,18 @@ public class ToolBar extends JToolBar {
             }
         });
         add(bookmarksManager);
-
+        
+//        translator = createButton(translator, "/Resources/translate1.png",
+//                KeyEvent.VK_R, "Translator");
+//        translator.addActionListener(new ActionListener() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//                jButton20ActionPerformed(evt);
+//            }
+//        });
+//        add(translator);
+        
         addSeparator(new Dimension(10, 30));
 
         keyShorcuts = createButton(keyShorcuts, "/Resources/keyboard1.png",
@@ -282,7 +294,23 @@ public class ToolBar extends JToolBar {
             }
         });
         add(keyShorcuts);
-
+        
+        addSeparator(new Dimension(10, 30));
+        
+        page = new JTextField();
+        page.setEditable(false);
+        page.setText(""+imagePanel.getIndex());
+        page.setVisible(Settings.isPageNo());
+        page.setPreferredSize(new Dimension(24, 24));
+        page.setHorizontalAlignment(JTextField.CENTER);
+        add(page);
+        
+        totalPages = new JLabel();
+        totalPages.setText(" / " + ArchiveManager.getSize());
+        totalPages.setPreferredSize(new Dimension(24, 24));
+        totalPages.setVisible(Settings.isPageNo());
+        add(totalPages);
+        
         settings = createButton(settings, "/Resources/configure_shortcuts1.png",
                 KeyEvent.VK_X, "Settings");
         settings.addActionListener(new ActionListener() {
@@ -390,7 +418,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1
      */
     private void jButton0ActionPerformed(ActionEvent evt) {
-        MainFrame.open(archiveManager);
+        mainFrame.open(archiveManager);
     }
 
     /**
@@ -400,19 +428,17 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1
      */
     private void jButton1ActionPerformed(ActionEvent evt) {
-     imagePanel.prevPage(archiveManager);
-     setAddBookmark();
+        mainFrame.prevPage(archiveManager);
     }
 
     /**
      * right button action
-     * @param Actionevent evt
+     * @param evt ActionEvent
      * @return null
      * @since v0.0.1
      */
     private void jButton2ActionPerformed(ActionEvent evt) {
-    imagePanel.nextPage(archiveManager);
-    setAddBookmark();
+        mainFrame.nextPage(archiveManager);
     }
 
     /**
@@ -453,19 +479,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.1
      */
     private void jButton6ActionPerformed(ActionEvent evt) {
-        try{
-            String res = JOptionPane.showInputDialog(mainFrame, "Enter page no: "
-            +"( 0 - " + ArchiveManager.getSize() +" )");
-            //System.out.print(res);
-            if(res != null) {
-                int page = Integer.parseInt(res);
-                if(page > -1)
-                    imagePanel.goToPage(page);
-            }
-        }catch(NumberFormatException e){
-        JOptionPane.showMessageDialog(mainFrame, "Enter Integers only!!");
-        }
-        setAddBookmark();
+        mainFrame.jumpToPage();
     }
 
     /**
@@ -551,9 +565,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.3
      */
     private void jButton13ActionPerformed(ActionEvent evt) {
-        File h = Settings.getPrevComicFile();
-        if(h != null)
-            MainFrame.displayComic(archiveManager, h);
+        mainFrame.prevComic(archiveManager);
 //        else
 //            prevComic.setEnabled(false);
     }
@@ -565,9 +577,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.3
      */
     private void jButton14ActionPerformed(ActionEvent evt) {
-        File h = Settings.getNextComicFile();
-        if(h != null)
-            MainFrame.displayComic(archiveManager, h);
+        mainFrame.nextComic(archiveManager);
 
     }
     
@@ -624,6 +634,16 @@ public class ToolBar extends JToolBar {
     private void jButton19ActionPerformed(ActionEvent evt) {
         if(!imagePanel.isImageEmpty(imagePanel.getIndex()))
             mainFrame.rotateRight();
+    }
+    
+    /**
+     * Translator
+     * @param evt ActonEvent
+     * @return null
+     * @since v0.0.4
+     */
+    private void jButton20ActionPerformed(ActionEvent evt) {
+        new TranslatorDialog(mainFrame);
     }
 
     /**
@@ -700,5 +720,26 @@ public class ToolBar extends JToolBar {
     static boolean isAddBookmarkSelected() {
         return addBookmark.isSelected();
     }
-
+    
+    static boolean isPageNumberVisible() {
+        return page.isShowing();
+    }
+    
+    static void showPageNumber(boolean show) {
+        page.setVisible(show);
+        totalPages.setVisible(show);
+    }
+    
+    static void refreshPage() {
+        if(ArchiveManager.getSize() == 0)
+            page.setText("0");
+        else
+            page.setText(""+(imagePanel.getIndex() + 1));
+        totalPages.setText(" / " + ArchiveManager.getSize());
+        if(ArchiveManager.getSize() >= 100)
+            totalPages.setPreferredSize(new Dimension(35, 24));
+        else
+            totalPages.setPreferredSize(new Dimension(24, 24));
+    }
+    
 }

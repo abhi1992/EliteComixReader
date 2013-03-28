@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Elite Comix Reader.  If not, see <http://www.gnu.org/licenses/>.
 
-Elite Comix Reader version: 0.0.3
+Elite Comix Reader version: 0.0.6.0
 
 author: Abhishek Banerjee
 categories: Entertainment
@@ -23,9 +23,11 @@ url: http://sourceforge.net/projects/elitecomixread/
 contact: abhishekbanerjee1992@ymail.com
 
 
-************** INSTALLATION ********************
+************************************INSTALLATION ************************************************
 
-The jar file reqires no installation. However for running the jar you will require oracle's jre7 and javafx on your system.
+***********************************PORTABLE EDITION**********************************************
+The jar file reqires no installation. However for running the jar you will require 
+oracle's jre7 and javafx on your system.
 
 Just unzip the file.
 Go to EliteComixReader/dist folder you will find the EliteComixReader.jar file. 

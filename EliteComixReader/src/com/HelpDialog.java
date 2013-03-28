@@ -53,7 +53,7 @@ public class HelpDialog extends JDialog{
         //setAutoRequestFocus(true);
         setLayout(new BorderLayout());
         jLabel1 = new JLabel(
-                new ImageIcon(getClass().getResource("/Resources/about2.png")));
+                new ImageIcon(getClass().getResource("/Resources/elite_comix_reader.png")));
         aboutPane = new JEditorPane();
         aboutPane.setContentType("text/html");
         aboutPane.setEditable(false);
@@ -135,28 +135,72 @@ public class HelpDialog extends JDialog{
                 + "Background color change : set your favourite background color.<br>"
                 + "Look and Feel : set your favourite look and feel. "
                 + "You will need to restart the reader for changes to be saved.<br>"
+                + "<Font color = '#515151' size = '4'>"
                 + "<Font size = '5' color = '#333333'><B><i>  Key Board Events</i></B></Font><br>"
                 + "<Font size = '5' color = '#101010'><B>****************************</B></Font><br>"
-                + "<Font size = '5' color = '#990000'><B>O</B></Font> - Open Comic / Folder<br>"
-                + "<Font size = '5' color = '#990000'><B>S</B></Font> - Save Page<br>"
-                + "<Font size = '5' color = '#990000'><B>Left Arrow</B></Font> - Previous Page<br>"
-                + "<Font size = '5' color = '#990000'><B>Right Arrow</B></Font> - Next Page<br>"
-                + "<Font size = '5' color = '#990000'><B>W</B></Font> - Fit Width / Height<br>"
-                + "<Font size = '5' color = '#990000'><B>9</B></Font> - Rotate Image Left<br>"
-                + "<Font size = '5' color = '#990000'><B>0</B></Font> - Rotate Image Right<br>"
-                + "<Font size = '5' color = '#990000'><B>[</B></Font> - Zoom Out<br>"
-                + "<Font size = '5' color = '#990000'><B>1</B></Font> - Original Image Size<br>"
-                + "<Font size = '5' color = '#990000'><B>]</B></Font> - Zoom In<br>"
-                + "<Font size = '5' color = '#990000'><B>Escape</B></Font> - Toggle Fullscreen Mode<br>"
-                + "<Font size = '5' color = '#990000'><B>T</B></Font> - Toggle Always On Top<br>"
-                + "<Font size = '5' color = '#990000'><B>J</B></Font> - Jump To Page<br>"
-                + "<Font size = '5' color = '#990000'><B>B</B></Font> - Add / Remove Bookmark<br>"
-                + "<Font size = '5' color = '#990000'><B>A</B></Font> - Show Bookmarks<br>"
-                + "<Font size = '5' color = '#990000'><B>K</B></Font> - Show Key Board Shortcuts<br>"
-                + "<Font size = '5' color = '#990000'><B>H</B></Font> - Hide Tool Bar<br>"
-                + "<Font size = '5' color = '#990000'><B>X</B></Font> - Settings<br>"
-                + "<Font size = '5' color = '#990000'><B>Z</B></Font> - Help<br>"
-                + "<Font size = '5' color = '#990000'><B>Q</B></Font> - Quit<br><br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.OPEN - Constants.START_VAL))
+                +"</B></Font> - Open Comic / Folder<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.SAVE - Constants.START_VAL))
+                + "</B></Font> - Save Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.LEFT - Constants.START_VAL))
+                + "</B></Font> - Previous Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.RIGHT - Constants.START_VAL))
+                + "</B></Font> - Next Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.FIT_WIDTH - Constants.START_VAL))
+                + "</B></Font> - Fit Width / Height<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ZOOM_OUT - Constants.START_VAL))
+                + "</B></Font> - Zoom Out<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ORIGIMAGE - Constants.START_VAL))
+                + "</B></Font> - Original Image Size<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ZOOM_IN - Constants.START_VAL))
+                + "</B></Font> - Zoom In<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.FULLSCREEN - Constants.START_VAL))
+                + "</B></Font> - Toggle Fullscreen Mode<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ALWAYS_ON_TOP - Constants.START_VAL))
+                + "</B></Font> - Toggle Always On Top<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.GOTO - Constants.START_VAL))
+                + "</B></Font> - Jump To Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ADD_BOOKMARK - Constants.START_VAL))
+                + "</B></Font> - Add / Remove Bookmark<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.BOOKMARKS_MANAGER - Constants.START_VAL))
+                + "</B></Font> - Show Bookmarks<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.KEYBOARDS_SHORTCUTS - Constants.START_VAL))
+                + "</B></Font> - Show Key Board Shortcuts<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.TOOL_BAR - Constants.START_VAL))
+                + "</B></Font> - Hide / Show Toolbar<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.SETTINGS - Constants.START_VAL))
+                + "</B></Font> - Settings<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.PAGE_INFO - Constants.START_VAL))
+                + "</B></Font> - Show Page no in panel<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.TIME - Constants.START_VAL))
+                + "</B></Font> - Show time in panel<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.PAGE_NO - Constants.START_VAL))
+                + "</B></Font> - Show Page no in Toolbar<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL))
+                + "</B></Font> - Help<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.EXIT - Constants.START_VAL))
+                + "</B></Font> - Quit<br><br>"
                 + "<Font size = '5' color = '#333333'><B><i>  Mouse Events</i></B></Font><br>"
                 + "<Font size = '5' color = '#101010'><B>****************************</b></Font><br>"
                 + "<Font size = '5' color = '#990000'><B>Double Click</B></Font> - Toggle Fullscreen Mode<br>"
@@ -204,7 +248,7 @@ public class HelpDialog extends JDialog{
             }
         });
         setModalityType(
-           Dialog.ModalityType.APPLICATION_MODAL);
+           Dialog.ModalityType.TOOLKIT_MODAL);
 
         setVisible(true);
 

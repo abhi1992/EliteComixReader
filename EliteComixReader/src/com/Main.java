@@ -18,8 +18,8 @@
 */
 package com;
 
+import java.io.File;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -36,13 +36,18 @@ public class Main {
      * Main method
      * @param args command line arguments
      */
-     public static void main(String args[]) {
+     public static void main(final String args[]) {
          
         final ArchiveManager arch = new ArchiveManager();
-        MainFrame mainFrame = null;
-        ImagePanel imagePanel;
-        ToolBar t;
-        load();
+        
+        //MainFrame mainFrame = null;
+        try {
+            load();
+        } catch(Exception e) {
+            File f = new File(ExtractorModel.getAppDir() + "/Properties.xml");
+            f.delete();
+            load();
+        }
         try {
             if(Settings.getLaf().equals("System")) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -60,7 +65,10 @@ public class Main {
 
              @Override
                 public void run() {
-                    new MainFrame(arch);
+                    if(args.length == 0)
+                        new MainFrame(arch);
+                    else
+                        new MainFrame(args[0], arch);
                 }
          });
         //mainFrame = null;

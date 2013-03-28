@@ -54,7 +54,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton0ActionPerformed(evt);
             }
         });
-        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, 0));
+        open.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.OPEN - Constants.START_VAL), 0));
         add(open);
 
         save = new JMenuItem("Save Image");
@@ -66,7 +67,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton10ActionPerformed(evt);
             }
         });
-        save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0));
+        save.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.SAVE - Constants.START_VAL), 0));
         add(save);
 
         addSeparator();
@@ -80,7 +82,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton1ActionPerformed(evt);
             }
         });
-        left.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
+        left.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.LEFT - Constants.START_VAL), 0));
         add(left);
 
         right = new JMenuItem("Next Page");
@@ -92,7 +95,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton2ActionPerformed(evt);
             }
         });
-        right.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
+        right.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.RIGHT - Constants.START_VAL), 0));
         add(right);
 
         goTo = new JMenuItem("Jump To Page");
@@ -104,7 +108,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton6ActionPerformed(evt);
             }
         });
-        goTo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_J, 0));
+        goTo.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.GOTO - Constants.START_VAL), 0));
         add(goTo);
 
         addSeparator();
@@ -118,7 +123,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton13ActionPerformed(evt);
             }
         });
-        prevComic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, 0));
+        prevComic.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.PREV_COMIC - Constants.START_VAL), 0));
         add(prevComic);
 
         nextComic = new JMenuItem("Next Comic");
@@ -130,7 +136,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton14ActionPerformed(evt);
             }
         });
-        nextComic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, 0));
+        nextComic.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.NEXT_COMIC - Constants.START_VAL), 0));
         add(nextComic);
 
         addSeparator();
@@ -144,7 +151,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton3ActionPerformed(evt);
             }
         });
-        fitWidth.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0));
+        fitWidth.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.FIT_WIDTH - Constants.START_VAL), 0));
         add(fitWidth);
         
         rotateLeft = new JMenuItem("Rotate Image Left");
@@ -156,7 +164,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton18ActionPerformed(evt);
             }
         });
-        rotateLeft.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, 0));
+        rotateLeft.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ROTATE_LEFT - Constants.START_VAL), 0));
         
         rotateRight = new JMenuItem("Rotate Image Right");
         rotateRight.setIcon(new ImageIcon(getClass().getResource("/Resources/rotate_cw.png")));
@@ -167,7 +176,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton19ActionPerformed(evt);
             }
         });
-        rotateRight.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0, 0));
+        rotateRight.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ROTATE_RIGHT - Constants.START_VAL), 0));
         
         rotate = new JMenu("Rotate");
         rotate.add(rotateLeft);
@@ -183,7 +193,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton4ActionPerformed(evt);
             }
         });
-        fullscreen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+        fullscreen.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.FULLSCREEN - Constants.START_VAL), 0));
         add(fullscreen);
         
         zoomOut = new JMenuItem("Zoom Out");
@@ -195,7 +206,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton16ActionPerformed(evt);
             }
         });
-        zoomOut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_CLOSE_BRACKET, 0));
+        zoomOut.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ZOOM_OUT - Constants.START_VAL), 0));
         
         origSize = new JMenuItem("Original Image Size");
         origSize.setIcon(new ImageIcon(getClass().getResource("/Resources/zoom_original.png")));
@@ -206,7 +218,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton15ActionPerformed(evt);
             }
         });
-        origSize.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0));
+        origSize.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ORIGIMAGE - Constants.START_VAL), 0));
         
         zoomIn = new JMenuItem("Zoom In");
         zoomIn.setIcon(new ImageIcon(getClass().getResource("/Resources/new_zoom_in.png")));
@@ -217,7 +230,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton17ActionPerformed(evt);
             }
         });
-        zoomIn.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_OPEN_BRACKET, 0));
+        zoomIn.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ZOOM_IN - Constants.START_VAL), 0));
         
         zoom = new JMenu("Zoom");
         zoom.add(zoomOut);
@@ -234,7 +248,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton5ActionPerformed(evt);
             }
         });
-        alwaysOnTop.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, 0));
+        alwaysOnTop.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ALWAYS_ON_TOP - Constants.START_VAL), 0));
         add(alwaysOnTop);
 
         addSeparator();
@@ -248,7 +263,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton11ActionPerformed(evt);
             }
         });
-        addBookmark.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
+        addBookmark.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ADD_BOOKMARK - Constants.START_VAL), 0));
         add(addBookmark);
 
         bookmarksManager = new JMenuItem("Show Bookmarks");
@@ -260,7 +276,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton12ActionPerformed(evt);
             }
         });
-        bookmarksManager.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0));
+        bookmarksManager.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.BOOKMARKS_MANAGER - Constants.START_VAL), 0));
         add(bookmarksManager);
 
         addSeparator();
@@ -274,7 +291,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton9ActionPerformed(evt);
             }
         });
-        shortcuts.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0));
+        shortcuts.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.KEYBOARDS_SHORTCUTS - Constants.START_VAL), 0));
         add(shortcuts);
 
         settings = new JMenuItem("Settings");
@@ -286,7 +304,8 @@ public class PopupMenu extends JPopupMenu{
                 new SettingsDialog(mainFrame);
             }
         });
-        settings.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0));
+        settings.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.SETTINGS - Constants.START_VAL), 0));
         add(settings);
 
         about = new JMenuItem("Help");
@@ -298,7 +317,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton7ActionPerformed(evt);
             }
         });
-        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0));
+        about.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL), 0));
         add(about);
 
         exit = new JMenuItem("Exit");
@@ -310,7 +330,8 @@ public class PopupMenu extends JPopupMenu{
                 jButton8ActionPerformed(evt);
             }
         });
-        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0));
+        exit.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.EXIT - Constants.START_VAL), 0));
         add(exit);
 
 
@@ -318,18 +339,16 @@ public class PopupMenu extends JPopupMenu{
     }
 
     private void jButton0ActionPerformed(ActionEvent evt) {
-         MainFrame.open(archiveManager);
+         mainFrame.open(archiveManager);
          open.transferFocusUpCycle();
     }
 
     private void jButton1ActionPerformed(ActionEvent evt) {
-         imagePanel.prevPage(archiveManager);
-         left.transferFocusUpCycle();
+         mainFrame.prevPage(archiveManager);
     }
 
     private void jButton2ActionPerformed(ActionEvent evt) {
-        imagePanel.nextPage(archiveManager);
-        right.transferFocusUpCycle();
+        mainFrame.nextPage(archiveManager);
     }
 
     private void jButton3ActionPerformed(ActionEvent evt) {
@@ -349,18 +368,7 @@ public class PopupMenu extends JPopupMenu{
     }
 
     private void jButton6ActionPerformed(ActionEvent evt) {
-        try {
-            String res = JOptionPane.showInputDialog(mainFrame, "Enter page no: "
-            +"( 0 - " + ArchiveManager.getSize() +" )");
-            //System.out.print(res);
-            if(res != null) {
-                int page = Integer.parseInt(res);
-                if(page > -1)
-                    imagePanel.goToPage(page);
-            }
-        } catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(mainFrame, "Enter Integers only!!");
-        }
+        mainFrame.jumpToPage();
     }
 
     private void jButton7ActionPerformed(ActionEvent evt) {
@@ -415,11 +423,7 @@ public class PopupMenu extends JPopupMenu{
      * @since v0.0.3
      */
     private void jButton13ActionPerformed(ActionEvent evt) {
-        File h = Settings.getPrevComicFile();
-        if(h != null)
-            MainFrame.displayComic(archiveManager, h);
-//        else
-//            prevComic.setEnabled(false);
+        mainFrame.prevComic(archiveManager);
     }
 
     /**
@@ -429,9 +433,7 @@ public class PopupMenu extends JPopupMenu{
      * @since v0.0.3
      */
     private void jButton14ActionPerformed(ActionEvent evt) {
-        File h = Settings.getNextComicFile();
-        if(h != null)
-            MainFrame.displayComic(archiveManager, h);
+        mainFrame.nextComic(archiveManager);
 
     }
     
@@ -493,11 +495,54 @@ public class PopupMenu extends JPopupMenu{
     }
     
   void showPopup(MouseEvent e) {
-
         show(e.getComponent(), e.getX(), e.getY());
-        //setVisible(true);
-}
-
+  }
+  
+//Todo: Add setMnemonics
+  
+  void setAccelerator() {
+      open.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.OPEN - Constants.START_VAL), 0));
+      save.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.SAVE - Constants.START_VAL), 0));
+      left.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.LEFT - Constants.START_VAL), 0));
+      right.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.RIGHT - Constants.START_VAL), 0));
+      goTo.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.GOTO - Constants.START_VAL), 0));
+      prevComic.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.PREV_COMIC - Constants.START_VAL), 0));
+      nextComic.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.NEXT_COMIC - Constants.START_VAL), 0));
+      fitWidth.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.FIT_WIDTH - Constants.START_VAL), 0));
+      rotateLeft.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ROTATE_LEFT - Constants.START_VAL), 0));
+      rotateRight.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ROTATE_RIGHT - Constants.START_VAL), 0));
+      fullscreen.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.FULLSCREEN - Constants.START_VAL), 0));
+      zoomIn.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ZOOM_IN - Constants.START_VAL), 0));
+      origSize.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ORIGIMAGE - Constants.START_VAL), 0));
+      zoomOut.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ZOOM_OUT - Constants.START_VAL), 0));
+      addBookmark.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.ADD_BOOKMARK - Constants.START_VAL), 0));
+      bookmarksManager.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.BOOKMARKS_MANAGER - Constants.START_VAL), 0));
+      shortcuts.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.KEYBOARDS_SHORTCUTS - Constants.START_VAL), 0));
+      settings.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.SETTINGS - Constants.START_VAL), 0));
+      about.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL), 0));
+      exit.setAccelerator(KeyStroke.getKeyStroke(
+                Constants.getAssignedKeys().get(Constants.EXIT - Constants.START_VAL), 0));
+  }
+  
     //<editor-fold defaultstate="collapsed" desc="Main">
     public static void main(String args[])
     {
