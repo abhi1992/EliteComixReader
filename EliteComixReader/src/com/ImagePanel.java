@@ -71,6 +71,7 @@ class ImagePanel extends JPanel {
         scale = 1.0;
         index = 0;
         setBackground(Settings.getDefaultColor());
+        repaint();
     }
 
     @Override
@@ -79,7 +80,7 @@ class ImagePanel extends JPanel {
         super.paintComponent(g);
         setBackground(Settings.getDefaultColor());
         if(Settings.isLoadingImage()) {
-                //g.setColor(Color.red);
+//                System.out.println(Calendar.getInstance().get(Calendar.SECOND));
                 g.setColor(Color.gray);
             g.setFont(new Font("Times New Roman", Font.BOLD, 30));
                 g.drawString("Loading...", getX() + Math.abs(getWidth() - 150)/2, 

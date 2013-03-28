@@ -26,6 +26,7 @@ import java.io.*;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.*;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -326,10 +327,12 @@ public class MainFrame extends JFrame {
         if(h != null) {
             imagePanel.setEmptyImage();
             Settings.setLoadingImage(true);
-            imagePanel.repaint();
+            paint(getGraphics());
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
             MainFrame.displayComic(ext, h);
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
             Settings.setLoadingImage(false);
-            imagePanel.repaint();
+            repaint();
         }
     }
     
@@ -338,10 +341,13 @@ public class MainFrame extends JFrame {
         if(h != null) {
             imagePanel.setEmptyImage();
             Settings.setLoadingImage(true);
-            imagePanel.repaint();
+            paint(getGraphics());
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
+            
             MainFrame.displayComic(ext, h);
+            //System.out.println(Calendar.getInstance().get(Calendar.SECOND));
             Settings.setLoadingImage(false);
-            imagePanel.repaint();
+            repaint();
         }
     }
 
