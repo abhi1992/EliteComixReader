@@ -34,7 +34,7 @@ public class Constants {
         , "", "500", "500", "", "50", "50", "1", "false", "false", "false", "" 
         , "0", "0", "0" , "user.home", "10", "user.home", "false", "false", "false", ""
         , "79", "83", "37", "39", "74", "114", "115", "87", "57", "48", "27"
-        , "91", "49", "93", "84", "65", "66", "75", "88", "72", "81", "112"}, 
+        , "91", "49", "93", "84", "65", "66", "75", "88", "72", "81", "112", "116", "117", "118"}, 
             
             defaultTags[] = {"Properties", "Laf"
                 , "Default", "Nimbus", "Motif", "Metal", "Size", "Height", "Width"
@@ -44,18 +44,18 @@ public class Constants {
                 , "Save", "Left", "Right", "GoTO", "PrevComic", "NextComic", "FitWidth"
                 , "RotateLeft", "RotateRight", "Fullscreen", "ZoomOut", "OrigImage", "ZoomIn"
                 , "AlwaysOnTop", "AddBookmark", "BookmarksManager", "KeyboardShortcuts"
-                , "Settings", "Help", "Exit", "ToolBar"};
-    public static ArrayList<Integer> availableKeys = new ArrayList<>(), 
+                , "Settings", "Help", "Exit", "ToolBar", "Page_Info", "Time_Info", "Page_No"};
+    public static ArrayList<Integer> availableKeys, 
             assignedKeys = new ArrayList<>();
     public static final short OPEN = 27, SAVE = 28, LEFT = 29, RIGHT = 30, GOTO = 31
             , PREV_COMIC = 32, NEXT_COMIC = 33, FIT_WIDTH = 34, ROTATE_LEFT = 35, 
             ROTATE_RIGHT = 36, FULLSCREEN = 37, ZOOM_OUT = 38, ORIGIMAGE = 39, 
             ZOOM_IN = 40, ALWAYS_ON_TOP = 41, ADD_BOOKMARK = 42, BOOKMARKS_MANAGER = 43,
             KEYBOARDS_SHORTCUTS = 44, SETTINGS = 45, HELP = 46, EXIT = 47, TOOL_BAR = 48
-            , START_VAL = 27;
+            , START_VAL = 27, PAGE_INFO = 49, TIME = 50, PAGE_NO = 51;
     
     public Constants() {
-        availableKeys = new ArrayList<>();
+        //availableKeys = new ArrayList<>();
         assignedKeys = new ArrayList<>();
         
     }
@@ -73,13 +73,13 @@ public class Constants {
         assignedKeys.add(value);
     }
     
-    void setAvailableKeys() {
-        for(int i = 0; i < 200; i++) {
-            if(!KeyEvent.getKeyText(i).contains("Unknown")) {
-                availableKeys.add(i);
-            }
-        }
-    }
+//    void setAvailableKeys() {
+//        for(int i = 0; i < 200; i++) {
+//            if(!KeyEvent.getKeyText(i).contains("Unknown")) {
+//                availableKeys.add(i);
+//            }
+//        }
+//    }
 
     public static ArrayList<Integer> getAssignedKeys() {
         return assignedKeys;

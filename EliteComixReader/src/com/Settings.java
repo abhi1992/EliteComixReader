@@ -114,8 +114,7 @@ public class Settings {
                     case "Size":
                         int h = 0,w = 0;
                         n = child.getChildNodes();
-                        for(int j = 0; j < n.getLength(); j++)
-                        {
+                        for(int j = 0; j < n.getLength(); j++) {
                             Node fd = n.item(j);
                             if((fd instanceof Element)) {
 
@@ -247,7 +246,8 @@ public class Settings {
         //Arrays.sort(arr);
         for(String h: arr)
         {
-            if(h.toLowerCase().endsWith(".cbr") || h.toLowerCase().endsWith(".cbz"))
+            if(h.toLowerCase().endsWith(".cbr") || h.toLowerCase().endsWith(".cbz")
+                    || h.toLowerCase().endsWith(".rar") || h.toLowerCase().endsWith(".zip"))
                 fileList.add(ff.getParent()+"/"+h);
             //System.out.println("\n"+h);
         }
@@ -513,10 +513,16 @@ public class Settings {
 //    }
 
     public static String getComicsPath() {
+        if(comicsPath.equals("user.home") ) {
+            return System.getProperty(comicsPath);
+        }
         return comicsPath;
     }
 
     public static String getExtractDir() {
+        if(ExtractDir.equals("user.home") ) {
+            return System.getProperty(ExtractDir + "/.EliteComixReader 0.0.8.0");
+        }
         return ExtractDir;
     }
 

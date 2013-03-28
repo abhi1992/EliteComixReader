@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import static java.nio.file.StandardCopyOption.*;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -138,6 +139,7 @@ public class MainFrame extends JFrame {
                     fullscreen();
                 }
                 if(e.getButton() == MouseEvent.BUTTON3) {
+                    popupMenu.setAccelerator();
                     popupMenu.showPopup(e);
                 }
             }
@@ -228,6 +230,17 @@ public class MainFrame extends JFrame {
         else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL))  {
             new HelpDialog(this);
         }
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.PAGE_NO - Constants.START_VAL))  {
+            ToolBar.showPageNumber(!ToolBar.isPageNumberVisible());
+        }
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.PAGE_INFO - Constants.START_VAL))  {
+            Settings.setPageInfo(!Settings.isPageInfo());
+            repaint();
+        }
+        else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.TIME - Constants.START_VAL))  {
+            Settings.setTimeInfo(!Settings.isTimeInfo());
+            repaint();
+        }
         else if(!imagePanel.isImageEmpty(imagePanel.getIndex()))  {
             if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                 moveScrollDown();
@@ -298,6 +311,37 @@ public class MainFrame extends JFrame {
                 imagePanel.origSize(ToolBar.isOrigSizeSelected());
                 ToolBar.setOrigSizeToggle();
             }
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.PREV_COMIC - Constants.START_VAL))  {
+                prevComic(ext);
+            }
+            else if(e.getKeyCode() == Constants.getAssignedKeys().get(Constants.NEXT_COMIC - Constants.START_VAL))  {
+                nextComic(ext);
+            }
+        }
+    }
+    
+    public void prevComic(ArchiveManager ext) {
+        
+        File h = Settings.getPrevComicFile();
+        if(h != null) {
+            imagePanel.setEmptyImage();
+            Settings.setLoadingImage(true);
+            imagePanel.repaint();
+            MainFrame.displayComic(ext, h);
+            Settings.setLoadingImage(false);
+            imagePanel.repaint();
+        }
+    }
+    
+    public void nextComic(ArchiveManager ext) {
+        File h = Settings.getNextComicFile();
+        if(h != null) {
+            imagePanel.setEmptyImage();
+            Settings.setLoadingImage(true);
+            imagePanel.repaint();
+            MainFrame.displayComic(ext, h);
+            Settings.setLoadingImage(false);
+            imagePanel.repaint();
         }
     }
 
@@ -556,9 +600,13 @@ public class MainFrame extends JFrame {
                     int success = ext.extract(f);
                     if(success == 0) {
                         imagePanel.setIndex(0);
-
+                        
                         if(imagePanel.getIndex() <= ArchiveManager.getSize()
                                 && ArchiveManager.getSize() != 0) {
+//                            File arr[] = new File[ArchiveManager.getSize()];
+//                                  arr =  (File[]) ArchiveManager.getFileArray().toArray();
+//                                    Arrays.sort(arr);
+//                            ArchiveManager.setFileArray(arr);
                             a = ArchiveManager.getImage(imagePanel.getIndex());
                             BookmarksManager.load(f);
                             ToolBar.setAddBookmark();
@@ -596,8 +644,4 @@ public class MainFrame extends JFrame {
         //MainFrame mainFrame = new MainFrame(e);
         //mainFrame = null;
     }
-
-
-
-
 }

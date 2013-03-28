@@ -106,7 +106,7 @@ public class RARExtractor extends ExtractorModel implements Extractor
                     int i = 0;
                     String n = Settings.getExtractDir();
                     if(Settings.getExtractDir().equals("user.home")) {
-                        n = System.getProperty("user.home") + "/.EliteComixReader";
+                        n = System.getProperty("user.home") + "/.EliteComixReader 0.0.8.0";
                     }
                     File f = new File(n);
                     

@@ -565,9 +565,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.3
      */
     private void jButton13ActionPerformed(ActionEvent evt) {
-        File h = Settings.getPrevComicFile();
-        if(h != null)
-            MainFrame.displayComic(archiveManager, h);
+        mainFrame.prevComic(archiveManager);
 //        else
 //            prevComic.setEnabled(false);
     }
@@ -579,9 +577,7 @@ public class ToolBar extends JToolBar {
      * @since v0.0.3
      */
     private void jButton14ActionPerformed(ActionEvent evt) {
-        File h = Settings.getNextComicFile();
-        if(h != null)
-            MainFrame.displayComic(archiveManager, h);
+        mainFrame.nextComic(archiveManager);
 
     }
     

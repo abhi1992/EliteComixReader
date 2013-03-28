@@ -45,6 +45,7 @@ public class ShortcutsDialog extends JDialog{
         
         setTitle("Key Board Shortcuts");
         setLayout(new BorderLayout());
+        
         jLabel = new JLabel(
                 new ImageIcon(getClass().getResource("/Resources/keyboard.png")));
         jEditorPane = new JEditorPane();
@@ -53,24 +54,69 @@ public class ShortcutsDialog extends JDialog{
         jEditorPane.setText("<Html><Font color = '#515151' size = '4'>"
                 + "<Font size = '5' color = '#333333'><B><i>  Key Board Events</i></B></Font><br>"
                 + "<Font size = '5' color = '#101010'><B>****************************</B></Font><br>"
-                + "<Font size = '5' color = '#990000'><B>O</B></Font> - Open Comic / Folder<br>"
-                + "<Font size = '5' color = '#990000'><B>S</B></Font> - Save Page<br>"
-                + "<Font size = '5' color = '#990000'><B>Left Arrow</B></Font> - Previous Page<br>"
-                + "<Font size = '5' color = '#990000'><B>Right Arrow</B></Font> - Next Page<br>"
-                + "<Font size = '5' color = '#990000'><B>W</B></Font> - Fit Width / Height<br>"
-                + "<Font size = '5' color = '#990000'><B>[</B></Font> - Zoom Out<br>"
-                + "<Font size = '5' color = '#990000'><B>1</B></Font> - Original Image Size<br>"
-                + "<Font size = '5' color = '#990000'><B>]</B></Font> - Zoom In<br>"
-                + "<Font size = '5' color = '#990000'><B>Escape</B></Font> - Toggle Fullscreen Mode<br>"
-                + "<Font size = '5' color = '#990000'><B>T</B></Font> - Toggle Always On Top<br>"
-                + "<Font size = '5' color = '#990000'><B>J</B></Font> - Jump To Page<br>"
-                + "<Font size = '5' color = '#990000'><B>B</B></Font> - Add / Remove Bookmark<br>"
-                + "<Font size = '5' color = '#990000'><B>A</B></Font> - Show Bookmarks<br>"
-                + "<Font size = '5' color = '#990000'><B>K</B></Font> - Show Key Board Shortcuts<br>"
-                + "<Font size = '5' color = '#990000'><B>H</B></Font> - Hide / Show Toolbar<br>"
-                + "<Font size = '5' color = '#990000'><B>X</B></Font> - Settings / Show Toolbar<br>"
-                + "<Font size = '5' color = '#990000'><B>Z</B></Font> - Help<br>"
-                + "<Font size = '5' color = '#990000'><B>Q</B></Font> - Quit<br><br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.OPEN - Constants.START_VAL))
+                +"</B></Font> - Open Comic / Folder<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.SAVE - Constants.START_VAL))
+                + "</B></Font> - Save Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.LEFT - Constants.START_VAL))
+                + "</B></Font> - Previous Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.RIGHT - Constants.START_VAL))
+                + "</B></Font> - Next Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.FIT_WIDTH - Constants.START_VAL))
+                + "</B></Font> - Fit Width / Height<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ZOOM_OUT - Constants.START_VAL))
+                + "</B></Font> - Zoom Out<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ORIGIMAGE - Constants.START_VAL))
+                + "</B></Font> - Original Image Size<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ZOOM_IN - Constants.START_VAL))
+                + "</B></Font> - Zoom In<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.FULLSCREEN - Constants.START_VAL))
+                + "</B></Font> - Toggle Fullscreen Mode<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ALWAYS_ON_TOP - Constants.START_VAL))
+                + "</B></Font> - Toggle Always On Top<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.GOTO - Constants.START_VAL))
+                + "</B></Font> - Jump To Page<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.ADD_BOOKMARK - Constants.START_VAL))
+                + "</B></Font> - Add / Remove Bookmark<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.BOOKMARKS_MANAGER - Constants.START_VAL))
+                + "</B></Font> - Show Bookmarks<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.KEYBOARDS_SHORTCUTS - Constants.START_VAL))
+                + "</B></Font> - Show Key Board Shortcuts<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.TOOL_BAR - Constants.START_VAL))
+                + "</B></Font> - Hide / Show Toolbar<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.SETTINGS - Constants.START_VAL))
+                + "</B></Font> - Settings<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.PAGE_INFO - Constants.START_VAL))
+                + "</B></Font> - Show Page no in panel<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.TIME - Constants.START_VAL))
+                + "</B></Font> - Show time in panel<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.PAGE_NO - Constants.START_VAL))
+                + "</B></Font> - Show Page no in Toolbar<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.HELP - Constants.START_VAL))
+                + "</B></Font> - Help<br>"
+                + "<Font size = '5' color = '#990000'><B>"
+                + KeyEvent.getKeyText(Constants.getAssignedKeys().get(Constants.EXIT - Constants.START_VAL))
+                + "</B></Font> - Quit<br><br>"
                 + "<Font size = '5' color = '#333333'><B><i>  Mouse Events</i></B></Font><br>"
                 + "<Font size = '5' color = '#101010'><B>****************************</b></Font><br>"
                 + "<Font size = '5' color = '#990000'><B>Double Click</B></Font> - Toggle Fullscreen Mode<br>"
@@ -85,20 +131,25 @@ public class ShortcutsDialog extends JDialog{
                 dispose();
             }
         });
+        setMinimumSize(new Dimension(500, 600));
         jPanel = new JPanel();
         jPanel.setLayout(new FlowLayout());
+        jEditorPane.setPreferredSize(new Dimension(300, 550));
         scroll = new JScrollPane(jEditorPane);
+        scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMinimum());
         jPanel.add(jButton);
         getContentPane().add(jLabel, BorderLayout.WEST);
         getContentPane().add(scroll, BorderLayout.CENTER);
         getContentPane().add(jPanel, BorderLayout.SOUTH);
-        setMinimumSize(new Dimension(500, 600));
+        
         Point p = mainFrame.getLocation();
         setLocation(p.x + Math.abs(mainFrame.getWidth() - getWidth())/2, p.y + 
                 Math.abs(mainFrame.getHeight() - getHeight()) / 2);
-        setVisible(true);
+        setModalityType(
+           Dialog.ModalityType.TOOLKIT_MODAL);
         
-        pack();
+        setVisible(true);
+        //pack();
     }
     
     /**
